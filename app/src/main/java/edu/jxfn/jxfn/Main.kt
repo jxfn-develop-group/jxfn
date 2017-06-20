@@ -146,9 +146,14 @@ class Main : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
             }
             val file = File(imagePath, "myCamera.jpg")
             val newFile: FileInputStream = FileInputStream(file)
-            val bitMap: Bitmap = BitmapFactory.decodeStream(newFile)
+            var bitmap: Bitmap = BitmapFactory.decodeStream(newFile)
             newFile.close()
-            imageView2.setImageBitmap(bitMap)
+            bitmap = bitmapProcess(bitmap)
+            imageView2.setImageBitmap(bitmap)
         }
+    }
+
+    override fun bitmapProcess(originBitmap: Bitmap): Bitmap {
+        return originBitmap
     }
 }
