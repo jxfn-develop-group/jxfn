@@ -22,21 +22,20 @@ import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
-import kotlinx.android.synthetic.main.nav_header_main.*
 import java.io.File
 import java.io.FileInputStream
 
 class Main : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-    val camersRequestCode: Int = 0
+    val cameraRequestCode: Int = 0
+    var bitmap: Bitmap? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+        fab.setOnClickListener {
+            bitmapProcess()
         }
 
         val toggle = ActionBarDrawerToggle(
@@ -134,11 +133,11 @@ class Main : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
         )
         val intent: Intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         intent.putExtra(MediaStore.EXTRA_OUTPUT, contentUri)
-        startActivityForResult(intent, camersRequestCode)
+        startActivityForResult(intent, cameraRequestCode)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == camersRequestCode) {
+        if (requestCode == cameraRequestCode) {
             val imagePath: File = File(Environment.getExternalStorageDirectory(), "Jxfn")
             if(!imagePath.exists()) {
                 textView1.text = "Error!"
@@ -146,14 +145,19 @@ class Main : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
             }
             val file = File(imagePath, "myCamera.jpg")
             val newFile: FileInputStream = FileInputStream(file)
-            var bitmap: Bitmap = BitmapFactory.decodeStream(newFile)
+            val newBitmap = BitmapFactory.decodeStream(newFile)
             newFile.close()
-            bitmap = bitmapProcess(bitmap)
-            imageView2.setImageBitmap(bitmap)
+            // bitmap = bitmapProcess(bitmap)
+            imageView2.setImageBitmap(newBitmap)
+            bitmap = newBitmap
         }
     }
 
-    override fun bitmapProcess(originBitmap: Bitmap): Bitmap {
-        return originBitmap
+    fun bitmapProcess(): Unit {
+        if (bitmap == null) {
+            Snackbar.make(nav_view, "Please choose a photo first", Snackbar.LENGTH_LONG).
+                    setAction("Action", null).show()
+            return
+        }
     }
 }
