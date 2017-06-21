@@ -156,6 +156,8 @@ class Main : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
     fun bitmapProcess(originBitmap: Bitmap?): Unit {
         if (originBitmap != null) {
             var processingBitmap: Bitmap = bitmapPreProcess(originBitmap)
+            // add your fun here like
+            // processingBitmap = bitmapDoSomething(processingBitmap)
             bitmap = processingBitmap
             imageView2.setImageBitmap(bitmap)
         }
