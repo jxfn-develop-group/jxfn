@@ -35,7 +35,7 @@ class Main : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
         setSupportActionBar(toolbar)
 
         fab.setOnClickListener {
-            bitmapProcess()
+            bitmapProcess(bitmap)
         }
 
         val toggle = ActionBarDrawerToggle(
@@ -153,8 +153,13 @@ class Main : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
         }
     }
 
-    fun bitmapProcess(): Unit {
-        if (bitmap == null) {
+    fun bitmapProcess(originBitmap: Bitmap?): Unit {
+        if (originBitmap != null) {
+            var processingBitmap: Bitmap = bitmapPreProcess(originBitmap)
+            bitmap = processingBitmap
+            imageView2.setImageBitmap(bitmap)
+        }
+        else {
             Snackbar.make(nav_view, "Please choose a photo first", Snackbar.LENGTH_LONG).
                     setAction("Action", null).show()
             return
