@@ -17,6 +17,9 @@ struct Matrix matrixInit(int n, int m){
 
 
 void matrixSetNum(struct Matrix *a, int n, int m, double val){
+    if(n < 0 ||n >= a->n || m < 0 || m >= a->m){
+        printf("array out of range!");
+    }
     a->arr[n * a->m + m] = val;
     //printf("%d %d %d %lf\n",n,m,n*a->m+m,val);
 }
