@@ -24,7 +24,7 @@ void matrixSetNum(struct Matrix *a, int n, int m, int val){
 void matrixPrin(struct Matrix a){
     for (int i = 0; i < a.n; i++) {
         for (int j = 0; j < a.m; j++) {
-            printf("%d ",a.arr[i * a.m + j]);
+            printf("%f ",a.arr[i * a.m + j]);
         }
         printf("\n");
     }
@@ -49,15 +49,41 @@ struct Matrix matrixMul(struct Matrix a, struct Matrix b){
 }
 
 
-Matrix matrtixDot(Matrix a, Matrix b){
+Matrix matrixDot(Matrix a, Matrix b){
     if(a.m != b.m || a.n != b.n){
         printf("The matrixs can't be doted!");
         exit(0);
     }
-    Matrix c;
+    Matrix c = matrixInit(a.n, b.m);
     for (int i = 0; i < a.n; i++){
         for(int j = 0; j < b.n ; j++){
             c.arr[i * a.m + j] = a.arr[i * a.m + j] * b.arr[i * a.m + j];
+        }
+    }
+    return c;
+}
+
+
+Matrix matrixAdd(Matrix a, Matrix b){
+    if(a.m != b.m || a.n != b.n){
+        printf("The matrixs can't be doted!");
+        exit(0);
+    }
+    Matrix c = matrixInit(a.n, b.m);
+    for (int i = 0; i < a.n; i++){
+        for(int j = 0; j < b.n ; j++){
+            c.arr[i * a.m + j] = a.arr[i * a.m + j] + b.arr[i * a.m + j];
+        }
+    }
+    return c;
+}
+
+
+Matrix matrixMulNum(Matrix a, double b){
+    Matrix c = matrixInit(a.n, a.m);
+    for(int i = 0; i < a.n; i++){
+        for(int j = 0; j < a.m; j++){
+            c.arr[i * c.m + j] = a.arr[i * a.m + j] * b;
         }
     }
     return c;

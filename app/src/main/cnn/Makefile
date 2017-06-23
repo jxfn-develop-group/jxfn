@@ -6,4 +6,4 @@ main.o : main.c
 matrix.o : matrix.c
 	$(complies) -c matrix.c
 clean :
-	rm -rf main.o exectute matrix.o
+	rm -rf main.o a.out matrix.o
