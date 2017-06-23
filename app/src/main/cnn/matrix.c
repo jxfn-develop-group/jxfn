@@ -5,9 +5,13 @@
 
 struct Matrix matrixInit(int n, int m){
     struct Matrix a;
+    if(n <= 0||m <= 0){
+        printf("The matrix size must be positive numbers!\n");
+        exit(0);
+    }
     a.arr = malloc(n * m * sizeof(double));
     if(a.arr == NULL){
-        printf("The matrix can't be created!");
+        printf("The matrix can't be created!\n");
         exit(0);
     }
     a.n = n;
@@ -18,7 +22,8 @@ struct Matrix matrixInit(int n, int m){
 
 void matrixSetNum(struct Matrix *a, int n, int m, double val){
     if(n < 0 ||n >= a->n || m < 0 || m >= a->m){
-        printf("array out of range!");
+        printf("array out of range!\n");
+        return ;
     }
     a->arr[n * a->m + m] = val;
     //printf("%d %d %d %lf\n",n,m,n*a->m+m,val);
@@ -37,7 +42,7 @@ void matrixPrin(struct Matrix a){
 
 struct Matrix matrixMul(struct Matrix a, struct Matrix b){
     if(a.m != b.n){
-        printf("The matrixs can't be multipled!");
+        printf("The matrixs can't be multipled!\n");
         exit(0);
     }
     struct Matrix c = matrixInit(a.n, b.m);
@@ -55,7 +60,7 @@ struct Matrix matrixMul(struct Matrix a, struct Matrix b){
 
 Matrix matrixDot(Matrix a, Matrix b){
     if(a.m != b.m || a.n != b.n){
-        printf("The matrixs can't be doted!");
+        printf("The matrixs can't be doted!\n");
         exit(0);
     }
     Matrix c = matrixInit(a.n, b.m);
@@ -70,7 +75,7 @@ Matrix matrixDot(Matrix a, Matrix b){
 
 Matrix matrixAdd(Matrix a, Matrix b){
     if(a.m != b.m || a.n != b.n){
-        printf("The matrixs can't be doted!");
+        printf("The matrixs can't be doted!\n");
         exit(0);
     }
     Matrix c = matrixInit(a.n, b.m);
@@ -91,4 +96,18 @@ Matrix matrixMulNum(Matrix a, double b){
         }
     }
     return c;
+}
+
+
+/*
+矩阵转置
+*/
+Matrix matrixTrans(Matrix a){
+    Matrix b = matrixInit(a.m, a.n);
+    for(int i = 0; i < b.n; i++){
+        for(int j = 0; j < b.m; j++){
+            b.arr[i * b.m + j] = a.arr[j * a.m + i];
+        }
+    }
+    return b;
 }

@@ -12,4 +12,5 @@
     Matrix matrixDot(Matrix a, Matrix b);
     Matrix matrixAdd(Matrix a, Matrix b);
     Matrix matrixMulNum(Matrix a, double b);
+    Matrix matrixTrans(Matrix a);
 #endif
