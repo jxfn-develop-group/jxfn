@@ -6,7 +6,7 @@
     };
     typedef struct Matrix Matrix;
     struct Matrix matrixInit(int n, int m);
-    void matrixSetNum(struct Matrix *a, int n, int m, int val);
+    void matrixSetNum(struct Matrix *a, int n, int m, double val);
     void matrixPrin(struct Matrix a);
     struct Matrix matrixMul(struct Matrix a, struct Matrix b);
     Matrix matrixDot(Matrix a, Matrix b);

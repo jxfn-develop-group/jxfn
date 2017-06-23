@@ -5,7 +5,7 @@
 
 struct Matrix matrixInit(int n, int m){
     struct Matrix a;
-    a.arr = malloc(n*m);
+    a.arr = malloc(n * m * sizeof(double));
     if(a.arr == NULL){
         printf("The matrix can't be created!");
         exit(0);
@@ -16,15 +16,16 @@ struct Matrix matrixInit(int n, int m){
 }
 
 
-void matrixSetNum(struct Matrix *a, int n, int m, int val){
+void matrixSetNum(struct Matrix *a, int n, int m, double val){
     a->arr[n * a->m + m] = val;
+    //printf("%d %d %d %lf\n",n,m,n*a->m+m,val);
 }
 
 
 void matrixPrin(struct Matrix a){
     for (int i = 0; i < a.n; i++) {
         for (int j = 0; j < a.m; j++) {
-            printf("%f ",a.arr[i * a.m + j]);
+            printf("%lf ",a.arr[i * a.m + j]);
         }
         printf("\n");
     }

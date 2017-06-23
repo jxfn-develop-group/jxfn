@@ -9,7 +9,9 @@ int main(){
     srand(time(0));
     for (int i = 0; i < 2; i++) {
         for (int j = 0; j < 3; j++) {
-            matrixSetNum(&a, i, j, rand());
+            //a.arr[i * a.m + j] = i+j;
+            matrixSetNum(&a,i,j,i+j);
+            //printf("%d %d %d\n",i,j,i*a.m+j);
         }
     }
     matrixPrin(a);
