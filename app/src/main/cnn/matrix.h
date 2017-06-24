@@ -13,4 +13,10 @@
     Matrix matrixAdd(Matrix a, Matrix b);
     Matrix matrixMulNum(Matrix a, double b);
     Matrix matrixTrans(Matrix a);
+    struct Matrixs{
+        int siz;
+        Matrix* p_matrix;
+    };
+    typedef struct Matrixs Matrixs;
+    Matrixs matrixsInit(int a, int n, int m);
 #endif

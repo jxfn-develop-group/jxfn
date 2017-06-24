@@ -111,3 +111,14 @@ Matrix matrixTrans(Matrix a){
     }
     return b;
 }
+
+
+Matrixs matrixsInit(int a, int n, int m){
+    Matrixs b;
+    if(a <= 0){
+        printf("error when create matrixs!\n");
+    }
+    b.siz = a;
+    b.p_matrix = malloc(a * sizeof(Matrix));
+    return b;
+}

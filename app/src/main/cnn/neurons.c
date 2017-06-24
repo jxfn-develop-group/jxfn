@@ -6,11 +6,9 @@
 #include "neurons.h"
 
 
-Neurons neuronsInit(Matrix from, Matrix to, Matrix weights, double bias){
+Neurons neuronsInit(int n, int m, double bias){
     Neurons c;
-    c.from = from;
-    c.to = to;
-    c.weights = weights;
+    c.weights = matrixInit(n, m);
     c.p_activateFunction = NULL;
     c.bias = bias;
     c.p_baseFunction = NULL;
@@ -18,15 +16,14 @@ Neurons neuronsInit(Matrix from, Matrix to, Matrix weights, double bias){
 }
 
 
-Neuronss NeuronssInit(int n,int m){
-    if(n <= 0 || m <= 0){
+Neuronss neuronssInit(int siz){
+    if(siz <= 0){
         printf("Neuronss init error!\n");
         exit(0);
     }
     Neuronss c;
-    c.n = n;
-    c.m = m;
-    c.neu = malloc(c.n * c.m * sizeof(Neurons));
+    c.siz = siz;
+    c.neu = malloc(c.siz * sizeof(Neurons));
     if(c.neu == NULL){
         printf("The memory is not enough when the Neuronss created!\n");
     }
