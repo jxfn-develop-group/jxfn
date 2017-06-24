@@ -2,6 +2,8 @@
 #include <stdlib.h>
 
 #include "matrix.h"
+#include "neurons.h"
+#include "funofneurons.h"
 
 
 int main(){
@@ -15,4 +17,5 @@ int main(){
         }
     }
     matrixPrin(a);
+    // Neurons tmp = neuronsInit(a,a,a,0.2);
 }

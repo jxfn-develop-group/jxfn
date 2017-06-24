@@ -1,9 +1,15 @@
 complies = gcc
-a.out : matrix.o main.o
-	$(complies) matrix.o main.o -o a.out
+a.out : matrix.o neurons.o funofneurons.o cnnnet.o main.o
+	$(complies) $^ -o a.out
 main.o : main.c
 	$(complies) -c main.c
 matrix.o : matrix.c
 	$(complies) -c matrix.c
+neurons.o : neurons.c
+	$(complies) -c neurons.c
+funofneurons.o : funofneurons.c
+	$(complies) -c funofneurons.c
+cnnnet.o : cnnnet.c
+	$(complies) -c $^
 clean :
-	rm -rf main.o a.out matrix.o
+	rm -rf main.o a.out matrix.o neurons.o funofneurons.o cnnnet.o
