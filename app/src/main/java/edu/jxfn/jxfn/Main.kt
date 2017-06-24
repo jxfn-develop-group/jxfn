@@ -19,11 +19,13 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import com.github.kittinunf.fuel.Fuel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import java.io.File
 import java.io.FileInputStream
+import java.nio.charset.Charset
 
 class Main : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     val cameraRequestCode: Int = 0
@@ -113,7 +115,8 @@ class Main : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+            requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         val writeExternalStorage: Int = 0
         if (requestCode == writeExternalStorage) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -153,11 +156,32 @@ class Main : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
         }
     }
 
+    fun translate(word: String): Unit {
+        val url: String = "https://translation.googleapis.com/language/translate/v2"
+        val param = listOf(
+                "key" to "AIzaSyBt9NFvN8wqyVDgXiw8wN41wtTDntxootg",
+                "target" to "zh-CN",
+                "source" to "en",
+                "q" to word
+        )
+        Fuel.post(url, param).response { request, response, result ->
+            //do something with response
+            val (res, err) = result
+            val resText = res!!.toString(charset("utf-8"))
+            val regexString = Regex(""""translatedText": "(.*)"""")
+            val regexResult =  regexString.find(resText)
+            textView1.text = regexResult!!.groupValues[1]
+        }
+    }
+
     fun bitmapProcess(): Unit {
         if (bitmap == null) {
             Snackbar.make(nav_view, "Please choose a photo first", Snackbar.LENGTH_LONG).
                     setAction("Action", null).show()
             return
         }
+
+        imageView2.setImageBitmap(null)
+        translate("hello world.")
     }
 }
