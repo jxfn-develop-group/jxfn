@@ -11,6 +11,7 @@
     struct Matrix matrixMul(struct Matrix a, struct Matrix b);
     Matrix matrixDot(Matrix a, Matrix b);
     Matrix matrixAdd(Matrix a, Matrix b);
+    void matrixAddItself(Matrix* a, Matrix b);
     Matrix matrixMulNum(Matrix a, double b);
     Matrix matrixTrans(Matrix a);
     struct Matrixs{

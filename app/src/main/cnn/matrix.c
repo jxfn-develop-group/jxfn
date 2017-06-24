@@ -65,7 +65,7 @@ Matrix matrixDot(Matrix a, Matrix b){
     }
     Matrix c = matrixInit(a.n, b.m);
     for (int i = 0; i < a.n; i++){
-        for(int j = 0; j < b.n ; j++){
+        for(int j = 0; j < b.m ; j++){
             c.arr[i * a.m + j] = a.arr[i * a.m + j] * b.arr[i * a.m + j];
         }
     }
@@ -80,11 +80,24 @@ Matrix matrixAdd(Matrix a, Matrix b){
     }
     Matrix c = matrixInit(a.n, b.m);
     for (int i = 0; i < a.n; i++){
-        for(int j = 0; j < b.n ; j++){
+        for(int j = 0; j < a.m ; j++){
             c.arr[i * a.m + j] = a.arr[i * a.m + j] + b.arr[i * a.m + j];
         }
     }
     return c;
+}
+
+
+void matrixAddItself(Matrix* a, Matrix b){
+    if(a->m != b.m || a->n != b.n){
+        printf("The matrixs can't be doted!\n");
+        exit(0);
+    }
+    for (int i = 0; i < a->n; i++){
+        for(int j = 0; j < a->m ; j++){
+            a->arr[i * a->m + j] += b.arr[i * a->m + j];
+        }
+    }
 }
 
 

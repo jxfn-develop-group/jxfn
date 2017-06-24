@@ -4,7 +4,7 @@
 #ifndef _NEURONS_H
     #define _NEURONS_H 2
     struct Neurons{
-        Matrixs weights;
+        Matrix weights;
         double bias;
         double (*p_baseFunction)(Matrix , Matrix , double);//基函数指针
         double (*p_activateFunction)(double , double);//激活函数指针
