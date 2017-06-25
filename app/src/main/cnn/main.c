@@ -18,8 +18,8 @@ int main(){
     readIm(s, &mat);
     Cnnnet cnn;
     cnnnetInit(&cnn);
-    //initRand(&cnn);
-    initFromFile(&cnn);
+    initRand(&cnn);
+    //initFromFile(&cnn);
     printf("%d\n",runCnn(&cnn, mat));
     //writeParameter(cnn);
     return 0;
