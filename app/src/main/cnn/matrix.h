@@ -20,4 +20,5 @@
     };
     typedef struct Matrixs Matrixs;
     void matrixsInit(Matrixs* mats, int a, int n, int m);
+    void matrixsFree(Matrixs* mats);
 #endif

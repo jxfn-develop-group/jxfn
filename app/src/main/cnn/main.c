@@ -20,7 +20,12 @@ int main(){
     cnnnetInit(&cnn);
     initRand(&cnn);
     //initFromFile(&cnn);
-    printf("%d\n",runCnn(&cnn, mat));
+    //printf("%d\n",runCnn(&cnn, mat));
+    for(int i = 0; i< 2;i++)
+    runCnn(&cnn,mat);
+    /*for(int i= 0 ;i<1;i++){
+        runCnn(&cnn, mat);
+    }*/
     //writeParameter(cnn);
 
     return 0;

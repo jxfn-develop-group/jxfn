@@ -41,6 +41,8 @@ double getRandRange(int a){
     ans *= rand() % 300;
     return ans;
 }
+
+
 double LReLu(double a){
     if(a < 0.0){
         return a * 0.1;
