@@ -11,10 +11,12 @@
     };
     typedef struct Neurons Neurons;
     void neuronsInit(Neurons* a, int n, int m, double bias);
+    void neuronsFree(Neurons* a);
     struct Neuronss{
         int siz;
         Neurons** neu;
     };
     typedef struct Neuronss Neuronss;
     void neuronssInit(Neuronss* a, int siz);
+    void neuronssFree(Neuronss* a);
 #endif

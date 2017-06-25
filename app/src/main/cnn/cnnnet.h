@@ -10,6 +10,7 @@
     };
     typedef struct Cnnnet Cnnnet;
     void cnnnetInit(Cnnnet* net1);
+    void cnnnetFree(Cnnnet* net1);
     void writeParameter(Cnnnet net1);//写神经网络参数
     void initFromFile(Cnnnet* net1);//从文件读入神经网络参数
     void initRand(Cnnnet* net1);//随机数设为参数

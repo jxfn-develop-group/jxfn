@@ -28,6 +28,26 @@ void cnnnetInit(Cnnnet* net1){
 }
 
 
+void cnnnetFree(Cnnnet* net1){
+    matrixsFree(&net1->mats[0]);
+    matrixsFree(&net1->mats[1]);
+    matrixsFree(&net1->mats[2]);
+    matrixsFree(&net1->mats[3]);
+    matrixsFree(&net1->mats[4]);
+    matrixsFree(&net1->mats[5]);
+    matrixsFree(&net1->mats[6]);
+    matrixsFree(&net1->mats[7]);
+
+    neuronssFree(&net1->level[0]);
+    neuronssFree(&net1->level[1]);
+    neuronssFree(&net1->level[2]);
+    neuronssFree(&net1->level[3]);
+    neuronssFree(&net1->level[4]);
+    neuronssFree(&net1->level[5]);
+    neuronssFree(&net1->level[6]);
+}
+
+
 void initFromFile(Cnnnet* net1){
     initRand(net1);
     readPara(net1);
@@ -88,7 +108,12 @@ void initRand(Cnnnet* net1){
 
 void runOfLayerOne(Cnnnet *net1){
     for (int i = 0; i < 6; i++){
-        for(int j = 0; j < 28; j++){
+        matrixConv(net1->mats[1].p_matrix[i], net1->mats[0].p_matrix[0],
+            &(net1->level[0].neu[i]->weights));
+        matrixAddNum(net1->mats[1].p_matrix[i], net1->level[0].neu[i]->bias);
+        matrixFunction(net1->mats[1].p_matrix[i],
+            net1->level[0].neu[i]->p_activateFunction, 0.0);
+        /*for(int j = 0; j < 28; j++){
             for(int k = 0; k < 28; k++){
                 net1->mats[1].p_matrix[i]->arr[j * 28 + k] = 0.0;
                 for(int ii = 0; ii < 5; ii++){
@@ -104,7 +129,7 @@ void runOfLayerOne(Cnnnet *net1){
                     net1->level[0].neu[i]->p_activateFunction
                     (net1->mats[1].p_matrix[i]->arr[j * 28 + k], 0.0);
             }
-        }
+        }*/
     }
 }
 
@@ -129,14 +154,14 @@ void runOfLayerTwo(Cnnnet *net1){
             }
         }
     }
+    matrixFree(&tmp);
+    matrixFree(&tmp1);
 }
 
 
 void runOfLayerThree(Cnnnet *net1){
     Matrixs tmat;
-    // printf("frist ocurr??\n");
     matrixsInit(&tmat, 16, 14, 14);
-    // printf("=init=\n");
     for (int i = 0; i < 16; i++){
         for(int j = 0; j < 10; j++){
             for (int k = 0; k < 10; k++){

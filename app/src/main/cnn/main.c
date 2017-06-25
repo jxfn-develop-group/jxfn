@@ -23,12 +23,16 @@ int main(){
     //printf("%d\n",runCnn(&cnn, mat));
     double start = clock();
     int tmp;
-    scanf("%d",&tmp);
+    //scanf("%d",&tmp);
+    tmp = 10;
+    int ans = 0;
     for(int i = 0; i< tmp;i++){
         // printf("%d %d\n",i,runCnn(&cnn,mat));
-        runCnn(&cnn, mat);
+        ans = runCnn(&cnn, mat);
     }
+    printf("%d\n",ans);
     printf("%f\n", (clock() - start)/(double)CLOCKS_PER_SEC);
+    cnnnetFree(&cnn);
     /*for(int i= 0 ;i<1;i++){
         runCnn(&cnn, mat);
     }*/

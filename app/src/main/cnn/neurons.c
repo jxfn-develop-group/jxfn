@@ -14,6 +14,11 @@ void neuronsInit(Neurons* a, int n, int m, double bias){
 }
 
 
+void neuronsFree(Neurons* a){
+    matrixFree(&a->weights);
+}
+
+
 void neuronssInit(Neuronss* a, int siz){
     if(siz <= 0){
         printf("Neuronss init error!\n");
@@ -27,4 +32,18 @@ void neuronssInit(Neuronss* a, int siz){
     for(int i = 0; i < siz; i++){
         a->neu[i] = malloc(sizeof(Neurons));
     }
+}
+
+
+void neuronssFree(Neuronss* a){
+    if(a->neu != NULL){
+        for(int i = 0; i < a->siz; i++){
+            neuronsFree(a->neu[i]);
+            if(a->neu[i] != NULL){
+                free(a->neu[i]);
+            }
+        }
+        free(a->neu);
+    }
+    a->siz = 0;
 }

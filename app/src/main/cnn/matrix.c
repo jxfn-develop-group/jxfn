@@ -24,7 +24,6 @@ void matrixSetNum(struct Matrix *a, int n, int m, double val){
         return ;
     }
     a->arr[n * a->m + m] = val;
-    //printf("%d %d %d %lf\n",n,m,n*a->m+m,val);
 }
 
 
@@ -99,6 +98,15 @@ void matrixAdd(Matrix* a, Matrix b){
 }
 
 
+void matrixAddNum(Matrix* a, double b){
+    for(int i = 0; i < a->n; i++){
+        for(int j = 0; j < a->m; j++){
+            a->arr[i * a->m + j] += b;
+        }
+    }
+}
+
+
 void matrixAddItself(Matrix* a, Matrix b){
     if(a->m != b.m || a->n != b.n){
         printf("The matrixs can't be doted!\n");
@@ -137,16 +145,33 @@ void matrixTrans(Matrix* a){
 }
 
 
+/*矩阵卷积*/
+void matrixConv(Matrix* a, Matrix* b,Matrix* c){
+    if(a->n != b->n - c->n + 1 || a->m != b->m - c->m + 1){
+        printf("Can't conv!\n");
+        return;
+    }
+    for(int i = 0; i < a->n; i++){
+        for(int j = 0; j < a->m; j++){
+            for(int ii = 0; ii < c->n; ii++){
+                for(int jj = 0; jj < c->m; jj++){
+                    a->arr[i * a->m + j] += b->arr[(i + ii) * b->m + j + jj] *
+                        c->arr[ii * c->m + jj];
+                }
+            }
+        }
+    }
+}
+
+
 void matrixsInit(Matrixs* mats, int a, int n, int m){
     if(a <= 0){
         printf("error when create matrixs!\n");
     }
     mats->siz = a;
     mats->p_matrix = malloc(a * sizeof(Matrix*));
-    //printf("==ininit==\n");
     for (int i = 0; i < a; i++){
         mats->p_matrix[i] = malloc(2 * sizeof(int) +  sizeof(Matrix*));
-        //printf("==%d==\n",i);
         mats->p_matrix[i]->n = n;
         mats->p_matrix[i]->m = m;
         mats->p_matrix[i]->arr = malloc(n * m * sizeof(double));
@@ -154,9 +179,32 @@ void matrixsInit(Matrixs* mats, int a, int n, int m){
 }
 
 
-void matrixsFree(Matrixs* mats){
-    for(int i = 0; i < mats->siz; i++){
-        free(mats->p_matrix[i]);
+void matrixFree(Matrix* mat){
+    if(mat->arr != NULL){
+        free(mat->arr);
     }
-    free(mats->p_matrix);
+    mat->n = mat->m = 0;
+}
+
+
+void matrixsFree(Matrixs* mats){
+    if(mats->p_matrix != NULL){
+        for(int i = 0; i < mats->siz; i++){
+            matrixFree(mats->p_matrix[i]);
+            if(mats->p_matrix[i] != NULL){
+                free(mats->p_matrix[i]);
+            }
+        }
+        free(mats->p_matrix);
+    }
+    mats->siz = 0;
+}
+
+
+void matrixFunction(Matrix* a,double (*p_fun)(double, double), double b){
+    for(int i = 0; i < a->n; i++){
+        for(int j = 0; j < a->m; j++){
+            a->arr[i * a->m + j] = p_fun(a->arr[i * a->m +j], b);
+        }
+    }
 }
