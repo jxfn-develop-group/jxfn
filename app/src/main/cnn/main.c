@@ -21,8 +21,14 @@ int main(){
     initRand(&cnn);
     //initFromFile(&cnn);
     //printf("%d\n",runCnn(&cnn, mat));
-    for(int i = 0; i< 2;i++)
-    runCnn(&cnn,mat);
+    double start = clock();
+    int tmp;
+    scanf("%d",&tmp);
+    for(int i = 0; i< tmp;i++){
+        // printf("%d %d\n",i,runCnn(&cnn,mat));
+        runCnn(&cnn, mat);
+    }
+    printf("%f\n", (clock() - start)/(double)CLOCKS_PER_SEC);
     /*for(int i= 0 ;i<1;i++){
         runCnn(&cnn, mat);
     }*/

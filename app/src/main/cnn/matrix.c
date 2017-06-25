@@ -143,10 +143,10 @@ void matrixsInit(Matrixs* mats, int a, int n, int m){
     }
     mats->siz = a;
     mats->p_matrix = malloc(a * sizeof(Matrix*));
-    printf("==ininit==\n");
+    //printf("==ininit==\n");
     for (int i = 0; i < a; i++){
         mats->p_matrix[i] = malloc(2 * sizeof(int) +  sizeof(Matrix*));
-        printf("==%d==\n",i);
+        //printf("==%d==\n",i);
         mats->p_matrix[i]->n = n;
         mats->p_matrix[i]->m = m;
         mats->p_matrix[i]->arr = malloc(n * m * sizeof(double));

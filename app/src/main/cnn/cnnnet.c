@@ -134,9 +134,9 @@ void runOfLayerTwo(Cnnnet *net1){
 
 void runOfLayerThree(Cnnnet *net1){
     Matrixs tmat;
-    printf("frist ocurr??\n");
+    // printf("frist ocurr??\n");
     matrixsInit(&tmat, 16, 14, 14);
-    printf("=init=\n");
+    // printf("=init=\n");
     for (int i = 0; i < 16; i++){
         for(int j = 0; j < 10; j++){
             for (int k = 0; k < 10; k++){
@@ -314,32 +314,32 @@ void learnOfLayerSeven(Cnnnet *net1){
 int runCnn(Cnnnet* net1, Matrix image){
     int ans = 0;
     matrixEqu(net1->mats[0].p_matrix[0], image);
-    int asserti = 0;
-    printf("=%d=\n", asserti++);
+    // int asserti = 0;
+    // printf("=%d=\n", asserti++);
     runOfLayerOne(net1);
-    printf("=%d=\n", asserti++);
+    // printf("=%d=\n", asserti++);
     runOfLayerTwo(net1);
-    printf("=%d=\n", asserti++);
+    // printf("=%d=\n", asserti++);
     runOfLayerThree(net1);
-    printf("=%d=\n", asserti++);
+    // printf("=%d=\n", asserti++);
     runOfLayerFour(net1);
-    printf("=%d=\n", asserti++);
+    // printf("=%d=\n", asserti++);
     runOfLayerFive(net1);
-    printf("=%d=\n", asserti++);
+    // printf("=%d=\n", asserti++);
     runOfLayerSix(net1);
-    printf("=%d=\n", asserti++);
+    //printf("=%d=\n", asserti++);
     runOfLayerSeven(net1);
-    printf("=%d=\n", asserti++);
+    //printf("=%d=\n", asserti++);
     for(int i = 1; i < 10; i++){
-        if(net1->mats[7].p_matrix[0]->arr[i] >
-            net1->mats[7].p_matrix[0]->arr[ans]){
+        if(net1->mats[7].p_matrix[i]->arr[0] >
+            net1->mats[7].p_matrix[ans]->arr[0]){
             ans = i;
         }
         //printf("%d %f\n",i,net1->mats[7].p_matrix[0]->arr[i]);
-    }
+    }/*
     for (int i=0 ;i<10;i++){
-        printf("?%.50f\n",net1->mats[7].p_matrix[0]->arr[i]);
-    }
+        printf("?%.50f\n",net1->mats[7].p_matrix[i]->arr[0]);
+    }*/
     return ans;
 }
 
