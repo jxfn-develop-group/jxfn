@@ -75,13 +75,13 @@ void initRand(Cnnnet* net1){
     for(int i = 0; i < 84; i++){
         neuronsInit(net1->level[5].neu[i], 1, 120, getRand());
         net1->level[5].neu[i]->weights.arr[0] = getRand();
-        net1->level[5].neu[i]->p_activateFunction = funOfLevel1;
+        net1->level[5].neu[i]->p_activateFunction = funOfLevel0;
         //每层的激活函数相同
     }
     for(int i = 0; i < 10; i++){
         neuronsInit(net1->level[6].neu[i], 1, 84, getRand());
         net1->level[6].neu[i]->weights.arr[0] = getRand();
-        net1->level[6].neu[i]->p_activateFunction = funOfLevel1;
+        net1->level[6].neu[i]->p_activateFunction = funOfLevel0;
     }
 }
 
@@ -215,6 +215,18 @@ void runOfLayerFour(Cnnnet *net1){
 void runOfLayerFive(Cnnnet *net1){
     Matrix tmat;
     matrixInit(&tmat, 5, 5);
+    for(int i = 0; i < 5; i++){
+        for(int j = 0; j < 5; j++){
+            tmat.arr[i * 5 + j]= 0.0;
+        }
+    }
+    for(int i = 0; i < 16; i++){
+        for(int j = 0; j < 5; j++){
+            for(int k = 0; k < 5; k++){
+                tmat.arr[i * 5 + j]+=net1->mats[4].p_matrix[i]->arr[i * 5 + j];
+            }
+        }
+    }
     for(int i = 0; i < 120; i++){
         net1->mats[5].p_matrix[i]->arr[0] = 0.0;
         for(int j = 0; j < 5; j++){
@@ -307,9 +319,8 @@ int runCnn(Cnnnet* net1, Matrix image){
     runOfLayerSix(net1);
     runOfLayerSeven(net1);
     for(int i = 1; i < 10; i++){
-        if(net1->mats[7].p_matrix[0]->arr[i] >
-            net1->mats[7].p_matrix[0]->arr[ans]){
-
+        if(net1->mats[7].p_matrix[i]->arr[0] >
+            net1->mats[7].p_matrix[ans]->arr[0]){
             ans = i;
         }
     }

@@ -22,5 +22,6 @@ int main(){
     //initFromFile(&cnn);
     printf("%d\n",runCnn(&cnn, mat));
     //writeParameter(cnn);
+
     return 0;
 }

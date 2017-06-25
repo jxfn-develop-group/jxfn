@@ -23,13 +23,24 @@ double getRand(){
     //srand(time(0));
     int sig = rand() % 2;
     sig = sig > 0? 1 : -1;
-    double ans = 1.0/30000.0;
+    double ans = 1.0/10000.0;
     ans *= sig;
-    ans *= rand() % 30000;
+    ans *= rand() % 10000;
     return ans;
+    //return 1.0;
 }
 
 
+double getRandRange(int a){
+    //srand(time(0));
+    double ans = a;
+    int sig = rand() % 2;
+    sig = sig > 0? 1 : -1;
+    ans = 1.0/ans;
+    ans *= sig;
+    ans *= rand() % 300;
+    return ans;
+}
 double LReLu(double a){
     if(a < 0.0){
         return a * 0.1;
