@@ -20,7 +20,7 @@ double maxOfMatrix(Matrix a, Matrix b, double c){
 
 
 double getRand(){
-    srand(time(0));
+    //srand(time(0));
     int sig = rand() % 2;
     sig = sig > 0? 1 : -1;
     double ans = 1.0/30000.0;
@@ -30,9 +30,16 @@ double getRand(){
 }
 
 
+double LReLu(double a){
+    if(a < 0.0){
+        return a * 0.1;
+    }
+    return a;
+}
+
+
 double funOfLevel0(double a, double b){
-    double ans = 0.0;
-    return ans;
+    return LReLu(a);
 }
 
 
@@ -43,8 +50,7 @@ double funOfLevel1(double a, double b){
 
 
 double funOfLevel2(double a, double b){
-    double ans = 0.0;
-    return ans;
+    return LReLu(a);
 }
 
 
@@ -55,6 +61,5 @@ double funOfLevel3(double a, double b){
 
 
 double funOfLevel4(double a, double b){
-    double ans = 0.0;
-    return ans;
+    return LReLu(a);
 }

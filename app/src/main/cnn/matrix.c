@@ -3,20 +3,18 @@
 
 #include "matrix.h"
 
-struct Matrix matrixInit(int n, int m){
-    struct Matrix a;
+void matrixInit(Matrix* mat, int n, int m){
     if(n <= 0||m <= 0){
         printf("The matrix size must be positive numbers!\n");
         exit(0);
     }
-    a.arr = malloc(n * m * sizeof(double));
-    if(a.arr == NULL){
+    mat->arr = malloc(n * m * sizeof(double));
+    if(mat->arr == NULL){
         printf("The matrix can't be created!\n");
         exit(0);
     }
-    a.n = n;
-    a.m = m;
-    return a;
+    mat->n = n;
+    mat->m = m;
 }
 
 
@@ -40,51 +38,64 @@ void matrixPrin(struct Matrix a){
 }
 
 
-struct Matrix matrixMul(struct Matrix a, struct Matrix b){
-    if(a.m != b.n){
+void matrixEqu(Matrix* a, Matrix b){
+    a->n = b.n;
+    a->m = b.m;
+    free(a->arr);
+    a->arr = malloc(b.n * b.m * sizeof(double));
+    for(int i = 0; i < b.n; i++){
+        for(int j = 0; j < b.m; j++){
+            a->arr[i * b.m + j] = b.arr[i * b.m + j];
+        }
+    }
+}
+void matrixMul(Matrix* a, Matrix b){
+    if(a->m != b.n){
         printf("The matrixs can't be multipled!\n");
         exit(0);
     }
-    struct Matrix c = matrixInit(a.n, b.m);
-    for (int i = 0; i < a.n; i++) {
+    Matrix c;
+    matrixInit(&c, a->n, b.m);
+    for (int i = 0; i < a->n; i++) {
         for(int j = 0; j < b.m; j++){
             c.arr[i * b.m + j] = 0;
-            for(int k = 0; k < a.m; k++){
-                c.arr[i * b.m +j] += a.arr[i * a.m + k] * b. arr[k * b.m + j];
+            for(int k = 0; k < a->m; k++){
+                c.arr[i * b.m +j] += a->arr[i * a->m + k] * b. arr[k * b.m +j];
             }
         }
     }
-    return c;
+    matrixEqu(a , c);
+    free(c.arr);
 }
 
 
-Matrix matrixDot(Matrix a, Matrix b){
-    if(a.m != b.m || a.n != b.n){
+void matrixDot(Matrix* a, Matrix b){
+    if(a->m != b.m || a->n != b.n){
         printf("The matrixs can't be doted!\n");
         exit(0);
     }
-    Matrix c = matrixInit(a.n, b.m);
-    for (int i = 0; i < a.n; i++){
+    Matrix c;
+    matrixInit(&c, a->n, b.m);
+    for (int i = 0; i < a->n; i++){
         for(int j = 0; j < b.m ; j++){
-            c.arr[i * a.m + j] = a.arr[i * a.m + j] * b.arr[i * a.m + j];
+            c.arr[i * a->m + j] = a->arr[i * b.m + j] * b.arr[i * b.m + j];
         }
     }
-    return c;
+    matrixEqu(a, c);
+    free(c.arr);
 }
 
 
-Matrix matrixAdd(Matrix a, Matrix b){
-    if(a.m != b.m || a.n != b.n){
+void matrixAdd(Matrix* a, Matrix b){
+    if(a->m != b.m || a->n != b.n){
         printf("The matrixs can't be doted!\n");
         exit(0);
     }
-    Matrix c = matrixInit(a.n, b.m);
-    for (int i = 0; i < a.n; i++){
-        for(int j = 0; j < a.m ; j++){
-            c.arr[i * a.m + j] = a.arr[i * a.m + j] + b.arr[i * a.m + j];
+    for (int i = 0; i < a->n; i++){
+        for(int j = 0; j < a->m ; j++){
+            a->arr[i * a->m + j] += b.arr[i * b.m + j];
         }
     }
-    return c;
 }
 
 
@@ -101,37 +112,41 @@ void matrixAddItself(Matrix* a, Matrix b){
 }
 
 
-Matrix matrixMulNum(Matrix a, double b){
-    Matrix c = matrixInit(a.n, a.m);
-    for(int i = 0; i < a.n; i++){
-        for(int j = 0; j < a.m; j++){
-            c.arr[i * c.m + j] = a.arr[i * a.m + j] * b;
+void matrixMulNum(Matrix* a, double b){
+    for(int i = 0; i < a->n; i++){
+        for(int j = 0; j < a->m; j++){
+            a->arr[i * a->m + j] *= b;
         }
     }
-    return c;
 }
 
 
 /*
 矩阵转置
 */
-Matrix matrixTrans(Matrix a){
-    Matrix b = matrixInit(a.m, a.n);
+void matrixTrans(Matrix* a){
+    Matrix b;
+    matrixInit(&b, a->m, a->n);
     for(int i = 0; i < b.n; i++){
         for(int j = 0; j < b.m; j++){
-            b.arr[i * b.m + j] = a.arr[j * a.m + i];
+            b.arr[i * b.m + j] = a->arr[j * a->m + i];
         }
     }
-    return b;
+    matrixEqu(a, b);
+    free(b.arr);
 }
 
 
-Matrixs matrixsInit(int a, int n, int m){
-    Matrixs b;
+void matrixsInit(Matrixs* mats, int a, int n, int m){
     if(a <= 0){
         printf("error when create matrixs!\n");
     }
-    b.siz = a;
-    b.p_matrix = malloc(a * sizeof(Matrix));
-    return b;
+    mats->siz = a;
+    mats->p_matrix = malloc(a * sizeof(Matrix*));
+    for (int i = 0; i < a; i++){
+        mats->p_matrix[i] = malloc(2 * sizeof(int) +  sizeof(Matrix*));
+        mats->p_matrix[i]->n = n;
+        mats->p_matrix[i]->m = m;
+        mats->p_matrix[i]->arr = malloc(n * m * sizeof(double));
+    }
 }

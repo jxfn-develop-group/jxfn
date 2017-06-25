@@ -5,19 +5,19 @@
         double* arr;
     };
     typedef struct Matrix Matrix;
-    struct Matrix matrixInit(int n, int m);
-    void matrixSetNum(struct Matrix *a, int n, int m, double val);
-    void matrixPrin(struct Matrix a);
-    struct Matrix matrixMul(struct Matrix a, struct Matrix b);
-    Matrix matrixDot(Matrix a, Matrix b);
-    Matrix matrixAdd(Matrix a, Matrix b);
-    void matrixAddItself(Matrix* a, Matrix b);
-    Matrix matrixMulNum(Matrix a, double b);
-    Matrix matrixTrans(Matrix a);
+    void matrixInit(Matrix* mat, int n, int m);
+    void matrixSetNum(Matrix *a, int n, int m, double val);
+    void matrixPrin(Matrix a);
+    void matrixMul(Matrix* a, Matrix b);
+    void matrixDot(Matrix* a, Matrix b);
+    void matrixAdd(Matrix* a, Matrix b);
+    void matrixEqu(Matrix* a, Matrix b);
+    void matrixMulNum(Matrix* a, double b);
+    void matrixTrans(Matrix* a);
     struct Matrixs{
         int siz;
-        Matrix* p_matrix;
+        Matrix** p_matrix;
     };
     typedef struct Matrixs Matrixs;
-    Matrixs matrixsInit(int a, int n, int m);
+    void matrixsInit(Matrixs* mats, int a, int n, int m);
 #endif

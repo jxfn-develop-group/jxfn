@@ -10,11 +10,11 @@
         double (*p_activateFunction)(double , double);//激活函数指针
     };
     typedef struct Neurons Neurons;
-    Neurons neuronsInit(int n, int m, double bias);
+    void neuronsInit(Neurons* a, int n, int m, double bias);
     struct Neuronss{
         int siz;
-        Neurons* neu;
+        Neurons** neu;
     };
     typedef struct Neuronss Neuronss;
-    Neuronss neuronssInit(int siz);
+    void neuronssInit(Neuronss* a, int siz);
 #endif
