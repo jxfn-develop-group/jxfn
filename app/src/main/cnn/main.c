@@ -25,7 +25,7 @@ int main(){
     double start = clock();
     int tmp;
     //scanf("%d",&tmp);
-    tmp = 10;
+    tmp = 10000;
     int ans = 0;
     for(int i = 0; i< tmp;i++){
         // printf("%d %d\n",i,runCnn(&cnn,mat));

@@ -14,4 +14,7 @@
     double funOfLevel2(double a, double b);
     double funOfLevel3(double a, double b);
     double funOfLevel4(double a, double b);
+    //double sigmoid(double a, double b);
+    double LReLu(double a);
+    double LReLuDer(double a);
 #endif
