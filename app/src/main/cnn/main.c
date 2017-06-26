@@ -31,7 +31,8 @@ int main(){
         // printf("%d %d\n",i,runCnn(&cnn,mat));
         ans = runCnn(&cnn, mat);
     }
-    printf("%d\n",ans);
+    //printf("%d\n",ans);
+    printf("%d\n", (int)sizeof(double));
     printf("%f\n", (clock() - start)/(double)CLOCKS_PER_SEC);
     cnnnetFree(&cnn);
     matrixFree(&mat);
