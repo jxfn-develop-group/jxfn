@@ -1,5 +1,6 @@
 #include <time.h>
 #include <stdlib.h>
+#include <math.h>
 
 
 #include "funofneurons.h"
@@ -61,6 +62,19 @@ double LReLu(double a){
 }
 
 
+double LReLuDer(double a){
+    if(a < -EPS){
+        return 0.1;
+    }
+    else if(a > EPS){
+        return 1.0;
+    }
+    else{
+        return 0.55;
+    }
+}
+
+
 double funOfLevel0(double a, double b){
     return LReLu(a);
 }
@@ -86,3 +100,9 @@ double funOfLevel3(double a, double b){
 double funOfLevel4(double a, double b){
     return LReLu(a);
 }
+
+
+/*
+double sigmoid(double a, double b){
+    return 1.0/(1.0 + exp(-a));
+}*/

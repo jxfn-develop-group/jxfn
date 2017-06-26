@@ -245,12 +245,16 @@ void learnOfLayerFive(Cnnnet *net1){
 
 
 void learnOfLayerSix(Cnnnet *net1){
-
+    for(int i = 0; i < 84; i++){
+        
+    }
 }
 
 
 void learnOfLayerSeven(Cnnnet *net1){
+    for(int i = 0; i < 10; i++){
 
+    }
 }
 
 
