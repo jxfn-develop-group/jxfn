@@ -38,62 +38,62 @@ void matrixPrin(struct Matrix a){
 }
 
 
-void matrixEqu(Matrix* a, Matrix b){
-    a->n = b.n;
-    a->m = b.m;
+void matrixEqu(Matrix* a, Matrix* b){
+    a->n = b->n;
+    a->m = b->m;
     free(a->arr);
-    a->arr = calloc(b.n * b.m, sizeof(double));
-    for(int i = 0; i < b.n; i++){
-        for(int j = 0; j < b.m; j++){
-            a->arr[i * b.m + j] = b.arr[i * b.m + j];
+    a->arr = calloc(b->n * b->m, sizeof(double));
+    for(int i = 0; i < b->n; i++){
+        for(int j = 0; j < b->m; j++){
+            a->arr[i * b->m + j] = b->arr[i * b->m + j];
         }
     }
 }
-void matrixMul(Matrix* a, Matrix b){
-    if(a->m != b.n){
+void matrixMul(Matrix* a, Matrix* b){
+    if(a->m != b->n){
         printf("The matrixs can't be multipled!\n");
         exit(0);
     }
     Matrix c;
-    matrixInit(&c, a->n, b.m);
+    matrixInit(&c, a->n, b->m);
     for (int i = 0; i < a->n; i++) {
-        for(int j = 0; j < b.m; j++){
-            c.arr[i * b.m + j] = 0;
+        for(int j = 0; j < b->m; j++){
+            c.arr[i * b->m + j] = 0;
             for(int k = 0; k < a->m; k++){
-                c.arr[i * b.m +j] += a->arr[i * a->m + k] * b. arr[k * b.m +j];
+                c.arr[i * b->m +j] += a->arr[i * a->m + k] * b->arr[k *b->m+j];
             }
         }
     }
-    matrixEqu(a , c);
+    matrixEqu(a , &c);
     free(c.arr);
 }
 
 
-void matrixDot(Matrix* a, Matrix b){
-    if(a->m != b.m || a->n != b.n){
+void matrixDot(Matrix* a, Matrix* b){
+    if(a->m != b->m || a->n != b->n){
         printf("The matrixs can't be doted!\n");
         exit(0);
     }
     Matrix c;
-    matrixInit(&c, a->n, b.m);
+    matrixInit(&c, a->n, b->m);
     for (int i = 0; i < a->n; i++){
-        for(int j = 0; j < b.m ; j++){
-            c.arr[i * a->m + j] = a->arr[i * b.m + j] * b.arr[i * b.m + j];
+        for(int j = 0; j < b->m ; j++){
+            c.arr[i * a->m + j] = a->arr[i * b->m + j] * b->arr[i * b->m + j];
         }
     }
-    matrixEqu(a, c);
+    matrixEqu(a, &c);
     free(c.arr);
 }
 
 
-void matrixAdd(Matrix* a, Matrix b){
-    if(a->m != b.m || a->n != b.n){
+void matrixAdd(Matrix* a, Matrix* b){
+    if(a->m != b->m || a->n != b->n){
         printf("The matrixs can't be doted!\n");
         exit(0);
     }
     for (int i = 0; i < a->n; i++){
         for(int j = 0; j < a->m ; j++){
-            a->arr[i * a->m + j] += b.arr[i * b.m + j];
+            a->arr[i * a->m + j] += b->arr[i * b->m + j];
         }
     }
 }
@@ -103,19 +103,6 @@ void matrixAddNum(Matrix* a, double b){
     for(int i = 0; i < a->n; i++){
         for(int j = 0; j < a->m; j++){
             a->arr[i * a->m + j] += b;
-        }
-    }
-}
-
-
-void matrixAddItself(Matrix* a, Matrix b){
-    if(a->m != b.m || a->n != b.n){
-        printf("The matrixs can't be doted!\n");
-        exit(0);
-    }
-    for (int i = 0; i < a->n; i++){
-        for(int j = 0; j < a->m ; j++){
-            a->arr[i * a->m + j] += b.arr[i * a->m + j];
         }
     }
 }
@@ -141,7 +128,7 @@ void matrixTrans(Matrix* a){
             b.arr[i * b.m + j] = a->arr[j * a->m + i];
         }
     }
-    matrixEqu(a, b);
+    matrixEqu(a, &b);
     free(b.arr);
 }
 
@@ -211,8 +198,8 @@ void matrixFunction(Matrix* a,double (*p_fun)(double, double), double b){
 }
 
 
-void matrixSample(Matrix* a, Matrix b, int n, int m, double (*p_fun)(Matrix)){
-    if(a->n * n != b.n ||a->m * m != b.m){
+void matrixSample(Matrix* a, Matrix *b, int n, int m, double (*p_fun)(Matrix)){
+    if(a->n * n != b->n ||a->m * m != b->m){
         printf("Can't matrixSample!\n");
         return;
     }
@@ -223,11 +210,32 @@ void matrixSample(Matrix* a, Matrix b, int n, int m, double (*p_fun)(Matrix)){
             for(int ii = 0; ii < n; ii++){
                 for(int jj = 0; jj < m; jj++){
                     mat.arr[ii * m + jj] =
-                        b.arr[(i * n + ii) * b.m + j * m +jj];
+                        b->arr[(i * n + ii) * b->m + j * m +jj];
                 }
             }
             a->arr[i * a->m +j] = p_fun(mat);
         }
     }
     matrixFree(&mat);
+}
+
+
+void matrixSwap(Matrix* a, Matrix* b){
+    Matrix c;
+    matrixEqu(&c, a);
+    matrixEqu(a, b);
+    matrixEqu(b, &c);
+    matrixFree(&c);
+}
+
+
+void matrixsEqu(Matrixs* a, Matrixs* b){
+    matrixsFree(a);
+    if(b->siz == 0){
+        return ;
+    }
+    matrixsInit(a, b->siz, b->p_matrix[0]->n, b->p_matrix[0]->m);
+    for(int i = 0; i < b->siz; i++){
+        matrixEqu(a->p_matrix[i], b->p_matrix[i]);
+    }
 }

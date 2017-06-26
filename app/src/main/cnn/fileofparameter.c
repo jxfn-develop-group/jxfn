@@ -183,6 +183,6 @@ void readIm(char* s, Matrix* mat){
             fscanf(fp,"%lf",&pic.arr[i * 32 + j]);
         }
     }
-    matrixEqu(mat, pic);
+    matrixEqu(mat, &pic);
     free(pic.arr);
 }

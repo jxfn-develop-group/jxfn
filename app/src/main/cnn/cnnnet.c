@@ -120,7 +120,7 @@ void runOfLayerOne(Cnnnet *net1){
 void runOfLayerTwo(Cnnnet *net1){
     for(int i = 0; i < 6; i++){
         matrixSample(net1->mats[2].p_matrix[i],
-            *net1->mats[1].p_matrix[i], 2, 2, maxnumOfMatrix);
+            net1->mats[1].p_matrix[i], 2, 2, maxnumOfMatrix);
     }
 }
 
@@ -130,26 +130,22 @@ void runOfLayerThree(Cnnnet *net1){
     matrixsInit(&tmat, 16, 14, 14);
     for(int i = 0; i < 6; i++){
         for(int j = 0; j < 3; j++){
-            matrixAdd(tmat.p_matrix[i],
-                *(net1->mats[2].p_matrix[(i+j)%6]));
+            matrixAdd(tmat.p_matrix[i], net1->mats[2].p_matrix[(i+j)%6]);
         }
     }
     for(int i = 6; i < 12; i++){
         for(int j = 0; j < 4; j++){
-            matrixAdd(tmat.p_matrix[i],
-                *(net1->mats[2].p_matrix[(i+j)%6]));
+            matrixAdd(tmat.p_matrix[i], net1->mats[2].p_matrix[(i+j)%6]);
         }
     }
     for(int i = 12; i < 15; i++){
         for(int j = 0; j < 5; j++){
             if(j == 2){continue;}
-            matrixAdd(tmat.p_matrix[i],
-                *(net1->mats[2].p_matrix[(i+j)%6]));
+            matrixAdd(tmat.p_matrix[i], net1->mats[2].p_matrix[(i+j)%6]);
         }
     }
     for(int i = 0; i < 6; i++){
-        matrixAdd(tmat.p_matrix[15],
-            *(net1->mats[2].p_matrix[i]));
+        matrixAdd(tmat.p_matrix[15], net1->mats[2].p_matrix[i]);
     }
     /*
     net1->mats[3].p_matrix[i] 必须初始化为零
@@ -166,7 +162,7 @@ void runOfLayerThree(Cnnnet *net1){
 
 void runOfLayerFour(Cnnnet *net1){
     for(int i = 0; i < 16; i++){
-        matrixSample(net1->mats[4].p_matrix[i], *net1->mats[3].p_matrix[i],
+        matrixSample(net1->mats[4].p_matrix[i], net1->mats[3].p_matrix[i],
             2, 2, maxnumOfMatrix);
     }
 }
@@ -176,7 +172,7 @@ void runOfLayerFive(Cnnnet *net1){
     Matrix tmat;
     matrixInit(&tmat, 5, 5);
     for(int i = 0; i < 16; i++){
-        matrixAdd(&tmat, *net1->mats[4].p_matrix[i]);
+        matrixAdd(&tmat, net1->mats[4].p_matrix[i]);
     }
     for(int i = 0; i < 120; i++){
         matrixConv(net1->mats[5].p_matrix[i], &tmat,
@@ -219,64 +215,75 @@ void runOfLayerSeven(Cnnnet *net1){
 }
 
 
-void learnOfLayerOne(Cnnnet *net1){
+void learnOfLayerOne(Cnnnet *net1, Matrixs* mat){
 
 }
 
 
-void learnOfLayerTwo(Cnnnet *net1){
-
+void learnOfLayerTwo(Cnnnet *net1, Matrixs* mat){
+    Matrixs res;
+    matrixsInit(&res, 6, 28, 28);
+    matrixsEqu(mat, &res);
+    matrixsFree(&res);
 }
 
 
-void learnOfLayerThree(Cnnnet *net1){
-
+void learnOfLayerThree(Cnnnet *net1, Matrixs* mat){
+    Matrixs res;
+    matrixsInit(&res, 6, 14, 14);
+    matrixsEqu(mat, &res);
+    matrixsFree(&res);
 }
 
 
-void learnOfLayerFour(Cnnnet *net1){
-
+void learnOfLayerFour(Cnnnet *net1, Matrixs* mat){
+    Matrixs res;
+    matrixsInit(&res, 16, 10, 10);
+    matrixsEqu(mat, &res);
+    matrixsFree(&res);
 }
 
 
-void learnOfLayerFive(Cnnnet *net1){
-
+void learnOfLayerFive(Cnnnet *net1, Matrixs* mat){
+    Matrixs res;
+    matrixsInit(&res, 16, 5, 5);
+    matrixsEqu(mat, &res);
+    matrixsFree(&res);
 }
 
 
-void learnOfLayerSix(Cnnnet *net1){
+void learnOfLayerSix(Cnnnet *net1, Matrixs* mat){
+    Matrixs res;
+    matrixsInit(&res, 1, 1, 120);
     for(int i = 0; i < 84; i++){
-        
+
     }
+    matrixsEqu(mat, &res);
+    matrixsFree(&res);
 }
 
 
-void learnOfLayerSeven(Cnnnet *net1){
-    for(int i = 0; i < 10; i++){
+void learnOfLayerSeven(Cnnnet *net1, Matrixs* mat){
+    Matrixs res;
+    matrixsInit(&res, 1, 1, 84);
+    for(int i = 0; i < 84; i++){
 
     }
+    matrixsEqu(mat, &res);
+    matrixsFree(&res);
 }
 
 
 int runCnn(Cnnnet* net1, Matrix image){
     int ans = 0;
-    matrixEqu(net1->mats[0].p_matrix[0], image);
-    // int asserti = 0;
-    // printf("=%d=\n", asserti++);
+    matrixEqu(net1->mats[0].p_matrix[0], &image);
     runOfLayerOne(net1);
-    // printf("=%d=\n", asserti++);
     runOfLayerTwo(net1);
-    // printf("=%d=\n", asserti++);
     runOfLayerThree(net1);
-    // printf("=%d=\n", asserti++);
     runOfLayerFour(net1);
-    // printf("=%d=\n", asserti++);
     runOfLayerFive(net1);
-    // printf("=%d=\n", asserti++);
     runOfLayerSix(net1);
-    //printf("=%d=\n", asserti++);
     runOfLayerSeven(net1);
-    //printf("=%d=\n", asserti++);
     for(int i = 1; i < 10; i++){
         if(net1->mats[7].p_matrix[i]->arr[0] >
             net1->mats[7].p_matrix[ans]->arr[0]){
@@ -292,13 +299,17 @@ void writeParameter(Cnnnet net1){
 }
 
 
-void learn(Cnnnet* net1, Matrix image, double answer){
+void learnCnn(Cnnnet* net1, Matrix image, int answer){
     runCnn(net1, image);
-    learnOfLayerSeven(net1);
-    learnOfLayerSix(net1);
-    learnOfLayerFive(net1);
-    learnOfLayerFour(net1);
-    learnOfLayerThree(net1);
-    learnOfLayerTwo(net1);
-    learnOfLayerOne(net1);
+    Matrixs mat1;
+    matrixsInit(&mat1, 1, 1, 10);
+    mat1.p_matrix[0]->arr[answer] = 100;
+    learnOfLayerSeven(net1, &mat1);
+    learnOfLayerSix(net1, &mat1);
+    learnOfLayerFive(net1, &mat1);
+    learnOfLayerFour(net1, &mat1);
+    learnOfLayerThree(net1, &mat1);
+    learnOfLayerTwo(net1, &mat1);
+    learnOfLayerOne(net1, &mat1);
+    matrixsFree(&mat1);
 }
