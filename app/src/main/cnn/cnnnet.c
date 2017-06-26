@@ -127,19 +127,7 @@ void runOfLayerTwo(Cnnnet *net1){
 
 void runOfLayerThree(Cnnnet *net1){
     Matrixs tmat;
-    matrixsInit(&tmat, 16, 14, 14);/*
-    for (int i = 0; i < 16; i++){
-        for(int j = 0; j < 10; j++){
-            for (int k = 0; k < 10; k++){
-                net1->mats[3].p_matrix[i]->arr[j * 10 + k] = 0.0;
-            }
-        }
-        for(int j = 0; j < 14; j++){
-            for(int k = 0; k < 14; k++){
-                tmat.p_matrix[i]->arr[j * 14 + k] = 0.0;
-            }
-        }
-    }*/
+    matrixsInit(&tmat, 16, 14, 14);
     for(int i = 0; i < 6; i++){
         for(int j = 0; j < 3; j++){
             matrixAdd(tmat.p_matrix[i],
@@ -171,22 +159,6 @@ void runOfLayerThree(Cnnnet *net1){
             &net1->level[2].neu[i]->weights);
         matrixFunction(net1->mats[3].p_matrix[i],
             net1->level[2].neu[i]->p_activateFunction, 0.0);
-        /*
-        for(int j = 0; j < 10; j++){
-            for(int k = 0; k < 10; k++){
-                net1->mats[3].p_matrix[i]->arr[j * 10 + k] = 0.0;
-                for(int ii = 0; ii < 5; ii++){
-                    for(int jj = 0; jj < 5; jj++){
-                        net1->mats[3].p_matrix[i]->arr[j * 10 + k] +=
-                        net1->level[2].neu[i]->weights.arr[ii * 5 + jj] *
-                        tmat.p_matrix[i]->arr[(j + ii) * 14 + k + jj];
-                    }
-                }
-                net1->mats[3].p_matrix[i]->arr[j * 10 + k] =
-                    net1->level[2].neu[i]->p_activateFunction
-                    (net1->mats[3].p_matrix[i]->arr[j * 10 +k], 0.0);
-            }
-        }*/
     }
     matrixsFree(&tmat);
 }
@@ -195,19 +167,7 @@ void runOfLayerThree(Cnnnet *net1){
 void runOfLayerFour(Cnnnet *net1){
     for(int i = 0; i < 16; i++){
         matrixSample(net1->mats[4].p_matrix[i], *net1->mats[3].p_matrix[i],
-            2, 2, maxnumOfMatrix);/*
-        for(int j = 0; j < 5; j++){
-            for(int k = 0; k < 5; k++){
-                for(int ii = 0; ii < 2; ii++){
-                    for(int jj = 0; jj < 2; jj++){
-                        tmp.arr[ii * 2 + jj] =
-                        net1->mats[3].p_matrix[i]->arr[(j*2 + ii) * 10 + k+jj];
-                    }
-                }
-                net1->mats[4].p_matrix[i]->arr[j * 5 + k] =
-                net1->level[3].neu[i]->p_baseFunction(tmp, tmp1, 0.0);
-            }
-        }*/
+            2, 2, maxnumOfMatrix);
     }
 }
 
@@ -215,30 +175,12 @@ void runOfLayerFour(Cnnnet *net1){
 void runOfLayerFive(Cnnnet *net1){
     Matrix tmat;
     matrixInit(&tmat, 5, 5);
-    /*for(int i = 0; i < 5; i++){
-        for(int j = 0; j < 5; j++){
-            tmat.arr[i * 5 + j] = 0.0;
-        }
-    }*/
     for(int i = 0; i < 16; i++){
         matrixAdd(&tmat, *net1->mats[4].p_matrix[i]);
-        /*for(int j = 0; j < 5; j++){
-            for(int k = 0; k < 5; k++){
-                tmat.arr[j * 5 + k]+=net1->mats[4].p_matrix[i]->arr[j * 5 + k];
-            }
-        }*/
     }
     for(int i = 0; i < 120; i++){
         matrixConv(net1->mats[5].p_matrix[i], &tmat,
-            &net1->level[4].neu[i]->weights);/*
-        net1->mats[5].p_matrix[i]->arr[0] = 0.0;
-        for(int j = 0; j < 5; j++){
-            for(int k = 0; k < 5; k++){
-                net1->mats[5].p_matrix[i]->arr[0] +=
-                    net1->level[4].neu[i]->weights.arr[j * 5 +k] *
-                    tmat.arr[j * 5 +k];
-            }
-        }*/
+            &net1->level[4].neu[i]->weights);
         net1->mats[5].p_matrix[i]->arr[0] =
             net1->level[4].neu[i]->p_activateFunction
             (net1->mats[5].p_matrix[i]->arr[0], 0.0);
@@ -336,11 +278,7 @@ int runCnn(Cnnnet* net1, Matrix image){
             net1->mats[7].p_matrix[ans]->arr[0]){
             ans = i;
         }
-        //printf("%d %f\n",i,net1->mats[7].p_matrix[0]->arr[i]);
-    }/*
-    for (int i=0 ;i<10;i++){
-        printf("?%.50f\n",net1->mats[7].p_matrix[i]->arr[0]);
-    }*/
+    }
     return ans;
 }
 
