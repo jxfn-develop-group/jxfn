@@ -34,10 +34,13 @@ int main(){
     printf("%d\n",ans);
     printf("%f\n", (clock() - start)/(double)CLOCKS_PER_SEC);
     cnnnetFree(&cnn);
+<<<<<<< HEAD
     matrixFree(&mat);
     /*for(int i= 0 ;i<1;i++){
         runCnn(&cnn, mat);
     }*/
+=======
+>>>>>>> cnn-dev
     //writeParameter(cnn);
     return 0;
 }
