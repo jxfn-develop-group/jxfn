@@ -174,7 +174,7 @@ class Main : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
         }
     }
 
-    fun bitmapProcess(): Unit {
+    fun bitmapProcess(bitmap: Bitmap?): Unit {
         if (bitmap == null) {
             Snackbar.make(nav_view, "Please choose a photo first", Snackbar.LENGTH_LONG).
                     setAction("Action", null).show()
