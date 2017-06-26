@@ -1,4 +1,4 @@
-complies = gcc
+complies = gcc -O3
 a.out : matrix.o neurons.o funofneurons.o cnnnet.o fileofparameter.o main.o
 	$(complies) $^ -o a.out
 main.o : main.c
