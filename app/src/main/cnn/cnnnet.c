@@ -118,27 +118,29 @@ void runOfLayerOne(Cnnnet *net1){
 
 
 void runOfLayerTwo(Cnnnet *net1){
-    Matrix tmp;
+    /*Matrix tmp;
     matrixInit(&tmp, 2, 2);
     Matrix tmp1;
-    matrixInit(&tmp1, 1, 1);
+    matrixInit(&tmp1, 1, 1);*/
     for(int i = 0; i < 6; i++){
         for(int j = 0; j < 14; j++){
             for(int k = 0; k < 14; k++){
-                for(int ii = 0; ii < 2; ii++){
+                matrixSample(net1->mats[2].p_matrix[i],
+                    *net1->mats[1].p_matrix[i], 2, 2, maxnumOfMatrix);
+                /*for(int ii = 0; ii < 2; ii++){
                     for(int jj = 0; jj < 2; jj++){
                         tmp.arr[ii * 2 + jj] =
                         net1->mats[1].p_matrix[i]->arr[(j*2 + ii) * 28 + k+jj];
                     }
                 }
                 net1->mats[2].p_matrix[i]->arr[j * 14 + k] =
-                net1->level[1].neu[i]->p_baseFunction(tmp, tmp1, 0.0);
+                net1->level[1].neu[i]->p_baseFunction(tmp, tmp1, 0.0);*/
 
             }
         }
-    }
+    }/*
     matrixFree(&tmp);
-    matrixFree(&tmp1);
+    matrixFree(&tmp1);*/
 }
 
 

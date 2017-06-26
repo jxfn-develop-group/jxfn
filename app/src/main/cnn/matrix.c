@@ -211,8 +211,22 @@ void matrixFunction(Matrix* a,double (*p_fun)(double, double), double b){
 
 
 void matrixSample(Matrix* a, Matrix b, int n, int m, double (*p_fun)(Matrix)){
-    if(a->n != n*b.n ||a->m != m*b.m){
+    if(a->n * n != b.n ||a->m * m != b.m){
         printf("Can't matrixSample!\n");
         return;
     }
+    Matrix mat;
+    matrixInit(&mat, n, m);
+    for(int i = 0; i < a->n; i++){
+        for(int j = 0; j < a->m; j++){
+            for(int ii = 0; ii < n; ii++){
+                for(int jj = 0; jj < m; jj++){
+                    mat.arr[ii * m + jj] =
+                        b.arr[(i * n + ii) * b.m + j * m +jj];
+                }
+            }
+            a->arr[i * a->m +j] = p_fun(mat);
+        }
+    }
+    matrixFree(&mat);
 }
