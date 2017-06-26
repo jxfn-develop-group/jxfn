@@ -220,6 +220,8 @@ void runOfLayerFour(Cnnnet *net1){
             }
         }
     }
+    matrixFree(&tmp);
+    matrixFree(&tmp1);
 }
 
 
@@ -251,6 +253,7 @@ void runOfLayerFive(Cnnnet *net1){
             net1->level[4].neu[i]->p_activateFunction
             (net1->mats[5].p_matrix[i]->arr[0], 0.0);
     }
+    matrixFree(&tmat);
 }
 
 
