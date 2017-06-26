@@ -37,7 +37,7 @@ class Main : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
         setSupportActionBar(toolbar)
 
         fab.setOnClickListener {
-            bitmapProcess()
+            bitmapProcess(bitmap)
         }
 
         val toggle = ActionBarDrawerToggle(
