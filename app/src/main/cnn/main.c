@@ -8,6 +8,7 @@
 #include "funofneurons.h"
 #include "cnnnet.h"
 #include "fileofparameter.h"
+#include "fileofconfig.h"
 
 
 int main(){
@@ -37,6 +38,5 @@ int main(){
         runCnn(&cnn, mat);
     }*/
     //writeParameter(cnn);
-
     return 0;
 }

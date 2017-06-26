@@ -1,5 +1,6 @@
 #include "neurons.h"
 #include "matrix.h"
+#include "fileofconfig.h"
 
 
 #ifndef _CONNET_H

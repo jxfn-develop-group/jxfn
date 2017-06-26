@@ -113,23 +113,6 @@ void runOfLayerOne(Cnnnet *net1){
         matrixAddNum(net1->mats[1].p_matrix[i], net1->level[0].neu[i]->bias);
         matrixFunction(net1->mats[1].p_matrix[i],
             net1->level[0].neu[i]->p_activateFunction, 0.0);
-        /*for(int j = 0; j < 28; j++){
-            for(int k = 0; k < 28; k++){
-                net1->mats[1].p_matrix[i]->arr[j * 28 + k] = 0.0;
-                for(int ii = 0; ii < 5; ii++){
-                    for(int jj = 0; jj < 5; jj++){
-                        net1->mats[1].p_matrix[i]->arr[j * 28 + k] +=
-                        net1->level[0].neu[i]->weights.arr[ii * 5 + jj] *
-                        net1->mats[0].p_matrix[0]->arr[(j + ii) * 32 + k + jj];
-                    }
-                }
-                net1->mats[1].p_matrix[i]->arr[j * 28 + k] +=
-                    net1->level[0].neu[i]->bias;
-                net1->mats[1].p_matrix[i]->arr[j * 28 + k] =
-                    net1->level[0].neu[i]->p_activateFunction
-                    (net1->mats[1].p_matrix[i]->arr[j * 28 + k], 0.0);
-            }
-        }*/
     }
 }
 

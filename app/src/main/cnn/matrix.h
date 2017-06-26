@@ -1,3 +1,6 @@
+#include "fileofconfig.h"
+
+
 #ifndef _MATRIX_H
     #define _MATRIX_H 2
     struct Matrix{
@@ -18,6 +21,8 @@
     void matrixTrans(Matrix* a);
     void matrixConv(Matrix* a, Matrix* b, Matrix* c);
     void matrixFunction(Matrix* a,double (*p_fun)(double, double), double b);
+    void matrixSample(Matrix* a, Matrix b, int n, int m,
+        double (*p_fun)(Matrix));//矩阵采样函数
     struct Matrixs{
         int siz;
         Matrix** p_matrix;

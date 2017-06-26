@@ -4,7 +4,7 @@
 #include "matrix.h"
 
 void matrixInit(Matrix* mat, int n, int m){
-    if(n <= 0||m <= 0){
+    if(n < 0||m < 0){
         printf("The matrix size must be positive numbers!\n");
         exit(0);
     }
@@ -30,7 +30,7 @@ void matrixSetNum(struct Matrix *a, int n, int m, double val){
 void matrixPrin(struct Matrix a){
     for (int i = 0; i < a.n; i++) {
         for (int j = 0; j < a.m; j++) {
-            printf("%lf ",a.arr[i * a.m + j]);
+            printf("%f ",a.arr[i * a.m + j]);
         }
         printf("\n");
     }
@@ -206,5 +206,13 @@ void matrixFunction(Matrix* a,double (*p_fun)(double, double), double b){
         for(int j = 0; j < a->m; j++){
             a->arr[i * a->m + j] = p_fun(a->arr[i * a->m +j], b);
         }
+    }
+}
+
+
+void matrixSample(Matrix* a, Matrix b, int n, int m, double (*p_fun)(Matrix)){
+    if(a->n != n*b.n ||a->m != m*b.m){
+        printf("Can't matrixSample!\n");
+        return;
     }
 }

@@ -19,6 +19,16 @@ double maxOfMatrix(Matrix a, Matrix b, double c){
 }
 
 
+
+double maxnumOfMatrix(Matrix a){
+    double ans = a.arr[0];
+    for (int i = 1; i < a.n * a.m; i++){
+        ans = maxd(ans, a.arr[i]);
+    }
+    return ans;
+}
+
+
 double getRand(){
     //srand(time(0));
     int sig = rand() % 2;

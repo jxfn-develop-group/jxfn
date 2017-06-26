@@ -1,4 +1,5 @@
 #include "cnnnet.h"
+#include "fileofconfig.h"
 
 
 #ifndef _FILEOFPARAMETER_H
