@@ -1,7 +1,7 @@
 #ifndef _FILEOFCONFIG_H
     #define __MOSHI__  1
     #if __MOSHI__
-        #define double float
+        // #define double float
     #endif
     #define EPS 1e-9
 #endif
