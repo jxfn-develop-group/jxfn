@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "matrix.h"
 
@@ -8,7 +9,7 @@ void matrixInit(Matrix* mat, int n, int m){
         printf("The matrix size must be positive numbers!\n");
         exit(0);
     }
-    mat->arr = malloc(n * m * sizeof(double));
+    mat->arr = calloc(n * m, sizeof(double));
     if(mat->arr == NULL){
         printf("The matrix can't be created!\n");
         exit(0);
@@ -41,7 +42,7 @@ void matrixEqu(Matrix* a, Matrix b){
     a->n = b.n;
     a->m = b.m;
     free(a->arr);
-    a->arr = malloc(b.n * b.m * sizeof(double));
+    a->arr = calloc(b.n * b.m, sizeof(double));
     for(int i = 0; i < b.n; i++){
         for(int j = 0; j < b.m; j++){
             a->arr[i * b.m + j] = b.arr[i * b.m + j];
@@ -169,12 +170,12 @@ void matrixsInit(Matrixs* mats, int a, int n, int m){
         printf("error when create matrixs!\n");
     }
     mats->siz = a;
-    mats->p_matrix = malloc(a * sizeof(Matrix*));
+    mats->p_matrix = calloc(a, sizeof(Matrix*));
     for (int i = 0; i < a; i++){
-        mats->p_matrix[i] = malloc(2 * sizeof(int) +  sizeof(Matrix*));
+        mats->p_matrix[i] = calloc(1, 2 * sizeof(int) + sizeof(Matrix*));
         mats->p_matrix[i]->n = n;
         mats->p_matrix[i]->m = m;
-        mats->p_matrix[i]->arr = malloc(n * m * sizeof(double));
+        mats->p_matrix[i]->arr = calloc(n * m, sizeof(double));
     }
 }
 

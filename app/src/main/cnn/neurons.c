@@ -25,12 +25,12 @@ void neuronssInit(Neuronss* a, int siz){
         exit(0);
     }
     a->siz = siz;
-    a->neu = malloc(a->siz * sizeof(Neurons*));
+    a->neu = calloc(a->siz, sizeof(Neurons*));
     if(a->neu == NULL){
         printf("The memory is not enough when the Neuronss created!\n");
     }
     for(int i = 0; i < siz; i++){
-        a->neu[i] = malloc(sizeof(Neurons));
+        a->neu[i] = calloc(1, sizeof(Neurons));
     }
 }
 
