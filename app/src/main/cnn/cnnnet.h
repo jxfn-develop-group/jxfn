@@ -18,4 +18,7 @@
     void initRand(Cnnnet* net1);//随机数设为参数
     int runCnn(Cnnnet* net1, Matrix image);//运行神经网络
     void learnCnn(Cnnnet* net1, Matrix image, int answer);//学习过程
+    #ifndef CNNERROR//允许误差
+        #define CNNERROR 0.1
+    #endif
 #endif

@@ -20,4 +20,7 @@
     typedef struct Neuronss Neuronss;
     void neuronssInit(Neuronss* a, int siz);
     void neuronssFree(Neuronss* a);
+    #ifndef LEARNINDEX
+        #define LEARNINDEX 0.01
+    #endif
 #endif

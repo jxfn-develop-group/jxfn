@@ -101,7 +101,7 @@ void initRand(Cnnnet* net1){
     for(int i = 0; i < 10; i++){
         neuronsInit(net1->level[6].neu[i], 1, 84, getRand());
         net1->level[6].neu[i]->weights.arr[0] = getRand();
-        net1->level[6].neu[i]->p_activateFunction = funOfLevel0;
+        net1->level[6].neu[i]->p_activateFunction = sigmoid;
     }
 }
 
@@ -187,7 +187,6 @@ void runOfLayerFive(Cnnnet *net1){
 
 void runOfLayerSix(Cnnnet *net1){
     for(int i = 0; i < 84; i++){
-        net1->mats[6].p_matrix[i]->arr[0] = 0.0;
         for(int j = 0; j < 120; j++){
             net1->mats[6].p_matrix[i]->arr[0] +=
             net1->mats[5].p_matrix[j]->arr[0] *
@@ -202,7 +201,6 @@ void runOfLayerSix(Cnnnet *net1){
 
 void runOfLayerSeven(Cnnnet *net1){
     for(int i = 0; i < 10; i++){
-        net1->mats[7].p_matrix[i]->arr[0] = 0.0;
         for(int j = 0; j < 84; j++){
             net1->mats[7].p_matrix[i]->arr[0] +=
             net1->mats[6].p_matrix[j]->arr[0] *
@@ -267,7 +265,9 @@ void learnOfLayerSeven(Cnnnet *net1, Matrixs* mat){
     Matrixs res;
     matrixsInit(&res, 1, 1, 84);
     for(int i = 0; i < 84; i++){
+        for(int j = 0; j < 10; j++){
 
+        }
     }
     matrixsEqu(mat, &res);
     matrixsFree(&res);
@@ -277,6 +277,9 @@ void learnOfLayerSeven(Cnnnet *net1, Matrixs* mat){
 int runCnn(Cnnnet* net1, Matrix image){
     int ans = 0;
     matrixEqu(net1->mats[0].p_matrix[0], &image);
+    for(int i = 1; i < 8; i++){
+        matrixsClear(&net1->mats[i]);
+    }
     runOfLayerOne(net1);
     runOfLayerTwo(net1);
     runOfLayerThree(net1);
@@ -290,6 +293,7 @@ int runCnn(Cnnnet* net1, Matrix image){
             ans = i;
         }
     }
+    //printf("ans:%f\n",net1->mats[7].p_matrix[ans]->arr[0]);
     return ans;
 }
 
@@ -303,7 +307,15 @@ void learnCnn(Cnnnet* net1, Matrix image, int answer){
     runCnn(net1, image);
     Matrixs mat1;
     matrixsInit(&mat1, 1, 1, 10);
-    mat1.p_matrix[0]->arr[answer] = 100;
+    for(int i = 0; i < 10; i++){
+        if(i == answer){
+            mat1.p_matrix[0]->arr[i] = 1.0;
+        }
+        else{
+            mat1.p_matrix[0]->arr[i] = 0.0;
+        }
+    }
+    mat1.p_matrix[0]->arr[answer] = 1;
     learnOfLayerSeven(net1, &mat1);
     learnOfLayerSix(net1, &mat1);
     learnOfLayerFive(net1, &mat1);

@@ -239,3 +239,15 @@ void matrixsEqu(Matrixs* a, Matrixs* b){
         matrixEqu(a->p_matrix[i], b->p_matrix[i]);
     }
 }
+
+
+void matrixsClear(Matrixs* a){
+    for(int i = 0; i < a->siz; i++){
+        for(int j = 0; j < a->p_matrix[i]->n; j++){
+            int tmp = a->p_matrix[i]->m;
+            for(int k = 0; k < tmp; k++){
+                a->p_matrix[i]->arr[j * tmp + k] = 0.0;
+            }
+        }
+    }
+}
