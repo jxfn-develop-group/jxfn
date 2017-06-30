@@ -4,6 +4,7 @@
 
 
 #include "funofneurons.h"
+#include "neurons.h"
 
 
 double maxd(double a, double b){
@@ -122,5 +123,5 @@ pre 前一层误差，nex下一层误差，w权重，input前一层输入
 */
 void sigmoidRT(double* pre, double * nex, double* w, double input){
     double updateBias = input * (*w) * sigmoidDer(*nex, 0.0);
-    w -= LEARNINDEX * updateBias;
+    *w -= LEARNINDEX * updateBias;
 }
