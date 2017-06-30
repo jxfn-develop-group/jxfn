@@ -32,4 +32,5 @@
     void matrixsInit(Matrixs* mats, int a, int n, int m);
     void matrixsFree(Matrixs* mats);
     void matrixsEqu(Matrixs* a, Matrixs* b);
+    void matrixsClear(Matrixs* a);
 #endif

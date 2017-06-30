@@ -25,7 +25,7 @@ int main(){
     double start = clock();
     int tmp;
     //scanf("%d",&tmp);
-    tmp = 1;
+    tmp = 5;
     int ans = 0;
     for(int i = 0; i< tmp;i++){
         // printf("%d %d\n",i,runCnn(&cnn,mat));
@@ -34,7 +34,7 @@ int main(){
     //printf("%d\n",ans);
     printf("%d\n", (int)sizeof(double));
     printf("%f\n", (clock() - start)/(double)CLOCKS_PER_SEC);
-    learnCnn(&cnn, mat, ans);
+    //learnCnn(&cnn, mat, ans);
     cnnnetFree(&cnn);
     matrixFree(&mat);
     return 0;

@@ -75,6 +75,11 @@ double LReLuDer(double a){
 }
 
 
+void LReLuRT(double* pre, double * nex, double* w, double input){
+
+}
+
+
 double funOfLevel0(double a, double b){
     return LReLu(a);
 }
@@ -102,7 +107,20 @@ double funOfLevel4(double a, double b){
 }
 
 
-/*
 double sigmoid(double a, double b){
     return 1.0/(1.0 + exp(-a));
-}*/
+}
+
+
+double sigmoidDer(double a,double b){
+    return sigmoid(a, 0.0) * (1.0 - sigmoid(a, 0.0));
+}
+
+
+/*
+pre 前一层误差，nex下一层误差，w权重，input前一层输入
+*/
+void sigmoidRT(double* pre, double * nex, double* w, double input){
+    double updateBias = input * (*w) * sigmoidDer(*nex, 0.0);
+    w -= LEARNINDEX * updateBias;
+}
