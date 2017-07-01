@@ -49,7 +49,7 @@ void cnnnetFree(Cnnnet* net1){
 
 
 void initFromFile(Cnnnet* net1){
-    initRand(net1);
+    cnnnetInit(net1);
     readPara(net1);
 }
 
@@ -85,12 +85,12 @@ void initRand(Cnnnet* net1){
     }
     for(int i = 0; i < 120; i++){
         neuronsInit(net1->level[4].neu[i], 5, 5, getRand());
-        net1->level[4].neu[i]->p_activateFunction = funOfLevel4;
         for(int j = 0; j < 5; j++){
             for(int k = 0; k < 5; k++){
                 net1->level[4].neu[i]->weights.arr[j * 5 + k] = getRand();
             }
         }
+        net1->level[4].neu[i]->p_activateFunction = funOfLevel4;
     }
     for(int i = 0; i < 84; i++){
         neuronsInit(net1->level[5].neu[i], 1, 120, getRand());
@@ -111,8 +111,8 @@ void runOfLayerOne(Cnnnet *net1){
         matrixConv(net1->mats[1].p_matrix[i], net1->mats[0].p_matrix[0],
             &(net1->level[0].neu[i]->weights));
         matrixAddNum(net1->mats[1].p_matrix[i], net1->level[0].neu[i]->bias);
-        matrixFunction(net1->mats[1].p_matrix[i],
-            net1->level[0].neu[i]->p_activateFunction, 0.0);
+        /*matrixFunction(net1->mats[1].p_matrix[i],
+            net1->level[0].neu[i]->p_activateFunction, 0.0);*/
     }
 }
 
@@ -245,16 +245,44 @@ void learnOfLayerFour(Cnnnet *net1, Matrixs* mat){
 void learnOfLayerFive(Cnnnet *net1, Matrixs* mat){
     Matrixs res;
     matrixsInit(&res, 16, 5, 5);
+    Matrix tmat;
+    matrixInit(&tmat, 5, 5);
+    Matrix tres;
+    matrixInit(&tres, 5 , 5);
+    for(int i = 0; i < 16; i++){
+        matrixAdd(&tmat, net1->mats[4].p_matrix[i]);
+    }
+    for(int i = 0; i < 120; i++){
+        double outputError = net1->mats[5].p_matrix[i]->arr[0]
+            - mat->p_matrix[i]->arr[0];
+        for(int j = 0; j < 25; j++){
+            LReLuRT(&tres.arr[j], &outputError ,
+                &net1->level[4].neu[i]->weights.arr[j], tmat.arr[j],
+                net1->mats[5].p_matrix[i]->arr[0]);
+        }
+    }
+    for(int i = 0; i < 16; i++){
+        matrixEqu(res.p_matrix[i], &tres);
+    }
     matrixsEqu(mat, &res);
     matrixsFree(&res);
+    matrixFree(&tmat);
+    matrixFree(&tres);
 }
 
 
 void learnOfLayerSix(Cnnnet *net1, Matrixs* mat){
     Matrixs res;
-    matrixsInit(&res, 1, 1, 120);
+    matrixsInit(&res, 120, 1, 1);
     for(int i = 0; i < 84; i++){
-
+        double outputError = net1->mats[6].p_matrix[i]->arr[0]
+            - mat->p_matrix[i]->arr[0];
+        for(int j = 0; j < 120; j++){
+            LReLuRT(&res.p_matrix[j]->arr[0], &outputError ,
+                &net1->level[5].neu[i]->weights.arr[j],
+                net1->mats[5].p_matrix[j]->arr[0],
+                net1->mats[6].p_matrix[i]->arr[0]);
+        }
     }
     matrixsEqu(mat, &res);
     matrixsFree(&res);
@@ -263,10 +291,15 @@ void learnOfLayerSix(Cnnnet *net1, Matrixs* mat){
 
 void learnOfLayerSeven(Cnnnet *net1, Matrixs* mat){
     Matrixs res;
-    matrixsInit(&res, 1, 1, 84);
-    for(int i = 0; i < 84; i++){
-        for(int j = 0; j < 10; j++){
-
+    matrixsInit(&res, 84, 1, 1);
+    for(int i = 0; i < 10; i++){
+        double outputError = net1->mats[7].p_matrix[i]->arr[0]
+            - mat->p_matrix[0]->arr[i];
+        for(int j = 0; j < 84; j++){
+            sigmoidRT(&res.p_matrix[j]->arr[0], &outputError ,
+                &net1->level[6].neu[i]->weights.arr[j],
+                net1->mats[6].p_matrix[j]->arr[0],
+                net1->mats[7].p_matrix[i]->arr[0]);
         }
     }
     matrixsEqu(mat, &res);
@@ -318,10 +351,10 @@ void learnCnn(Cnnnet* net1, Matrix image, int answer){
     mat1.p_matrix[0]->arr[answer] = 1;
     learnOfLayerSeven(net1, &mat1);
     learnOfLayerSix(net1, &mat1);
-    learnOfLayerFive(net1, &mat1);
+    learnOfLayerFive(net1, &mat1);/*
     learnOfLayerFour(net1, &mat1);
     learnOfLayerThree(net1, &mat1);
     learnOfLayerTwo(net1, &mat1);
-    learnOfLayerOne(net1, &mat1);
+    learnOfLayerOne(net1, &mat1);*/
     matrixsFree(&mat1);
 }
