@@ -16,9 +16,11 @@
     double funOfLevel4(double a, double b);
     double sigmoid(double a, double b);
     double sigmoidDer(double a, double b);
-    void sigmoidRT(double* pre, double * nex, double* w, double input);
+    void sigmoidRT(double* pre, double * nex, double* w, double input,
+        double output);
     //反向传播时进行修改
     double LReLu(double a);
     double LReLuDer(double a);
-    void LReLuRT(double* pre, double * nex, double* w, double input);
+    void LReLuRT(double* pre, double * nex, double* w, double input,
+        double output);
 #endif

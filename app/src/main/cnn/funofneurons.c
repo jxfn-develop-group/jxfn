@@ -76,8 +76,11 @@ double LReLuDer(double a){
 }
 
 
-void LReLuRT(double* pre, double * nex, double* w, double input){
-
+void LReLuRT(double* pre, double * nex, double* w, double input,
+        double output){
+    double tmp = *nex * sigmoidDer(output, 0.0);
+    *pre += tmp * (*w);
+    *w -= LEARNINDEX * input * tmp;
 }
 
 
@@ -121,7 +124,9 @@ double sigmoidDer(double a,double b){
 /*
 pre 前一层误差，nex下一层误差，w权重，input前一层输入
 */
-void sigmoidRT(double* pre, double * nex, double* w, double input){
-    double updateBias = input * (*w) * sigmoidDer(*nex, 0.0);
-    *w -= LEARNINDEX * updateBias;
+void sigmoidRT(double* pre, double * nex, double* w, double input,
+        double output){
+    double tmp = *nex * sigmoidDer(output, 0.0);
+    *pre += tmp * (*w);
+    *w -= LEARNINDEX * input * tmp;
 }

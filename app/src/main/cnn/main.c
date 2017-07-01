@@ -34,7 +34,7 @@ int main(){
     //printf("%d\n",ans);
     printf("%d\n", (int)sizeof(double));
     printf("%f\n", (clock() - start)/(double)CLOCKS_PER_SEC);
-    //learnCnn(&cnn, mat, ans);
+    learnCnn(&cnn, mat, ans);
     cnnnetFree(&cnn);
     matrixFree(&mat);
     return 0;
