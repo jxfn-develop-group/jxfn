@@ -167,10 +167,15 @@ class Main : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
         Fuel.post(url, param).response { request, response, result ->
             //do something with response
             val (res, err) = result
-            val resText = res!!.toString(charset("utf-8"))
-            val regexString = Regex(""""translatedText": "(.*)"""")
-            val regexResult =  regexString.find(resText)
-            textView1.text = regexResult!!.groupValues[1]
+            if (res == null) {
+                textView1.text = "No Internet Connect"
+            }
+            else {
+                val resText = res!!.toString(charset("utf-8"))
+                val regexString = Regex(""""translatedText": "(.*)"""")
+                val regexResult = regexString.find(resText)
+                textView1.text = regexResult!!.groupValues[1]
+            }
         }
     }
 
