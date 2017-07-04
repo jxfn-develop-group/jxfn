@@ -26,15 +26,12 @@ int main(){
     int tmp;
     //scanf("%d",&tmp);
     tmp = 5;
-    int ans = 0;
-    for(int i = 0; i< tmp;i++){
-        // printf("%d %d\n",i,runCnn(&cnn,mat));
-        ans = runCnn(&cnn, mat);
-    }
     //printf("%d\n",ans);
     printf("%d\n", (int)sizeof(double));
     printf("%f\n", (clock() - start)/(double)CLOCKS_PER_SEC);
-    learnCnn(&cnn, mat, ans);
+    for(int i = 0; i < 10; i++){
+        learnCnn(&cnn, mat, 1);
+    }
     cnnnetFree(&cnn);
     matrixFree(&mat);
     return 0;

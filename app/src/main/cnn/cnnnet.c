@@ -102,7 +102,7 @@ void initRand(Cnnnet* net1){
     for(int i = 0; i < 10; i++){
         neuronsInit(net1->level[6].neu[i], 1, 84, getRand());
         net1->level[6].neu[i]->weights.arr[0] = getRand();
-        net1->level[6].neu[i]->p_activateFunction = sigmoid;
+        net1->level[6].neu[i]->p_activateFunction = funOfLevel0;
     }
 }
 
@@ -367,7 +367,7 @@ void learnOfLayerSeven(Cnnnet *net1, Matrixs* mat){
         double outputError = net1->mats[7].p_matrix[i]->arr[0]
             - mat->p_matrix[0]->arr[i];
         for(int j = 0; j < 84; j++){
-            sigmoidRT(&res.p_matrix[j]->arr[0], &outputError ,
+            LReLuRT(&res.p_matrix[j]->arr[0], &outputError ,
                 &net1->level[6].neu[i]->weights.arr[j],
                 net1->mats[6].p_matrix[j]->arr[0],
                 net1->mats[7].p_matrix[i]->arr[0],
@@ -414,7 +414,7 @@ void learnCnn(Cnnnet* net1, Matrix image, int answer){
     matrixsInit(&mat1, 1, 1, 10);
     for(int i = 0; i < 10; i++){
         if(i == answer){
-            mat1.p_matrix[0]->arr[i] = 1.0;
+            mat1.p_matrix[0]->arr[i] = 1000.0;
         }
         else{
             mat1.p_matrix[0]->arr[i] = 0.0;
