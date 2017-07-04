@@ -21,9 +21,9 @@
     void neuronssInit(Neuronss* a, int siz);
     void neuronssFree(Neuronss* a);
     #ifndef LEARNINDEX
-        #define LEARNINDEX 0.001
+        #define LEARNINDEX 0.5
     #endif
     #ifndef LEARNBIAS
-        #define LEARNBIAS 0.0001
+        #define LEARNBIAS 0.01
     #endif
 #endif
