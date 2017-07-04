@@ -1,4 +1,5 @@
 out1
 # callgrind cache
 callgrind
+data/
 test*
