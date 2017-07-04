@@ -365,7 +365,7 @@ void learnOfLayerSeven(Cnnnet *net1, Matrixs* mat){
     matrixsInit(&res, 84, 1, 1);
     for(int i = 0; i < 10; i++){
         double outputError = net1->mats[7].p_matrix[i]->arr[0]
-            - mat->p_matrix[0]->arr[i];
+            - mat->p_matrix[i]->arr[0];
         for(int j = 0; j < 84; j++){
             LReLuRT(&res.p_matrix[j]->arr[0], &outputError ,
                 &net1->level[6].neu[i]->weights.arr[j],
@@ -411,22 +411,21 @@ void writeParameter(Cnnnet net1){
 void learnCnn(Cnnnet* net1, Matrix image, int answer){
     runCnn(net1, image);
     Matrixs mat1;
-    matrixsInit(&mat1, 1, 1, 10);
+    matrixsInit(&mat1, 10, 1, 1);
     for(int i = 0; i < 10; i++){
         if(i == answer){
-            mat1.p_matrix[0]->arr[i] = 1000.0;
+            mat1.p_matrix[i]->arr[0] = 1000.0;
         }
         else{
-            mat1.p_matrix[0]->arr[i] = 0.0;
+            mat1.p_matrix[i]->arr[0] = 0.0;
         }
     }
-    mat1.p_matrix[0]->arr[answer] = 1;
-    learnOfLayerSeven(net1, &mat1);
+    learnOfLayerSeven(net1, &mat1);/*
     learnOfLayerSix(net1, &mat1);
     learnOfLayerFive(net1, &mat1);
     learnOfLayerFour(net1, &mat1);
     learnOfLayerThree(net1, &mat1);
     learnOfLayerTwo(net1, &mat1);
-    learnOfLayerOne(net1, &mat1);
+    learnOfLayerOne(net1, &mat1);*/
     matrixsFree(&mat1);
 }

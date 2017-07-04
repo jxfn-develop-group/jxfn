@@ -164,24 +164,16 @@ void writePara(Cnnnet net1){
 }
 
 
-void readIm(int s[], Matrix* mat){
+void readIm(int *s, Matrix* mat){
     Matrix pic;
     matrixInit(&pic, 32, 32);
-    for(int i = 0; i < 32; i++){
-        pic.arr[i] = 0.0;
-        pic.arr[i + 32] = 0.0;
-        pic.arr[i + 32*30] = 0.0;
-        pic.arr[i + 32*31] = 0.0;
-        pic.arr[i * 32] = 0.0;
-        pic.arr[i * 32 + 1] = 0.0;
-        pic.arr[i * 32 + 30] = 0.0;
-        pic.arr[i * 32 + 31] = 0.0;
-    }
     for(int i = 2; i< 30; i++){
         for(int j = 2; j < 30; j++){
             pic.arr[i * 32 + j] = s[(i-2)*28 + (j-2)];
+            printf("%f ",pic.arr[i*32+j]);
         }
+        printf("\n");
     }
     matrixEqu(mat, &pic);
-    free(pic.arr);
+    matrixFree(&pic);
 }

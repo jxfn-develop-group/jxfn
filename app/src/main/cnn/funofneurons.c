@@ -80,7 +80,7 @@ double LReLuDer(double a){
 
 void LReLuRT(double* pre, double * nex, double* w, double input,
         double output, double* bias){
-    double tmp = *nex * sigmoidDer(output, 0.0);
+    double tmp = *nex * LReLuDer(output);
     *pre += tmp * (*w);
     *w -= LEARNINDEX * input * tmp;
     *bias -= LEARNBIAS * tmp;
@@ -89,7 +89,7 @@ void LReLuRT(double* pre, double * nex, double* w, double input,
 
 void LReLuRTNoChange(double* pre, double* nex, double* w, double input,
         double output, double* bias, double* wc){
-    double tmp = *nex * sigmoidDer(output, 0.0);
+    double tmp = *nex * LReLuDer(output);
     *pre += tmp * (*w);
     *wc = -LEARNINDEX * input * tmp;
     *bias -= LEARNBIAS * tmp;
