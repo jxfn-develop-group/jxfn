@@ -13,25 +13,41 @@
 
 int main(){
     srand(time(0));
-    char s[111] = "out1";
     Matrix mat;
     matrixInit(&mat, 32, 32);
-    readIm(s, &mat);
     Cnnnet cnn;
     cnnnetInit(&cnn);
     initRand(&cnn);
     //initFromFile(&cnn);
     //printf("%d\n",runCnn(&cnn, mat));
-    double start = clock();
-    int tmp;
-    //scanf("%d",&tmp);
-    tmp = 5;
+    int tmp = 0;
+    scanf("%d",&tmp);
     //printf("%d\n",ans);
-    printf("%d\n", (int)sizeof(double));
-    printf("%f\n", (clock() - start)/(double)CLOCKS_PER_SEC);
-    for(int i = 0; i < 10; i++){
-        learnCnn(&cnn, mat, 1);
+    FILE* fpoint = fopen("out1", "r");
+    double start = clock();
+
+    int ans = 0;
+    int img[28*28] = {};
+    for(int i = 0; i < tmp; i++){
+        for (int j = 0; j < 28*28; ++j)
+        {
+            fscanf(fpoint, "%d", &img[j]);
+        }
+        readIm(img, &mat);
+        for (int k = 0; k < 100; ++k)
+        {
+            learnCnn(&cnn, mat, ans);
+        }
     }
+
+    for (int j = 0; j < 28*28; ++j)
+    {
+        fscanf(fpoint, "%d", &img[j]);
+    }
+    readIm(img, &mat);
+    printf("%d\n", runCnn(&cnn, mat));
+
+    printf("%f\n", (clock() - start)/(double)CLOCKS_PER_SEC);
     cnnnetFree(&cnn);
     matrixFree(&mat);
     return 0;
