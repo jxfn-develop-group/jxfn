@@ -1,10 +1,12 @@
 #include <time.h>
 #include <stdlib.h>
 #include <math.h>
+#include <stdio.h>
 
 
 #include "funofneurons.h"
 #include "neurons.h"
+#include "matrix.h"
 
 
 double maxd(double a, double b){
@@ -77,10 +79,51 @@ double LReLuDer(double a){
 
 
 void LReLuRT(double* pre, double * nex, double* w, double input,
-        double output){
+        double output, double* bias){
     double tmp = *nex * sigmoidDer(output, 0.0);
     *pre += tmp * (*w);
     *w -= LEARNINDEX * input * tmp;
+    *bias -= LEARNBIAS * tmp;
+}
+
+
+void LReLuRTNoChange(double* pre, double* nex, double* w, double input,
+        double output, double* bias, double* wc){
+    double tmp = *nex * sigmoidDer(output, 0.0);
+    *pre += tmp * (*w);
+    *wc = -LEARNINDEX * input * tmp;
+    *bias -= LEARNBIAS * tmp;
+}
+
+
+void convRT(Matrix* pre, Matrix* nex, Neurons* neu, Matrix* input,
+    Matrix* output, void(*p_fun)(double*, double*, double *, double,
+        double, double*, double*)){
+    if(!matrixSameSize(pre, input) || !matrixSameSize(nex, output) ||
+    neu->weights.n + output->n != input->n + 1||
+    neu->weights.m + output->m != input->m + 1){
+        printf("error when convRT!!\n");
+        return ;
+    }
+    Matrix tmat;
+    int om = output->m, on = output->n, im = input->m, nm = neu->weights.m;
+    matrixInit(&tmat, neu->weights.n, neu->weights.m);
+    for(int i = 0; i < on; i++){
+        for(int j = 0; j < output->m; j++){
+            if(fabs(output->arr[i * output->m + j]) < EPS){
+                continue;
+            }
+            for(int ii = 0; ii < neu->weights.n; ii++){
+                for(int jj = 0; jj < neu->weights.m; jj++){
+                    p_fun(&pre->arr[(i+ii)*im+j+jj],&nex->arr[i*om+j],
+                    &neu->weights.arr[ii*nm+jj],input->arr[(i+ii)*im+j+jj],
+                    output->arr[i*om+j],&neu->bias,&tmat.arr[ii*nm+jj]);
+                }
+            }
+        }
+    }
+    matrixAdd(&neu->weights, &tmat);
+    matrixFree(&tmat);
 }
 
 
@@ -122,11 +165,12 @@ double sigmoidDer(double a,double b){
 
 
 /*
-pre 前一层误差，nex下一层误差，w权重，input前一层输入
+pre 前一层误差，nex下一层误差，w权重，input前一层输入,output 下一层输出
 */
 void sigmoidRT(double* pre, double * nex, double* w, double input,
-        double output){
+        double output, double* bias){
     double tmp = *nex * sigmoidDer(output, 0.0);
     *pre += tmp * (*w);
     *w -= LEARNINDEX * input * tmp;
+    *bias -= LEARNBIAS * tmp;
 }
