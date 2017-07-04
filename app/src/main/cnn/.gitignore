@@ -1,8 +1,5 @@
 out1
-<<<<<<< HEAD
-
 # callgrind cache
 callgrind
-=======
+data/
 test*
->>>>>>> cnn-dev
