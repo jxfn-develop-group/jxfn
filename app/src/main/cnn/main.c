@@ -27,11 +27,11 @@ int main(){
     double start = clock();
 
     int ans = 0;
-    int img[28*28] = {};
+    double img[28*28] = {};
     for(int i = 0; i < tmp; i++){
         for (int j = 0; j < 28*28; ++j)
         {
-            fscanf(fpoint, "%d", &img[j]);
+            fscanf(fpoint, "%lf", &img[j]);
         }
         readIm(img, &mat);
         for (int k = 0; k < 100; ++k)
@@ -42,7 +42,7 @@ int main(){
 
     for (int j = 0; j < 28*28; ++j)
     {
-        fscanf(fpoint, "%d", &img[j]);
+        fscanf(fpoint, "%lf", &img[j]);
     }
     readIm(img, &mat);
     printf("%d\n", runCnn(&cnn, mat));
