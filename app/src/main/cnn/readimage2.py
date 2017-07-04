@@ -23,5 +23,12 @@ def read(s):
 
 
 if __name__ == '__main__':
-    for i in range(500, 1000):
-        read('data' + '/' + 'img001-00' + str(i) + '.png')
+    for i in range(2):
+        for j in range(10, 56):
+            read('data' + '/' + 'img00' + str(2-i) + '-0' + str(j) + '.png')
+            # (55-9)*2 = 92
+
+    for i in range(2):
+        for j in range(1, 10):
+            read('data' + '/' + 'img00' + str(2-i) + '-00' + str(j) + '.png')
+            # 9*2 = 18
