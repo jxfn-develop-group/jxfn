@@ -24,6 +24,6 @@
         #define LEARNINDEX 0.001
     #endif
     #ifndef LEARNBIAS
-        #define LEARNBIAS 0.00001
+        #define LEARNBIAS 0.0001
     #endif
 #endif
