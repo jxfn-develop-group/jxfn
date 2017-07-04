@@ -24,6 +24,9 @@
     void matrixSample(Matrix* a, Matrix* b, int n, int m,
         double (*p_fun)(Matrix));//矩阵采样函数
     void matrixSwap(Matrix* a, Matrix* b);
+    void matrixRestore(Matrix* a, Matrix* b, Matrix* c, int n, int m);
+        //矩阵采样函数逆函数，a原矩阵，b采样后矩阵，c结果矩阵
+    int matrixSameSize(Matrix* a, Matrix* b);
     struct Matrixs{
         int siz;
         Matrix** p_matrix;

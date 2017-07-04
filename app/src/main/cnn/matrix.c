@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 #include "matrix.h"
 
@@ -248,6 +249,39 @@ void matrixsClear(Matrixs* a){
             for(int k = 0; k < tmp; k++){
                 a->p_matrix[i]->arr[j * tmp + k] = 0.0;
             }
+        }
+    }
+}
+
+
+int matrixSameSize(Matrix* a, Matrix* b){
+    return a->n == b->n && a->m == b->m;
+}
+
+
+void matrixRestore(Matrix* a, Matrix* b, Matrix* c, int n, int m){
+    if(b->n * n != a->n || b->m * m != a->m || a->n != c->n || a->m != c->m){
+        printf("there is an erros in matrixRestore!\n");
+        return ;
+    }
+    for(int i = 0; i < b->n; i++){
+        for(int j = 0; j < b->m; j++){
+            if(fabs(b->arr[i * b->m + j]) < EPS ){
+                continue;
+            }
+            int posx = 0, posy = 0;
+            for(int ii = 0; ii < n; ii++){
+                for(int jj = 0; jj < m; jj++){
+                    if(a->arr[(i * n + posx) * a->m + j * m + posy] <
+                            a->arr[(i * n + ii) * a->m + j * m + jj]){
+                        posx = ii;
+                        posy = jj;
+                    }
+                    c->arr[(i * n + ii) * a->m + j * m + jj] = 0.0;
+                }
+            }
+            c->arr[(i * n + posx) * a->m + j * m + posy] =
+                b->arr[i * b->m +j];
         }
     }
 }
