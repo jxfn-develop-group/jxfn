@@ -81,7 +81,7 @@ double LReLuDer(double a){
 void LReLuRT(double* pre, double * nex, double* w, double input,
         double output, double* bias){
     double tmp = *nex * LReLuDer(output);
-    //*pre +=  (tmp * (*w));
+    *pre +=  (tmp * (*w));
     /*if(fabs(tmp* (*w))>fabs(*nex)+1e-3){
         *pre +=  *nex * 1e-6;
     }
