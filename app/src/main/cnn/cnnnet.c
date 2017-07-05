@@ -60,7 +60,7 @@ void initRand(Cnnnet* net1){
         neuronsInit(net1->level[0].neu[i],  5, 5, getRand());
         for(int j = 0; j < 5; j++){
             for(int k = 0; k < 5; k++){
-                net1->level[0].neu[i]->weights.arr[j * 5 + k] = getRand();
+                net1->level[0].neu[i]->weights.arr[j * 5 + k] = getRand()/25.0;
             }
         }
         net1->level[0].neu[i]->p_activateFunction = funOfLevel0;
@@ -74,7 +74,18 @@ void initRand(Cnnnet* net1){
         neuronsInit(net1->level[2].neu[i], 5, 5, getRand());
         for(int j = 0; j < 5; j++){
             for(int k = 0; k < 5; k++){
-                net1->level[2].neu[i]->weights.arr[j * 5 + k] = getRand();
+                net1->level[2].neu[i]->weights.arr[j * 5 + k] = getRand()/25.0;
+                if(i<6){
+                    net1->level[2].neu[i]->weights.arr[j * 5 + k] =
+                    getRand()/3.0;
+                }
+                else if(i==15){
+                    net1->level[2].neu[i]->weights.arr[j * 5 + k] =
+                    getRand()/6.0;
+                }
+                else{
+                    net1->level[2].neu[i]->weights.arr[j * 5 + k] = getRand()/4.0;
+                }
             }
         }
         net1->level[2].neu[i]->p_activateFunction = funOfLevel2;
@@ -88,20 +99,20 @@ void initRand(Cnnnet* net1){
         neuronsInit(net1->level[4].neu[i], 5, 5, getRand());
         for(int j = 0; j < 5; j++){
             for(int k = 0; k < 5; k++){
-                net1->level[4].neu[i]->weights.arr[j * 5 + k] = getRand();
+                net1->level[4].neu[i]->weights.arr[j * 5 + k] = getRand()/400.0;
             }
         }
         net1->level[4].neu[i]->p_activateFunction = funOfLevel4;
     }
     for(int i = 0; i < 84; i++){
         neuronsInit(net1->level[5].neu[i], 1, 120, getRand());
-        net1->level[5].neu[i]->weights.arr[0] = getRand();
+        net1->level[5].neu[i]->weights.arr[0] = getRand()/120.0;
         net1->level[5].neu[i]->p_activateFunction = funOfLevel0;
         //每层的激活函数相同
     }
     for(int i = 0; i < 10; i++){
         neuronsInit(net1->level[6].neu[i], 1, 84, getRand());
-        net1->level[6].neu[i]->weights.arr[0] = getRand();
+        net1->level[6].neu[i]->weights.arr[0] = getRand()/84.0;
         net1->level[6].neu[i]->p_activateFunction = funOfLevel0;
     }
 }
@@ -347,6 +358,7 @@ void learnOfLayerSix(Cnnnet *net1, Matrixs* mat){
     for(int i = 0; i < 84; i++){
         double outputError = net1->mats[6].p_matrix[i]->arr[0]
             - mat->p_matrix[i]->arr[0];
+        //printf("%d %f\n",i,outputError);
         for(int j = 0; j < 120; j++){
             LReLuRT(&res.p_matrix[j]->arr[0], &outputError ,
                 &net1->level[5].neu[i]->weights.arr[j],
@@ -366,6 +378,7 @@ void learnOfLayerSeven(Cnnnet *net1, Matrixs* mat){
     for(int i = 0; i < 10; i++){
         double outputError = net1->mats[7].p_matrix[i]->arr[0]
             - mat->p_matrix[i]->arr[0];
+        //printf("lay7oute %d %f\n",i,outputError);
         for(int j = 0; j < 84; j++){
             LReLuRT(&res.p_matrix[j]->arr[0], &outputError ,
                 &net1->level[6].neu[i]->weights.arr[j],
@@ -374,6 +387,9 @@ void learnOfLayerSeven(Cnnnet *net1, Matrixs* mat){
                 &net1->level[6].neu[i]->bias);
         }
     }
+    /*for(int i=0; i< 84;i++){
+        printf("lay7:%f %d\n",res.p_matrix[i]->arr[0],i);
+    }*/
     matrixsEqu(mat, &res);
     matrixsFree(&res);
 }
@@ -417,15 +433,15 @@ void learnCnn(Cnnnet* net1, Matrix image, int answer){
             mat1.p_matrix[i]->arr[0] = 1000.0;
         }
         else{
-            mat1.p_matrix[i]->arr[0] = 0.0;
+            mat1.p_matrix[i]->arr[0] = -100.0;
         }
     }
-    learnOfLayerSeven(net1, &mat1);/*
+    learnOfLayerSeven(net1, &mat1);
     learnOfLayerSix(net1, &mat1);
     learnOfLayerFive(net1, &mat1);
     learnOfLayerFour(net1, &mat1);
     learnOfLayerThree(net1, &mat1);
     learnOfLayerTwo(net1, &mat1);
-    learnOfLayerOne(net1, &mat1);*/
+    learnOfLayerOne(net1, &mat1);
     matrixsFree(&mat1);
 }

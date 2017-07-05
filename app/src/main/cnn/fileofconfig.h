@@ -3,5 +3,5 @@
     #if __MOSHI__
         // #define double float
     #endif
-    #define EPS 1e-15
+    #define EPS 1e-6
 #endif
