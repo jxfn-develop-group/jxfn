@@ -30,4 +30,6 @@
         Matrix* output, void(*p_fun)(double*, double*, double *, double,
             double, double*, double*));
     //卷积反向传递函数
+    double minDouble(double a, double b);
+    void gradAdjust(Matrixs* mat);
 #endif

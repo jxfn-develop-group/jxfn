@@ -302,7 +302,7 @@ void learnOfLayerThree(Cnnnet *net1, Matrixs* mat){
     for(int i = 0; i < 6; i++){
         matrixAdd(res.p_matrix[i], tma.p_matrix[15]);
     }
-
+    gradAdjust(&res);
     matrixsEqu(mat, &res);
     matrixsFree(&res);
     matrixsFree(&tma);
@@ -336,13 +336,23 @@ void learnOfLayerFive(Cnnnet *net1, Matrixs* mat){
         double outputError = net1->mats[5].p_matrix[i]->arr[0]
             - mat->p_matrix[i]->arr[0];
         // printf("layout5:%f %d\n",outputError,i);
+        double tmpbias = net1->level[4].neu[i]->bias;
         for(int j = 0; j < 25; j++){
             LReLuRT(&tres.arr[j], &outputError ,
                 &net1->level[4].neu[i]->weights.arr[j], tmat.arr[j],
                 net1->mats[5].p_matrix[i]->arr[0],
                 &net1->level[4].neu[i]->bias);
         }
+        if(fabs(tmpbias - net1->level[4].neu[i]->bias)>BIASLIMIT){
+            if(tmpbias > net1->level[4].neu[i]->bias){
+                net1->level[4].neu[i]->bias = tmpbias - BIASLIMIT;
+            }
+            else{
+                net1->level[4].neu[i]->bias = tmpbias + BIASLIMIT;
+            }
+        }
     }
+    gradAdjust(&res);
     for(int i = 0; i < 16; i++){
         matrixEqu(res.p_matrix[i], &tres);
     }
@@ -360,6 +370,7 @@ void learnOfLayerSix(Cnnnet *net1, Matrixs* mat){
         double outputError = net1->mats[6].p_matrix[i]->arr[0]
             - mat->p_matrix[i]->arr[0];
         // printf("layout6: %d %f\n",i,outputError);
+        double tmpbias = net1->level[5].neu[i]->bias;
         for(int j = 0; j < 120; j++){
             LReLuRT(&res.p_matrix[j]->arr[0], &outputError ,
                 &net1->level[5].neu[i]->weights.arr[j],
@@ -367,7 +378,16 @@ void learnOfLayerSix(Cnnnet *net1, Matrixs* mat){
                 net1->mats[6].p_matrix[i]->arr[0],
                 &net1->level[5].neu[i]->bias);
         }
+        if(fabs(tmpbias - net1->level[5].neu[i]->bias)>BIASLIMIT){
+            if(tmpbias > net1->level[5].neu[i]->bias){
+                net1->level[5].neu[i]->bias = tmpbias - BIASLIMIT;
+            }
+            else{
+                net1->level[5].neu[i]->bias = tmpbias + BIASLIMIT;
+            }
+        }
     }
+    gradAdjust(&res);
     matrixsEqu(mat, &res);
     matrixsFree(&res);
 }
@@ -380,6 +400,7 @@ void learnOfLayerSeven(Cnnnet *net1, Matrixs* mat){
         double outputError = net1->mats[7].p_matrix[i]->arr[0]
             - mat->p_matrix[i]->arr[0];
         // printf("lay7oute %d %f\n",i,outputError);
+        double tmpbias = net1->level[6].neu[i]->bias;
         for(int j = 0; j < 84; j++){
             LReLuRT(&res.p_matrix[j]->arr[0], &outputError ,
                 &net1->level[6].neu[i]->weights.arr[j],
@@ -387,10 +408,19 @@ void learnOfLayerSeven(Cnnnet *net1, Matrixs* mat){
                 net1->mats[7].p_matrix[i]->arr[0],
                 &net1->level[6].neu[i]->bias);
         }
+        if(fabs(tmpbias - net1->level[6].neu[i]->bias)>BIASLIMIT){
+            if(tmpbias > net1->level[6].neu[i]->bias){
+                net1->level[6].neu[i]->bias = tmpbias - BIASLIMIT;
+            }
+            else{
+                net1->level[6].neu[i]->bias = tmpbias + BIASLIMIT;
+            }
+        }
     }
     /*for(int i=0; i< 84;i++){
         printf("lay7:%f %d\n",res.p_matrix[i]->arr[0],i);
     }*/
+    gradAdjust(&res);
     matrixsEqu(mat, &res);
     matrixsFree(&res);
 }
@@ -431,10 +461,10 @@ void learnCnn(Cnnnet* net1, Matrix image, int answer){
     matrixsInit(&mat1, 10, 1, 1);
     for(int i = 0; i < 10; i++){
         if(i == answer){
-            mat1.p_matrix[i]->arr[0] = 10.0;
+            mat1.p_matrix[i]->arr[0] = 100.0;
         }
         else{
-            mat1.p_matrix[i]->arr[0] = -1.0;
+            mat1.p_matrix[i]->arr[0] = -10.0;
         }
     }
     learnOfLayerSeven(net1, &mat1);
