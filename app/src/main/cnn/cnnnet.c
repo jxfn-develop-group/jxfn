@@ -335,6 +335,7 @@ void learnOfLayerFive(Cnnnet *net1, Matrixs* mat){
     for(int i = 0; i < 120; i++){
         double outputError = net1->mats[5].p_matrix[i]->arr[0]
             - mat->p_matrix[i]->arr[0];
+        // printf("layout5:%f %d\n",outputError,i);
         for(int j = 0; j < 25; j++){
             LReLuRT(&tres.arr[j], &outputError ,
                 &net1->level[4].neu[i]->weights.arr[j], tmat.arr[j],
@@ -358,7 +359,7 @@ void learnOfLayerSix(Cnnnet *net1, Matrixs* mat){
     for(int i = 0; i < 84; i++){
         double outputError = net1->mats[6].p_matrix[i]->arr[0]
             - mat->p_matrix[i]->arr[0];
-        //printf("%d %f\n",i,outputError);
+        // printf("layout6: %d %f\n",i,outputError);
         for(int j = 0; j < 120; j++){
             LReLuRT(&res.p_matrix[j]->arr[0], &outputError ,
                 &net1->level[5].neu[i]->weights.arr[j],
@@ -378,7 +379,7 @@ void learnOfLayerSeven(Cnnnet *net1, Matrixs* mat){
     for(int i = 0; i < 10; i++){
         double outputError = net1->mats[7].p_matrix[i]->arr[0]
             - mat->p_matrix[i]->arr[0];
-        //printf("lay7oute %d %f\n",i,outputError);
+        // printf("lay7oute %d %f\n",i,outputError);
         for(int j = 0; j < 84; j++){
             LReLuRT(&res.p_matrix[j]->arr[0], &outputError ,
                 &net1->level[6].neu[i]->weights.arr[j],
@@ -430,10 +431,10 @@ void learnCnn(Cnnnet* net1, Matrix image, int answer){
     matrixsInit(&mat1, 10, 1, 1);
     for(int i = 0; i < 10; i++){
         if(i == answer){
-            mat1.p_matrix[i]->arr[0] = 1000.0;
+            mat1.p_matrix[i]->arr[0] = 10.0;
         }
         else{
-            mat1.p_matrix[i]->arr[0] = -100.0;
+            mat1.p_matrix[i]->arr[0] = -1.0;
         }
     }
     learnOfLayerSeven(net1, &mat1);

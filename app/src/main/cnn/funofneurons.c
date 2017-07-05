@@ -89,14 +89,14 @@ void LReLuRT(double* pre, double * nex, double* w, double input,
         *pre += (tmp * (*w)) * 1e-6;
     }
     *w -= LEARNINDEX * (input * tmp);
-    if(fabs(*w)>1+1e-3){
+    /*if(fabs(*w)>1+1e-3){
         if(*w>0){
             *w = 1.0;
         }
         else{
             *w = -1.0;
         }
-    }
+    }*/
     *bias -= LEARNBIAS * tmp;
 }
 
@@ -104,7 +104,8 @@ void LReLuRT(double* pre, double * nex, double* w, double input,
 void LReLuRTNoChange(double* pre, double* nex, double* w, double input,
         double output, double* bias, double* wc){
     double tmp = *nex * LReLuDer(output);
-    *pre += LEARNINDEX * tmp * (*w);
+    // *pre += LEARNINDEX * tmp * (*w);
+    *pre += tmp * (*w);
     *wc = -LEARNINDEX * input * tmp;
     *bias -= LEARNBIAS * tmp;
 }
