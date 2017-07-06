@@ -238,20 +238,18 @@ void runOfLayerSeven(Cnnnet *net1){
 void learnOfLayerOne(Cnnnet *net1, Matrixs* mat){
     Matrix tmp;
     matrixInit(&tmp, 32, 32);
-    Matrix tneu;
-    matrixInit(&tneu, 1, 6);
-    for(int i = 0; i < 6; i++){
-        tneu.arr[i] = net1->level[0].neu[i]->bias;
+    Matrix tbias;
+    matrixInit(&tbias, 1, 6);
+    for(int i = 0 ;i < 6; i++){
+        tbias.arr[i] = net1->level[0].neu[i]->bias;
     }
     for(int i = 0; i < 6; i++){
         convRT(&tmp, mat->p_matrix[i], net1->level[0].neu[i],
         net1->mats[0].p_matrix[0], net1->mats[1].p_matrix[i], LReLuRTNoChange);
-    }
-    for(int i = 0; i < 6; i++){
-        biasAdjust(&tneu.arr[i], &net1->level[0].neu[i]->bias);
+        biasAdjust(&tbias.arr[i], &net1->level[0].neu[i]->bias);
     }
     matrixFree(&tmp);
-    matrixFree(&tneu);
+    matrixFree(&tbias);
 }
 
 
@@ -367,14 +365,6 @@ void learnOfLayerFive(Cnnnet *net1, Matrixs* mat){
                 &net1->level[4].neu[i]->bias);
         }
         biasAdjust(&tmpbias, &net1->level[4].neu[i]->bias);
-        if(fabs(tmpbias - net1->level[4].neu[i]->bias)>BIASLIMIT){
-            if(tmpbias > net1->level[4].neu[i]->bias){
-                net1->level[4].neu[i]->bias = tmpbias - BIASLIMIT;
-            }
-            else{
-                net1->level[4].neu[i]->bias = tmpbias + BIASLIMIT;
-            }
-        }
     }
     gradAdjust(&res);
     for(int i = 0; i < 16; i++){

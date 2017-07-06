@@ -235,6 +235,7 @@ void gradAdjust(Matrixs* mat){
 }
 
 
+<<<<<<< HEAD
 void biasAdjust(double* tmpbias,double* now){
     if(fabs(*tmpbias - *now)>BIASLIMIT){
         if(*tmpbias > *now){
@@ -242,6 +243,23 @@ void biasAdjust(double* tmpbias,double* now){
         }
         else{
             *now = *tmpbias + BIASLIMIT;
+=======
+void biasAdjust(double* tmpbias, double* bias){
+    if(fabs(*tmpbias - *bias) > BIASLIMIT){
+        if(*tmpbias > *bias){
+            *bias = *tmpbias - BIASLIMIT;
+        }
+        else{
+            *bias = *tmpbias + BIASLIMIT;
+        }
+    }
+    if(fabs(*bias) > 1.0){
+        if(*bias > 0.0){
+            *bias = 1.0;
+        }
+        else{
+            *bias = -1.0;
+>>>>>>> cnn-dev
         }
     }
 }

@@ -24,7 +24,7 @@
         #define LEARNINDEX 1e-4
     #endif
     #ifndef LEARNBIAS
-        #define LEARNBIAS 1e-4
+        #define LEARNBIAS 1e-5
     #endif
     #ifndef WEIGHTLIMIT
         #define WEIGHTLIMIT 1e-3
