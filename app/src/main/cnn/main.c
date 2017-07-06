@@ -13,25 +13,40 @@
 
 int main(){
     srand(time(0));
-    char s[111] = "out1";
     Matrix mat;
     matrixInit(&mat, 32, 32);
-    readIm(s, &mat);
     Cnnnet cnn;
     cnnnetInit(&cnn);
     initRand(&cnn);
     //initFromFile(&cnn);
     //printf("%d\n",runCnn(&cnn, mat));
+    int tmp = 0;
+    scanf("%d",&tmp);
+    //printf("%d\n",ans);
+    FILE* fpoint = fopen("out1", "r");
     double start = clock();
-    int tmp;
-    //scanf("%d",&tmp);
-    tmp = 10000;
+
     int ans = 0;
-    for(int i = 0; i< tmp;i++){
-        // printf("%d %d\n",i,runCnn(&cnn,mat));
-        ans = runCnn(&cnn, mat);
+    double img[28*28] = {};
+    for(int i = 0; i < tmp; i++){
+        for (int j = 0; j < 28*28; ++j)
+        {
+            fscanf(fpoint, "%lf", &img[j]);
+        }
+        readIm(img, &mat);
+        for (int k = 0; k < 100; ++k)
+        {
+            learnCnn(&cnn, mat, ans);
+        }
     }
-    printf("%d\n",ans);
+
+    for (int j = 0; j < 28*28; ++j)
+    {
+        fscanf(fpoint, "%lf", &img[j]);
+    }
+    readIm(img, &mat);
+    printf("%d\n", runCnn(&cnn, mat));
+
     printf("%f\n", (clock() - start)/(double)CLOCKS_PER_SEC);
     cnnnetFree(&cnn);
     matrixFree(&mat);

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 #include "matrix.h"
 
@@ -38,62 +39,62 @@ void matrixPrin(struct Matrix a){
 }
 
 
-void matrixEqu(Matrix* a, Matrix b){
-    a->n = b.n;
-    a->m = b.m;
+void matrixEqu(Matrix* a, Matrix* b){
+    a->n = b->n;
+    a->m = b->m;
     free(a->arr);
-    a->arr = calloc(b.n * b.m, sizeof(double));
-    for(int i = 0; i < b.n; i++){
-        for(int j = 0; j < b.m; j++){
-            a->arr[i * b.m + j] = b.arr[i * b.m + j];
+    a->arr = calloc(b->n * b->m, sizeof(double));
+    for(int i = 0; i < b->n; i++){
+        for(int j = 0; j < b->m; j++){
+            a->arr[i * b->m + j] = b->arr[i * b->m + j];
         }
     }
 }
-void matrixMul(Matrix* a, Matrix b){
-    if(a->m != b.n){
+void matrixMul(Matrix* a, Matrix* b){
+    if(a->m != b->n){
         printf("The matrixs can't be multipled!\n");
         exit(0);
     }
     Matrix c;
-    matrixInit(&c, a->n, b.m);
+    matrixInit(&c, a->n, b->m);
     for (int i = 0; i < a->n; i++) {
-        for(int j = 0; j < b.m; j++){
-            c.arr[i * b.m + j] = 0;
+        for(int j = 0; j < b->m; j++){
+            c.arr[i * b->m + j] = 0;
             for(int k = 0; k < a->m; k++){
-                c.arr[i * b.m +j] += a->arr[i * a->m + k] * b. arr[k * b.m +j];
+                c.arr[i * b->m +j] += a->arr[i * a->m + k] * b->arr[k *b->m+j];
             }
         }
     }
-    matrixEqu(a , c);
+    matrixEqu(a , &c);
     free(c.arr);
 }
 
 
-void matrixDot(Matrix* a, Matrix b){
-    if(a->m != b.m || a->n != b.n){
+void matrixDot(Matrix* a, Matrix* b){
+    if(a->m != b->m || a->n != b->n){
         printf("The matrixs can't be doted!\n");
         exit(0);
     }
     Matrix c;
-    matrixInit(&c, a->n, b.m);
+    matrixInit(&c, a->n, b->m);
     for (int i = 0; i < a->n; i++){
-        for(int j = 0; j < b.m ; j++){
-            c.arr[i * a->m + j] = a->arr[i * b.m + j] * b.arr[i * b.m + j];
+        for(int j = 0; j < b->m ; j++){
+            c.arr[i * a->m + j] = a->arr[i * b->m + j] * b->arr[i * b->m + j];
         }
     }
-    matrixEqu(a, c);
+    matrixEqu(a, &c);
     free(c.arr);
 }
 
 
-void matrixAdd(Matrix* a, Matrix b){
-    if(a->m != b.m || a->n != b.n){
+void matrixAdd(Matrix* a, Matrix* b){
+    if(a->m != b->m || a->n != b->n){
         printf("The matrixs can't be doted!\n");
         exit(0);
     }
     for (int i = 0; i < a->n; i++){
         for(int j = 0; j < a->m ; j++){
-            a->arr[i * a->m + j] += b.arr[i * b.m + j];
+            a->arr[i * a->m + j] += b->arr[i * b->m + j];
         }
     }
 }
@@ -103,19 +104,6 @@ void matrixAddNum(Matrix* a, double b){
     for(int i = 0; i < a->n; i++){
         for(int j = 0; j < a->m; j++){
             a->arr[i * a->m + j] += b;
-        }
-    }
-}
-
-
-void matrixAddItself(Matrix* a, Matrix b){
-    if(a->m != b.m || a->n != b.n){
-        printf("The matrixs can't be doted!\n");
-        exit(0);
-    }
-    for (int i = 0; i < a->n; i++){
-        for(int j = 0; j < a->m ; j++){
-            a->arr[i * a->m + j] += b.arr[i * a->m + j];
         }
     }
 }
@@ -141,7 +129,7 @@ void matrixTrans(Matrix* a){
             b.arr[i * b.m + j] = a->arr[j * a->m + i];
         }
     }
-    matrixEqu(a, b);
+    matrixEqu(a, &b);
     free(b.arr);
 }
 
@@ -154,6 +142,7 @@ void matrixConv(Matrix* a, Matrix* b,Matrix* c){
     }
     for(int i = 0; i < a->n; i++){
         for(int j = 0; j < a->m; j++){
+            a->arr[i * a->m + j] = 0.0;
             for(int ii = 0; ii < c->n; ii++){
                 for(int jj = 0; jj < c->m; jj++){
                     a->arr[i * a->m + j] += b->arr[(i + ii) * b->m + j + jj] *
@@ -211,8 +200,8 @@ void matrixFunction(Matrix* a,double (*p_fun)(double, double), double b){
 }
 
 
-void matrixSample(Matrix* a, Matrix b, int n, int m, double (*p_fun)(Matrix)){
-    if(a->n * n != b.n ||a->m * m != b.m){
+void matrixSample(Matrix* a, Matrix *b, int n, int m, double (*p_fun)(Matrix)){
+    if(a->n * n != b->n ||a->m * m != b->m){
         printf("Can't matrixSample!\n");
         return;
     }
@@ -223,11 +212,77 @@ void matrixSample(Matrix* a, Matrix b, int n, int m, double (*p_fun)(Matrix)){
             for(int ii = 0; ii < n; ii++){
                 for(int jj = 0; jj < m; jj++){
                     mat.arr[ii * m + jj] =
-                        b.arr[(i * n + ii) * b.m + j * m +jj];
+                        b->arr[(i * n + ii) * b->m + j * m +jj];
                 }
             }
             a->arr[i * a->m +j] = p_fun(mat);
         }
     }
     matrixFree(&mat);
+}
+
+
+void matrixSwap(Matrix* a, Matrix* b){
+    Matrix c;
+    matrixEqu(&c, a);
+    matrixEqu(a, b);
+    matrixEqu(b, &c);
+    matrixFree(&c);
+}
+
+
+void matrixsEqu(Matrixs* a, Matrixs* b){
+    matrixsFree(a);
+    if(b->siz == 0){
+        return ;
+    }
+    matrixsInit(a, b->siz, b->p_matrix[0]->n, b->p_matrix[0]->m);
+    for(int i = 0; i < b->siz; i++){
+        matrixEqu(a->p_matrix[i], b->p_matrix[i]);
+    }
+}
+
+
+void matrixsClear(Matrixs* a){
+    for(int i = 0; i < a->siz; i++){
+        for(int j = 0; j < a->p_matrix[i]->n; j++){
+            int tmp = a->p_matrix[i]->m;
+            for(int k = 0; k < tmp; k++){
+                a->p_matrix[i]->arr[j * tmp + k] = 0.0;
+            }
+        }
+    }
+}
+
+
+int matrixSameSize(Matrix* a, Matrix* b){
+    return a->n == b->n && a->m == b->m;
+}
+
+
+void matrixRestore(Matrix* a, Matrix* b, Matrix* c, int n, int m){
+    if(b->n * n != a->n || b->m * m != a->m || a->n != c->n || a->m != c->m){
+        printf("there is an erros in matrixRestore!\n");
+        return ;
+    }
+    for(int i = 0; i < b->n; i++){
+        for(int j = 0; j < b->m; j++){
+            if(fabs(b->arr[i * b->m + j]) < EPS ){
+                continue;
+            }
+            int posx = 0, posy = 0;
+            for(int ii = 0; ii < n; ii++){
+                for(int jj = 0; jj < m; jj++){
+                    if(a->arr[(i * n + posx) * a->m + j * m + posy] <
+                            a->arr[(i * n + ii) * a->m + j * m + jj]){
+                        posx = ii;
+                        posy = jj;
+                    }
+                    c->arr[(i * n + ii) * a->m + j * m + jj] = 0.0;
+                }
+            }
+            c->arr[(i * n + posx) * a->m + j * m + posy] =
+                b->arr[i * b->m +j];
+        }
+    }
 }
