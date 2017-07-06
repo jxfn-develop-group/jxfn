@@ -101,8 +101,6 @@ void Image::imageStandard()
         }
     }
 
-    std::cout << maxItem->first << ' ' << minItem->first << '\n';
-
     // if the background is white (255), then invert it.
     if (maxItem->first > minItem->first) {
         this->imageInvert(minItem->second);
