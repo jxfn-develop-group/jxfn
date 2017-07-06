@@ -205,6 +205,7 @@ void runOfLayerFive(Cnnnet *net1){
 
 void runOfLayerSix(Cnnnet *net1){
     for(int i = 0; i < 84; i++){
+        net1->mats[6].p_matrix[i]->arr[0] = 0.0;
         for(int j = 0; j < 120; j++){
             net1->mats[6].p_matrix[i]->arr[0] +=
             net1->mats[5].p_matrix[j]->arr[0] *
@@ -220,6 +221,7 @@ void runOfLayerSix(Cnnnet *net1){
 
 void runOfLayerSeven(Cnnnet *net1){
     for(int i = 0; i < 10; i++){
+        net1->mats[7].p_matrix[i]->arr[0] = 0.0;
         for(int j = 0; j < 84; j++){
             net1->mats[7].p_matrix[i]->arr[0] +=
             net1->mats[6].p_matrix[j]->arr[0] *
