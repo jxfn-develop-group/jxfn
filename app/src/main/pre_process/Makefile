@@ -1,9 +1,16 @@
-targer = image.o
-test_target = $(target) test.o
+cc := g++ -O3
+target := image.o
+test_target := $(target) test.o
 
-test: $(test_target)
-	cc -o test $(test_target)
+test.out: $(test_target)
+	echo $(test_target)
+	$(cc) -o test.out $(test_target)
 
-test.o: test.cpp image.hpp
+test.o: test.cpp
+	$(cc) -c test.cpp
 
-image.o: image.cpp image.hpp
+image.o: image.cpp
+	$(cc) -c image.cpp
+
+clean:
+	rm *.o *.out
