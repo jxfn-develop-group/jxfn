@@ -32,6 +32,7 @@ Image::Image(int n, int m, int* array):vector()
 std::map<int, int> Image::imageHist()
 {
     std::map<int, int> res;
+    // Image::iterator is a std::vector<std::vector<int>>::iterator.
     for (Image::iterator i = this->begin(); i != this->end(); i++) {
         for (std::vector<int>::iterator j = i->begin(); j != i->end(); j++) {
             if (res.find(*j) != res.end()) {
@@ -44,4 +45,20 @@ std::map<int, int> Image::imageHist()
     }
 
     return res;
+}
+
+
+// Invert the image. Be ware of that this func doesn't return a Image.
+void Image::imageInvert(int threshold)
+{
+    for (Image::iterator i = this->begin(); i != this->end(); i++) {
+        for (std::vector<int>::iterator j = i->begin(); j != i->end(); j++) {
+            if (*j > threshold) {
+                *j = 0;
+            }
+            else {
+                *j = 255;
+            }
+        }
+    }
 }

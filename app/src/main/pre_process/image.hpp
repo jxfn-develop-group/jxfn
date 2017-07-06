@@ -7,5 +7,6 @@
         public:
             Image(int n, int m, int* array);
             std::map<int, int> imageHist();
+            void imageInvert(int threshold);
     };
 #endif
