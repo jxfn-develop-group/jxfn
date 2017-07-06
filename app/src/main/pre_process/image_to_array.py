@@ -2,7 +2,7 @@ import numpy as np
 from PIL import Image
 
 
-def read(s, n, m):
+def read(s, n=1200, m=900):
     im = Image.open(s)
     im = im.convert('L')
     data = im.getdata()
