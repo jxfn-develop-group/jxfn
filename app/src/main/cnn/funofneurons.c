@@ -81,14 +81,14 @@ double LReLuDer(double a){
 void LReLuRT(double* pre, double * nex, double* w, double input,
         double output, double* bias){
     double tmp = *nex * LReLuDer(output);
-    //*pre +=  (tmp * (*w));
-    if(fabs(tmp* (*w))>fabs(*nex)+1e-3){
+    *pre +=  (tmp * (*w));
+    /*if(fabs(tmp* (*w))>fabs(*nex)+1e-3){
         *pre +=  *nex * 1e-6;
     }
     else{
         *pre += (tmp * (*w)) * 1e-6;
-    }
-    *w -= LEARNINDEX * (input * tmp);
+    }*/
+    *w -= minDouble(LEARNINDEX * (input * tmp), WEIGHTLIMIT);
     /*if(fabs(*w)>1+1e-3){
         if(*w>0){
             *w = 1.0;
@@ -106,7 +106,7 @@ void LReLuRTNoChange(double* pre, double* nex, double* w, double input,
     double tmp = *nex * LReLuDer(output);
     // *pre += LEARNINDEX * tmp * (*w);
     *pre += tmp * (*w);
-    *wc = -LEARNINDEX * input * tmp;
+    *wc = minDouble(-LEARNINDEX * input * tmp, WEIGHTLIMIT);
     *bias -= LEARNBIAS * tmp;
 }
 
@@ -188,4 +188,60 @@ void sigmoidRT(double* pre, double * nex, double* w, double input,
     *pre += tmp * (*w);
     *w -= LEARNINDEX * input * tmp;
     *bias -= LEARNBIAS * tmp;
+}
+
+
+double minDouble(double a, double b){
+    if(fabs(a) > fabs(b)){
+        if(a>0){
+            return fabs(b);
+        }
+        else{
+            return -fabs(b);
+        }
+    }
+    else{
+        return a;
+    }
+}
+
+
+void gradAdjust(Matrixs* mat){
+    double maxd = 0.0;
+    for(int i = 0; i < mat->siz; i++){
+        for(int j = 0; j < mat->p_matrix[i]->n; j++){
+            int m = mat->p_matrix[i]->m;
+            for(int k = 0; k < m; k++){
+                if(fabs(mat->p_matrix[i]->arr[j * m +k])>maxd){
+                    maxd = fabs(mat->p_matrix[i]->arr[j * m +k]);
+                }
+            }
+        }
+    }
+    if(maxd > GRADLIMIT){
+        maxd /= GRADLIMIT;
+    }
+    else{
+        return;
+    }
+    for(int i = 0; i < mat->siz; i++){
+        for(int j = 0; j < mat->p_matrix[i]->n; j++){
+            int m = mat->p_matrix[i]->m;
+            for(int k = 0; k < m; k++){
+                mat->p_matrix[i]->arr[j *m + k] /= maxd;
+            }
+        }
+    }
+}
+
+
+void biasAdjust(double* tmpbias,double* now){
+    if(fabs(*tmpbias - *now)>BIASLIMIT){
+        if(*tmpbias > *now){
+            *now = *tmpbias - BIASLIMIT;
+        }
+        else{
+            *now = *tmpbias + BIASLIMIT;
+        }
+    }
 }

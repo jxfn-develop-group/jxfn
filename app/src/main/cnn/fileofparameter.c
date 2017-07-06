@@ -21,10 +21,10 @@ void readLayerOne(Cnnnet* net1, FILE* fp){
 
 void writeLayerOne(Cnnnet net1, FILE* fp){
     for(int i = 0; i < 6; i++){
-        fprintf(fp,"%f\n",net1.level[0].neu[i]->bias);
+        fprintf(fp,"%.12f\n",net1.level[0].neu[i]->bias);
         for(int j = 0; j < 5; j++){
             for(int k = 0; k < 5; k++){
-                fprintf(fp,"%f ",net1.level[0].neu[i]->weights.arr[j * 5 + k]);
+                fprintf(fp,"%.12f ",net1.level[0].neu[i]->weights.arr[j * 5 + k]);
             }
             fprintf(fp,"\n");
         }
@@ -56,10 +56,10 @@ void readLayerThree(Cnnnet* net1, FILE* fp){
 
 void writeLayerThree(Cnnnet net1, FILE* fp){
     for(int i = 0; i < 16; i++){
-        fprintf(fp,"%f\n",net1.level[2].neu[i]->bias);
+        fprintf(fp,"%.12f\n",net1.level[2].neu[i]->bias);
         for(int j = 0; j < 5; j++){
             for(int k = 0; k < 5; k++){
-                fprintf(fp,"%f ",net1.level[2].neu[i]->weights.arr[j * 5 + k]);
+                fprintf(fp,"%.12f ",net1.level[2].neu[i]->weights.arr[j * 5 + k]);
             }
             fprintf(fp, "\n");
         }
@@ -91,10 +91,10 @@ void readLayerFive(Cnnnet* net1, FILE* fp){
 
 void writeLayerFive(Cnnnet net1, FILE* fp){
     for(int i = 0; i < 120; i++){
-        fprintf(fp,"%f\n",net1.level[4].neu[i]->bias);
+        fprintf(fp,"%.12f\n",net1.level[4].neu[i]->bias);
         for(int j = 0; j < 5; j++){
             for(int k = 0; k < 5; k++){
-                fprintf(fp,"%f ",net1.level[4].neu[i]->weights.arr[j * 5 + k]);
+                fprintf(fp,"%.12f ",net1.level[4].neu[i]->weights.arr[j * 5 + k]);
             }
         }
         fprintf(fp, "\n");
@@ -105,15 +105,20 @@ void writeLayerFive(Cnnnet net1, FILE* fp){
 void readLayerSix(Cnnnet* net1, FILE* fp){
     for(int i = 0; i < 84; i++){
         fscanf(fp,"%lf",&net1->level[5].neu[i]->bias);
-        fscanf(fp,"%lf",&net1->level[5].neu[i]->weights.arr[0]);
+        for(int j=0;j<120;j++){
+            fscanf(fp,"%lf",&net1->level[5].neu[i]->weights.arr[j]);
+        }
     }
 }
 
 
 void writeLayerSix(Cnnnet net1, FILE* fp){
     for(int i = 0; i < 84; i++){
-        fprintf(fp,"%f ",net1.level[5].neu[i]->bias);
-        fprintf(fp,"%f\n",net1.level[5].neu[i]->weights.arr[0]);
+        fprintf(fp,"%.12f\n",net1.level[5].neu[i]->bias);
+        for(int j=0; j<120; j++){
+            fprintf(fp,"%.12f ",net1.level[5].neu[i]->weights.arr[j]);
+        }
+        fprintf(fp, "\n");
     }
 }
 
@@ -121,15 +126,20 @@ void writeLayerSix(Cnnnet net1, FILE* fp){
 void readLayerSeven(Cnnnet* net1, FILE* fp){
     for(int i = 0; i < 10; i++){
         fscanf(fp,"%lf",&net1->level[6].neu[i]->bias);
-        fscanf(fp,"%lf",&net1->level[6].neu[i]->weights.arr[0]);
+        for(int j = 0; j < 84; j++){
+            fscanf(fp,"%lf",&net1->level[6].neu[i]->weights.arr[j]);
+        }
     }
 }
 
 
 void writeLayerSeven(Cnnnet net1, FILE* fp){
     for(int i = 0; i < 10; i++){
-        fprintf(fp,"%f ",net1.level[5].neu[i]->bias);
-        fprintf(fp,"%f\n",net1.level[5].neu[i]->weights.arr[0]);
+        fprintf(fp,"%.12f\n",net1.level[6].neu[i]->bias);
+        for(int j = 0; j < 84; j++){
+            fprintf(fp,"%.12f ",net1.level[6].neu[i]->weights.arr[j]);
+        }
+        fprintf(fp, "\n");
     }
 }
 
