@@ -11,6 +11,7 @@
             // invert image. (0 -> 255 while 255 -> 0)
             void imageInvert(int threshold);
             void imageTwoValue(int threshold);
+            // stardand the image.
             void imageStandard();
     };
 #endif
