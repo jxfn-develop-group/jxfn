@@ -62,3 +62,19 @@ void Image::imageInvert(int threshold)
         }
     }
 }
+
+
+// change the image to a 2-value image.
+void Image::imageTwoValue(int threshold)
+{
+    for (Image::iterator i = this->begin(); i != this->end(); i++) {
+        for (std::vector<int>::iterator j = i->begin(); j != i->end(); j++) {
+            if (*j > threshold) {
+                *j = 255;
+            }
+            else {
+                *j = 0;
+            }
+        }
+    }
+}
