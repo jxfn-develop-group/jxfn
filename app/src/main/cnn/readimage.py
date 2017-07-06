@@ -20,7 +20,10 @@ def read(s,fileout):
     st = st.replace('[','')
     st = st.replace(']','')
     fileout.write(st)
+<<<<<<< HEAD
     fileout.write('\n\n')
+=======
+>>>>>>> 3bb7805d5699b6877f89cd018ab6e372136e1c2a
     # fileout.close()
 
     #new_im = Image.fromarray(data)

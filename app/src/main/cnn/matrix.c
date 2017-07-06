@@ -142,7 +142,7 @@ void matrixConv(Matrix* a, Matrix* b,Matrix* c){
     }
     for(int i = 0; i < a->n; i++){
         for(int j = 0; j < a->m; j++){
-            a->arr[i*a->m+j] = 0.0;
+            a->arr[i * a->m + j] = 0.0;
             for(int ii = 0; ii < c->n; ii++){
                 for(int jj = 0; jj < c->m; jj++){
                     a->arr[i * a->m + j] += b->arr[(i + ii) * b->m + j + jj] *
