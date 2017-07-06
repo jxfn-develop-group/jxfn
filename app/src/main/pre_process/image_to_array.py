@@ -24,4 +24,4 @@ def read(s, n=1200, m=900):
 
 if __name__ == '__main__':
     n, m = map(int, input().split())
-    read('data/'+'img001-007.png', n, m)
+    read('data/'+'xiaoluoxi.jpg', n, m)
