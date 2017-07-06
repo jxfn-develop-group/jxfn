@@ -32,4 +32,5 @@
     //卷积反向传递函数
     double minDouble(double a, double b);
     void gradAdjust(Matrixs* mat);
+    void biasAdjust(double* tmpbias, double* bias);
 #endif

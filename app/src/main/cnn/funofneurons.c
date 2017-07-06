@@ -233,3 +233,23 @@ void gradAdjust(Matrixs* mat){
         }
     }
 }
+
+
+void biasAdjust(double* tmpbias, double* bias){
+    if(fabs(*tmpbias - *bias) > BIASLIMIT){
+        if(*tmpbias > *bias){
+            *bias = *tmpbias - BIASLIMIT;
+        }
+        else{
+            *bias = *tmpbias + BIASLIMIT;
+        }
+    }
+    if(fabs(*bias) > 1.0){
+        if(*bias > 0.0){
+            *bias = 1.0;
+        }
+        else{
+            *bias = -1.0;
+        }
+    }
+}
