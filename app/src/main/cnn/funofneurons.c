@@ -233,7 +233,6 @@ void gradAdjust(Matrixs* mat){
         }
     }
 }
-<<<<<<< HEAD
 
 
 void biasAdjust(double* tmpbias,double* now){
@@ -246,5 +245,3 @@ void biasAdjust(double* tmpbias,double* now){
         }
     }
 }
-=======
->>>>>>> 3bb7805d5699b6877f89cd018ab6e372136e1c2a
