@@ -103,9 +103,9 @@ void Image::imageStandard()
 
     // if the background is white (255), then invert it.
     if (maxItem->first > minItem->first) {
-        this->imageInvert(minItem->second);
+        this->imageInvert(minItem->first);
     }
     else {
-        this->imageTwoValue(minItem->second);
+        this->imageTwoValue(minItem->first);
     }
 }
