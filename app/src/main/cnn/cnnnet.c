@@ -366,9 +366,7 @@ void learnOfLayerFive(Cnnnet *net1, Matrixs* mat){
                 net1->mats[5].p_matrix[i]->arr[0],
                 &net1->level[4].neu[i]->bias);
         }
-<<<<<<< HEAD
         biasAdjust(&tmpbias, &net1->level[4].neu[i]->bias);
-=======
         if(fabs(tmpbias - net1->level[4].neu[i]->bias)>BIASLIMIT){
             if(tmpbias > net1->level[4].neu[i]->bias){
                 net1->level[4].neu[i]->bias = tmpbias - BIASLIMIT;
@@ -377,7 +375,6 @@ void learnOfLayerFive(Cnnnet *net1, Matrixs* mat){
                 net1->level[4].neu[i]->bias = tmpbias + BIASLIMIT;
             }
         }
->>>>>>> 3bb7805d5699b6877f89cd018ab6e372136e1c2a
     }
     gradAdjust(&res);
     for(int i = 0; i < 16; i++){
