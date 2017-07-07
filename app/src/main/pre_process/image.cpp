@@ -106,13 +106,10 @@ void Image::imageStandard()
         }
         preItem = i;
 
-        // std::cout << i->first << ' ' << i->second << ' ' << downloadCnt << '\n';
         if (i->second < minItem->second && downloadCnt >= 3) {
             minItem = i;
         }
     }
-
-    // std::cout << minItem->first << '\n';
 
     // if the background is white (255), then invert it.
     if (maxItem->first > 128) {
