@@ -17,4 +17,4 @@ def loads(s, n=1280, m=960):
 
 if __name__ == '__main__':
     n, m = map(int, input().split())
-    loads('outa', n, m)
+    loads('out2', n, m)

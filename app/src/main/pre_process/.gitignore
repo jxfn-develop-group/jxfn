@@ -1,5 +1,5 @@
 test
 data/
 *.out
-out1
+out*
 *.o
