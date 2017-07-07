@@ -3,7 +3,6 @@ target := image.o
 test_target := $(target) test.o
 
 test.out: $(test_target)
-	echo $(test_target)
 	$(cc) -o test.out $(test_target)
 
 test.o: test.cpp

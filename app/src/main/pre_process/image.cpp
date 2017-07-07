@@ -7,18 +7,15 @@
 // args:
 //     n int,
 //     m int,
-//     array double array :
-//         0, ... , n,
-//         ... ,
-//         m, ... , m*n
+//     array double array
 // return:
 //     no return value.
 Image::Image(int n, int m, int* array):vector()
 {
-    this->resize(m);
-    for (size_t i = 0; i < m; i++) {
-        (*this)[i].resize(n);
-        for (size_t j = 0; j < n; j++) {
+    this->resize(n);
+    for (size_t i = 0; i < n; i++) {
+        (*this)[i].resize(m);
+        for (size_t j = 0; j < m; j++) {
             (*this)[i][j] = array[i*m + j];
         }
     }
@@ -91,18 +88,34 @@ void Image::imageStandard()
     std::map<int, int> hist = this->imageHist();
 
     auto maxItem = hist.begin();
-    auto minItem = hist.begin();
     for (auto i = hist.begin(); i != hist.end(); i++) {
         if (i->second > maxItem->second) {
             maxItem = i;
         }
-        if (i->second < minItem->second) {
+    }
+
+    int downloadCnt = 0;
+    auto minItem = maxItem;
+    auto preItem = hist.begin();
+    for (auto i = hist.begin(); i != maxItem; ++i) {
+        if (i->second < preItem->second) {
+            downloadCnt ++;
+        }
+        else if (downloadCnt < 3) {
+            downloadCnt = 0;
+        }
+        preItem = i;
+
+        // std::cout << i->first << ' ' << i->second << ' ' << downloadCnt << '\n';
+        if (i->second < minItem->second && downloadCnt >= 3) {
             minItem = i;
         }
     }
 
+    // std::cout << minItem->first << '\n';
+
     // if the background is white (255), then invert it.
-    if (maxItem->first > minItem->first) {
+    if (maxItem->first > 128) {
         this->imageInvert(minItem->first);
     }
     else {
