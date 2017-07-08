@@ -16,13 +16,14 @@ int main(int argc, char const *argv[]) {
     }
     ifs.close();
 
-    Image img(1280, 960, array);
+    Image img(n, m, array);
 
-    for (size_t i = 0; i < n; i++) {
-        for (size_t j = 0; j < m; j++) {
-            // std::cout << img[i][j] << '\n';
-        }
-    }
+    // for (size_t i = 0; i < n; i++) {
+    //     for (size_t j = 0; j < m; j++) {
+    //         std::cout << img[i][j] << ' ';
+    //     }
+    //     std::cout << '\n';
+    // }
 
     auto res = img.imageHist();
     for (std::map<int, int>::iterator it = res.begin(); it != res.end(); it++) {
@@ -31,12 +32,12 @@ int main(int argc, char const *argv[]) {
 
     img.imageStandard();
     // img.imageInvert(87);
-    for (size_t i = 0; i < n; i++) {
-        for (size_t j = 0; j < m; j++) {
-            // std::cout << img[i][j] << ' ';
-        }
-        // std::cout << '\n';
-    }
+    // for (size_t i = 0; i < n; i++) {
+    //     for (size_t j = 0; j < m; j++) {
+    //         std::cout << img[i][j] << ' ';
+    //     }
+    //     std::cout << '\n';
+    // }
 
     res = img.imageHist();
     for (std::map<int, int>::iterator it = res.begin(); it != res.end(); it++) {

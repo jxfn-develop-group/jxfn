@@ -19,5 +19,7 @@
             // find grid that contain a AlphaBeta
             // be ware of that may contain nothing at all.
             std::vector<std::vector<int>> findGrid();
+        private:
+            bool gridJudge(std::vector<int> edge);
     };
 #endif
