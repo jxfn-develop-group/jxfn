@@ -9,10 +9,7 @@ def read(s, n=1280, m=960):
     data = np.matrix(data)
     data = np.reshape(data, (n, m))
     data = data.astype('uint8')
-    try:
-        fileout = open('out1', 'a+')
-    except FileNotFoundError:
-        fileout = open('out1', 'w+')
+    fileout = open('out1', 'w+')
 
     data = data.tolist()
     st = str(data)
@@ -24,4 +21,5 @@ def read(s, n=1280, m=960):
 
 if __name__ == '__main__':
     n, m = map(int, input().split())
-    read('data/'+'xiaoluoxi.jpg', n, m)
+    # read('data/'+'xiaoluoxi.jpg', n, m)
+    read('data/'+'Jxfn.jpg', n, m)

@@ -119,3 +119,110 @@ void Image::imageStandard()
         this->imageTwoValue(minItem->first);
     }
 }
+
+
+// return the Grid that contain at least one pixels is white(255).
+// return :
+//      res [[0, 1, 2, 3], ..., ]
+//      each of vector in stand of a grid [x1, y1, x2, y2]
+//      (x1, y2) ... (x2, y2)
+//      ...      ... ...
+//      (x1, y1) ... (x2, y1)
+std::vector<std::vector<int>> Image::findGrid()
+{
+    int dir[4][2] = {
+        {0, 0},
+        {0, 1},
+        {1, 0},
+        {1, 1}
+    };
+    std::vector<std::vector<int>> res;
+    std::set<std::pair<int, int>> vis;
+    std::queue<std::pair<int, int>> bfsQueue;
+
+    for (auto i = this->begin(); i != this->end(); ++i) {
+        for (auto j = i->begin(); j != i->end(); ++j) {
+            // you should turn this Image to a 2-value first.
+            // white = 255.
+            if (*j == 255) {
+                // bfs
+                int nowX = i - this->begin();
+                int nowY = j - i->begin();
+                // the start point.
+                std::pair<int, int> coordinate(nowX, nowY);
+
+                // check whether this point has been visited.
+                if (vis.find(coordinate) != vis.end()) {
+                    continue;
+                }
+                bfsQueue.push(coordinate);
+
+                // the edge of Grid.
+                // [x1, y1, x2, y2]
+                //      (x1, y2) ... (x2, y2)
+                //      ...      ... ...
+                //      (x1, y1) ... (x2, y1)
+                std::vector<int> edge;
+                edge.resize(4);
+                // x1, x2
+                edge[0] = edge[2] = nowX;
+                // y1, y2
+                edge[1] = edge[3] = nowY;
+
+                while (!bfsQueue.empty()) {
+                    coordinate = bfsQueue.front();
+                    bfsQueue.pop();
+                    if (vis.find(coordinate) != vis.end()) {
+                        continue;
+                    }
+                    vis.insert(coordinate);
+
+                    nowX = coordinate.first;
+                    nowY = coordinate.second;
+
+                    int nextX = 0;
+                    int nextY = 0;
+                    for (size_t k = 0; k < 4; k++) {
+                        // next point.
+                        nextX = nowX + dir[k][0];
+                        nextY = nowY + dir[k][1];
+
+                        std::pair<int, int> nextCoordinate(nextX, nextY);
+
+                        // prevent that array out of range.
+                        if (nextX >= this->size()) {
+                            continue;
+                        }
+                        if (nextY >= i->size()) {
+                            continue;
+                        }
+
+                        // reflash edge
+                        if ((*this)[nextX][nextY] == 255 &&
+                                vis.find(nextCoordinate) == vis.end()) {
+                            bfsQueue.push(nextCoordinate);
+                            // x1, x2
+                            if (nextX < edge[0]) {
+                                edge[0] = nextX;
+                            }
+                            else if (nextX > edge[2]) {
+                                edge[2] = nextX;
+                            }
+                            // y1, y2
+                            if (nextY < edge[1]) {
+                                edge[1] = nextY;
+                            }
+                            else if (nextY > edge[3]) {
+                                edge[3] = nextY;
+                            }
+                        }
+                    }
+                }
+
+                res.push_back(edge);
+            }
+        }
+    }
+
+    return res;
+}
