@@ -12,22 +12,21 @@
 //     no return value.
 Image::Image(int n, int m, int* array):vector()
 {
-    this->resize(n);
-    for (size_t i = 0; i < n; i++) {
-        (*this)[i].resize(m);
-        for (size_t j = 0; j < m; j++) {
-            (*this)[i][j] = array[i*m + j];
+    this->resize(m);
+    for (size_t i = 0; i < m; i++) {
+        (*this)[i].resize(n);
+        for (size_t j = 0; j < n; j++) {
+            (*this)[i][j] = array[i*n + j];
         }
     }
 }
-
 
 
 // the hist table of image.
 // args:
 //     none,
 // return:
-//     std::vector<std::pair<int, int>>
+//     std::map<int, int>
 std::map<int, int> Image::imageHist()
 {
     std::map<int, int> res;
@@ -42,7 +41,6 @@ std::map<int, int> Image::imageHist()
             }
         }
     }
-
     return res;
 }
 
@@ -86,14 +84,12 @@ void Image::imageTwoValue(int threshold)
 void Image::imageStandard()
 {
     std::map<int, int> hist = this->imageHist();
-
     auto maxItem = hist.begin();
     for (auto i = hist.begin(); i != hist.end(); i++) {
         if (i->second > maxItem->second) {
             maxItem = i;
         }
     }
-
     int downloadCnt = 0;
     auto minItem = maxItem;
     auto preItem = hist.begin();
@@ -110,7 +106,6 @@ void Image::imageStandard()
             minItem = i;
         }
     }
-
     // if the background is white (255), then invert it.
     if (maxItem->first > 128) {
         this->imageInvert(minItem->first);
@@ -144,7 +139,7 @@ std::vector<std::vector<int>> Image::findGrid()
     std::set<std::pair<int, int>> vis;
     std::vector<std::vector<int>> res;
     std::queue<std::pair<int, int>> bfsQueue;
-
+    // do the job.
     for (auto i = this->begin(); i != this->end(); ++i) {
         for (auto j = i->begin(); j != i->end(); ++j) {
             // white = 255.
@@ -171,7 +166,7 @@ std::vector<std::vector<int>> Image::findGrid()
                 edge[0] = edge[2] = nowX;
                 // y1, y2
                 edge[1] = edge[3] = nowY;
-
+                // bfs cycle.
                 while (!bfsQueue.empty()) {
                     coordinate = bfsQueue.front();
                     bfsQueue.pop();
@@ -184,7 +179,21 @@ std::vector<std::vector<int>> Image::findGrid()
                     // update nowPoint.
                     nowX = coordinate.first;
                     nowY = coordinate.second;
-
+                    // update edge.
+                    // x1, x2
+                    if (nowX < edge[0]) {
+                        edge[0] = nowX;
+                    }
+                    else if (nowX > edge[2]) {
+                        edge[2] = nowX;
+                    }
+                    // y1, y2
+                    if (nowY < edge[1]) {
+                        edge[1] = nowY;
+                    }
+                    else if (nowY > edge[3]) {
+                        edge[3] = nowY;
+                    }
                     int nextX = 0;
                     int nextY = 0;
                     for (size_t k = 0; k < 8; k++) {
@@ -204,27 +213,11 @@ std::vector<std::vector<int>> Image::findGrid()
                                 vis.find(nextCoordinate) == vis.end()) {
                             // if not visited next point.
                             bfsQueue.push(nextCoordinate);
-                            // x1, x2
-                            if (nextX < edge[0]) {
-                                edge[0] = nextX;
-                            }
-                            else if (nextX > edge[2]) {
-                                edge[2] = nextX;
-                            }
-                            // y1, y2
-                            if (nextY < edge[1]) {
-                                edge[1] = nextY;
-                            }
-                            else if (nextY > edge[3]) {
-                                edge[3] = nextY;
-                            }
                         }
                     }
                 }
-
                 if (this->gridJudge(edge)) {
                     res.push_back(edge);
-
                 }
             }
         }
@@ -243,8 +236,7 @@ bool Image::gridJudge(std::vector<int> edge)
 
     int col = edge[2] - edge[0] + 1;
     int row = edge[3] - edge[1] + 1;
-
-    if (col < 5 || row < 5) {
+    if (col < 2 || row < 2) {
         return false;
     }
     return true;

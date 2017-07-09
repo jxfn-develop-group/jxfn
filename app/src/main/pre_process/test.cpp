@@ -18,13 +18,6 @@ int main(int argc, char const *argv[]) {
 
     Image img(n, m, array);
 
-    // for (size_t i = 0; i < n; i++) {
-    //     for (size_t j = 0; j < m; j++) {
-    //         std::cout << img[i][j] << ' ';
-    //     }
-    //     std::cout << '\n';
-    // }
-
     auto res = img.imageHist();
     for (auto it = res.begin(); it != res.end(); it++) {
         // std::cout << it->first << ' ' << it->second << '\n';
@@ -32,9 +25,9 @@ int main(int argc, char const *argv[]) {
 
     img.imageStandard();
     // img.imageInvert(87);
-    // for (size_t i = 0; i < n; i++) {
-    //     for (size_t j = 0; j < m; j++) {
-    //         std::cout << img[i][j] << ' ';
+    // for (auto i = img.begin(); i != img.end(); ++i) {
+    //     for (auto j = i->begin(); j != i->end(); ++j) {
+    //         std::cout << *j << ' ';
     //     }
     //     std::cout << '\n';
     // }
@@ -52,9 +45,9 @@ int main(int argc, char const *argv[]) {
         std::cout << '\n';
     }
 
-    // for (size_t i = 0; i < n; i++) {
-    //     for (size_t j = 0; j < m; j++) {
-    //         std::cout << img[i][j] << ' ';
+    // for (auto i = img.begin(); i != img.end(); i++) {
+    //     for (auto j = i->begin(); j != i->end(); j++) {
+    //         std::cout << *j << ' ';
     //     }
     //     std::cout << '\n';
     // }
