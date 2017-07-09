@@ -222,7 +222,6 @@ std::vector<std::vector<int>> Image::findGrid()
             }
         }
     }
-
     return res;
 }
 
@@ -233,7 +232,6 @@ bool Image::gridJudge(std::vector<int> edge)
     if (edge.size() != 4) {
         return false;
     }
-
     int col = edge[2] - edge[0] + 1;
     int row = edge[3] - edge[1] + 1;
     if (col < 2 || row < 2) {
