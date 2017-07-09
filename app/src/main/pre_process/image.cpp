@@ -131,14 +131,18 @@ void Image::imageStandard()
 // you should turn this Image to a 2-value first.
 std::vector<std::vector<int>> Image::findGrid()
 {
-    int dir[4][2] = {
+    int dir[8][2] = {
         {0, 1},
         {0, -1},
         {1, 0},
-        {-1, 0}
+        {-1, 0},
+        {1, 1},
+        {1, -1},
+        {-1, 1},
+        {-1, -1}
     };
-    std::vector<std::vector<int>> res;
     std::set<std::pair<int, int>> vis;
+    std::vector<std::vector<int>> res;
     std::queue<std::pair<int, int>> bfsQueue;
 
     for (auto i = this->begin(); i != this->end(); ++i) {
@@ -150,13 +154,12 @@ std::vector<std::vector<int>> Image::findGrid()
                 int nowY = j - i->begin();
                 // the start point.
                 std::pair<int, int> coordinate(nowX, nowY);
-
                 // check whether this point has been visited.
                 if (vis.find(coordinate) != vis.end()) {
                     continue;
                 }
+                // the begin of bfs.
                 bfsQueue.push(coordinate);
-
                 // the edge of Grid.
                 // [x1, y1, x2, y2]
                 //      (x1, y2) ... (x2, y2)
@@ -172,24 +175,23 @@ std::vector<std::vector<int>> Image::findGrid()
                 while (!bfsQueue.empty()) {
                     coordinate = bfsQueue.front();
                     bfsQueue.pop();
-
+                    // if this point has been visited.
                     if (vis.find(coordinate) != vis.end()) {
                         continue;
                     }
+                    // mark this point as visited.
                     vis.insert(coordinate);
-
+                    // update nowPoint.
                     nowX = coordinate.first;
                     nowY = coordinate.second;
 
                     int nextX = 0;
                     int nextY = 0;
-                    for (size_t k = 0; k < 4; k++) {
+                    for (size_t k = 0; k < 8; k++) {
                         // next point.
                         nextX = nowX + dir[k][0];
                         nextY = nowY + dir[k][1];
-
                         std::pair<int, int> nextCoordinate(nextX, nextY);
-
                         // prevent that array out of range.
                         if (nextX >= this->size() || nextX < 0) {
                             continue;
@@ -197,7 +199,6 @@ std::vector<std::vector<int>> Image::findGrid()
                         if (nextY >= i->size() || nextY < 0) {
                             continue;
                         }
-
                         // reflash edge
                         if ((*this)[nextX][nextY] == 255 &&
                                 vis.find(nextCoordinate) == vis.end()) {
@@ -243,7 +244,7 @@ bool Image::gridJudge(std::vector<int> edge)
     int col = edge[2] - edge[0] + 1;
     int row = edge[3] - edge[1] + 1;
 
-    if (col < 28 || row < 28) {
+    if (col < 5 || row < 5) {
         return false;
     }
     return true;

@@ -26,7 +26,7 @@ int main(int argc, char const *argv[]) {
     // }
 
     auto res = img.imageHist();
-    for (std::map<int, int>::iterator it = res.begin(); it != res.end(); it++) {
+    for (auto it = res.begin(); it != res.end(); it++) {
         // std::cout << it->first << ' ' << it->second << '\n';
     }
 
@@ -40,7 +40,7 @@ int main(int argc, char const *argv[]) {
     // }
 
     res = img.imageHist();
-    for (std::map<int, int>::iterator it = res.begin(); it != res.end(); it++) {
+    for (auto it = res.begin(); it != res.end(); it++) {
         // std::cout << it->first << ' ' << it->second << '\n';
     }
 
@@ -51,6 +51,13 @@ int main(int argc, char const *argv[]) {
         }
         std::cout << '\n';
     }
+
+    // for (size_t i = 0; i < n; i++) {
+    //     for (size_t j = 0; j < m; j++) {
+    //         std::cout << img[i][j] << ' ';
+    //     }
+    //     std::cout << '\n';
+    // }
 
     return 0;
 }
