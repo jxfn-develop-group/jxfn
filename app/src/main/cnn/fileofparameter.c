@@ -3,6 +3,7 @@
 
 
 #include "fileofparameter.h"
+#include "fileofconfig.h"
 #include "funofneurons.h"
 
 
@@ -124,7 +125,7 @@ void writeLayerSix(Cnnnet net1, FILE* fp){
 
 
 void readLayerSeven(Cnnnet* net1, FILE* fp){
-    for(int i = 0; i < 10; i++){
+    for(int i = 0; i < OUTPUTNUMBER; i++){
         fscanf(fp,"%lf",&net1->level[6].neu[i]->bias);
         for(int j = 0; j < 84; j++){
             fscanf(fp,"%lf",&net1->level[6].neu[i]->weights.arr[j]);
@@ -134,7 +135,7 @@ void readLayerSeven(Cnnnet* net1, FILE* fp){
 
 
 void writeLayerSeven(Cnnnet net1, FILE* fp){
-    for(int i = 0; i < 10; i++){
+    for(int i = 0; i < OUTPUTNUMBER; i++){
         fprintf(fp,"%.12f\n",net1.level[6].neu[i]->bias);
         for(int j = 0; j < 84; j++){
             fprintf(fp,"%.12f ",net1.level[6].neu[i]->weights.arr[j]);
@@ -144,8 +145,16 @@ void writeLayerSeven(Cnnnet net1, FILE* fp){
 }
 
 
-void readPara(Cnnnet* net1){
-    FILE* fp = fopen("parameter","r");
+void readPara(Cnnnet* net1, char* s){
+    int len = 0;
+    while(s[len] != 0 && len<100){
+        len++;
+    }
+    if(len == 0 || len == 100){
+        printf("Invalid filename!\n");
+        exit(0);
+    }
+    FILE* fp = fopen(s,"r");
     if (fp == NULL){
         printf("The file of init doesn't exit!\n");
         exit(0);
@@ -161,8 +170,16 @@ void readPara(Cnnnet* net1){
 }
 
 
-void writePara(Cnnnet net1){
-    FILE* fp = fopen("parameter","w");
+void writePara(Cnnnet net1, char* s){
+    int len = 0;
+    while(s[len] != 0 && len<100){
+        len++;
+    }
+    if(len == 0 || len == 100){
+        printf("Invalid filename!\n");
+        exit(0);
+    }
+    FILE* fp = fopen(s,"w");
     writeLayerOne(net1, fp);
     writeLayerTwo(net1, fp);
     writeLayerThree(net1, fp);
