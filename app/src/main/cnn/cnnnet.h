@@ -22,4 +22,5 @@
     #ifndef CNNERROR//允许误差
         #define CNNERROR 0.1
     #endif
+    double errorCnn(Cnnnet *net1, Matrix image, int ans);
 #endif
