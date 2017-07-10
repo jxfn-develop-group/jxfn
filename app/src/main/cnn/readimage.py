@@ -19,7 +19,7 @@ def read(s,fileout):
     st = str(data)
     st = st.replace('[','')
     st = st.replace(']','')
-    fileout.write(st)
+    fileout.write(st+'\n')
     # fileout.close()
 
     #new_im = Image.fromarray(data)

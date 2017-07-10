@@ -40,9 +40,11 @@ void matrixPrin(struct Matrix a){
 
 
 void matrixEqu(Matrix* a, Matrix* b){
+    if(a->arr != NULL){
+        free(a->arr);
+    }
     a->n = b->n;
     a->m = b->m;
-    free(a->arr);
     a->arr = calloc(b->n * b->m, sizeof(double));
     for(int i = 0; i < b->n; i++){
         for(int j = 0; j < b->m; j++){
@@ -50,6 +52,8 @@ void matrixEqu(Matrix* a, Matrix* b){
         }
     }
 }
+
+
 void matrixMul(Matrix* a, Matrix* b){
     if(a->m != b->n){
         printf("The matrixs can't be multipled!\n");
