@@ -17,7 +17,7 @@ void cnnnetInit(Cnnnet* net1){
     matrixsInit(&net1->mats[4], 16, 5, 5);
     matrixsInit(&net1->mats[5], 120, 1, 1);
     matrixsInit(&net1->mats[6], 84, 1, 1);
-    matrixsInit(&net1->mats[7], 10, 1, 1);
+    matrixsInit(&net1->mats[7], OUTPUTNUMBER, 1, 1);
 
     neuronssInit(&net1->level[0], 6);
     neuronssInit(&net1->level[1], 6);
@@ -25,7 +25,7 @@ void cnnnetInit(Cnnnet* net1){
     neuronssInit(&net1->level[3], 16);
     neuronssInit(&net1->level[4], 120);
     neuronssInit(&net1->level[5], 84);
-    neuronssInit(&net1->level[6], 10);
+    neuronssInit(&net1->level[6], OUTPUTNUMBER);
 }
 
 
@@ -49,9 +49,9 @@ void cnnnetFree(Cnnnet* net1){
 }
 
 
-void initFromFile(Cnnnet* net1){
+void initFromFile(Cnnnet* net1, char* fn){
     initRand(net1);
-    readPara(net1);
+    readPara(net1, fn);
 }
 
 
@@ -112,7 +112,7 @@ void initRand(Cnnnet* net1){
         net1->level[5].neu[i]->p_activateFunction = funOfLevel0;
         //每层的激活函数相同
     }
-    for(int i = 0; i < 10; i++){
+    for(int i = 0; i < OUTPUTNUMBER; i++){
         neuronsInit(net1->level[6].neu[i], 1, 84, getRand()*0.2);
         for(int j = 0; j < 84; j++){
             net1->level[6].neu[i]->weights.arr[j] = getRand();
@@ -230,7 +230,7 @@ void runOfLayerSix(Cnnnet *net1){
 
 
 void runOfLayerSeven(Cnnnet *net1){
-    for(int i = 0; i < 10; i++){
+    for(int i = 0; i < OUTPUTNUMBER; i++){
         net1->mats[7].p_matrix[i]->arr[0] = 0.0;
         for(int j = 0; j < 84; j++){
             net1->mats[7].p_matrix[i]->arr[0] +=
@@ -422,7 +422,7 @@ void learnOfLayerSix(Cnnnet *net1, Matrixs* mat){
 void learnOfLayerSeven(Cnnnet *net1, Matrixs* mat){
     Matrixs res;
     matrixsInit(&res, 84, 1, 1);
-    for(int i = 0; i < 10; i++){
+    for(int i = 0; i < OUTPUTNUMBER; i++){
         double outputError = net1->mats[7].p_matrix[i]->arr[0]
             - mat->p_matrix[i]->arr[0];
         if(fabs(outputError) < 0.1){
@@ -464,7 +464,7 @@ int runCnn(Cnnnet* net1, Matrix image){
     runOfLayerFive(net1);
     runOfLayerSix(net1);
     runOfLayerSeven(net1);
-    for(int i = 1; i < 10; i++){
+    for(int i = 1; i < OUTPUTNUMBER; i++){
         if(net1->mats[7].p_matrix[i]->arr[0] >
             net1->mats[7].p_matrix[ans]->arr[0]){
             ans = i;
@@ -483,16 +483,16 @@ int runCnn(Cnnnet* net1, Matrix image){
 }
 
 
-void writeParameter(Cnnnet net1){
-    writePara(net1);
+void writeParameter(Cnnnet net1, char* fn){
+    writePara(net1, fn);
 }
 
 
 void learnCnn(Cnnnet* net1, Matrix image, int answer){
     runCnn(net1, image);
     Matrixs mat1;
-    matrixsInit(&mat1, 10, 1, 1);
-    for(int i = 0; i < 10; i++){
+    matrixsInit(&mat1, OUTPUTNUMBER, 1, 1);
+    for(int i = 0; i < OUTPUTNUMBER; i++){
         if(i == answer){
             mat1.p_matrix[i]->arr[0] = IDEALOUTPUTPOS;
         }
@@ -514,7 +514,7 @@ void learnCnn(Cnnnet* net1, Matrix image, int answer){
 double errorCnn(Cnnnet* net1, Matrix image, int ans){
     double res = 0.0;
     runCnn(net1, image);
-    for(int i = 0; i < 10; i++){
+    for(int i = 0; i < OUTPUTNUMBER; i++){
         if(i==ans){
             res += 0.5*pow(IDEALOUTPUTPOS - net1->mats[7].p_matrix[i]->arr[0],2.0);
         }
