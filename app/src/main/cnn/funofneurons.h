@@ -33,4 +33,5 @@
     double minDouble(double a, double b);
     void gradAdjust(Matrixs* mat);
     void biasAdjust(double* tmpbias, double* bias);
+    void weightsAdjust(Matrix* pre, Matrix* now);
 #endif

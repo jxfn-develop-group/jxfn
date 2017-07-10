@@ -19,11 +19,15 @@ def read(s,fileout):
     st = str(data)
     st = st.replace('[','')
     st = st.replace(']','')
+<<<<<<< HEAD
     fileout.write(st)
 <<<<<<< HEAD
     fileout.write('\n\n')
 =======
 >>>>>>> 3bb7805d5699b6877f89cd018ab6e372136e1c2a
+=======
+    fileout.write(st+'\n')
+>>>>>>> cnn-dev
     # fileout.close()
 
     #new_im = Image.fromarray(data)
