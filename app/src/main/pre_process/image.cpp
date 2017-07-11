@@ -255,14 +255,12 @@ std::vector<std::vector<int>> Image::findGrid()
                 (aimX1 + aimX2)/2, (aimY1 + aimY2)/2
             );
             if ((aimCenter.second >= baseY1 && aimCenter.second <= baseY2) ||
-                    (baseCenter.second >= aimY1 && baseCenter.second >= aimY2)) {
-                std::cout << aimCenter.first << ' ' << aimCenter.second << '\n';
+                    (baseCenter.second >= aimY1 && baseCenter.second <= aimY2)) {
                 int disX = aimCenter.first - baseCenter.first;
                 if (disX < 0) {
                     disX *= -1;
                 }
                 // judge if disX is small enough.
-                std::cout << aimX2 - aimX1 << '\n';
                 if (disX <= (baseX2-baseX1) || disX <= (aimX2 - aimX1)) {
                     // merge the aim into base.
                     std::vector<int> mergeBaseAim;
@@ -296,7 +294,7 @@ bool Image::gridJudge(std::vector<int> edge)
     }
     int col = edge[2] - edge[0] + 1;
     int row = edge[3] - edge[1] + 1;
-    if (col < 2 && row < 2) {
+    if (col < 2 || row < 2) {
         return false;
     }
     return true;
