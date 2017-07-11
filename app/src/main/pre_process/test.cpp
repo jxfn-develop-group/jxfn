@@ -45,12 +45,5 @@ int main(int argc, char const *argv[]) {
         std::cout << '\n';
     }
 
-    // for (auto i = img.begin(); i != img.end(); i++) {
-    //     for (auto j = i->begin(); j != i->end(); j++) {
-    //         std::cout << *j << ' ';
-    //     }
-    //     std::cout << '\n';
-    // }
-
     return 0;
 }

@@ -4,6 +4,7 @@
     #include <set>
     #include <queue>
     #include <vector>
+    #include <algorithm>
 
     class Image : public std::vector<std::vector<int>>{
         public:

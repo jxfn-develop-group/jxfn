@@ -139,7 +139,7 @@ std::vector<std::vector<int>> Image::findGrid()
     std::set<std::pair<int, int>> vis;
     std::vector<std::vector<int>> res;
     std::queue<std::pair<int, int>> bfsQueue;
-    // do the job.
+    // find grids.
     for (auto i = this->begin(); i != this->end(); ++i) {
         for (auto j = i->begin(); j != i->end(); ++j) {
             // white = 255.
@@ -222,7 +222,67 @@ std::vector<std::vector<int>> Image::findGrid()
             }
         }
     }
-    return res;
+    // merge the grids.
+    std::vector<std::vector<int>> mergeRes;
+    std::set<std::vector<std::vector<int>>::iterator> mergeVis;
+    for (auto base = res.begin(); base != res.end(); ++base) {
+        int mergeFlag = 0;
+        // merge aim into base.
+        if (mergeVis.find(base) != mergeVis.end()) {
+            continue;
+        }
+        for (auto aim = base; aim != res.end(); ++aim) {
+            // jump the first one.
+            if (aim == base) {
+                continue;
+            }
+            if (mergeVis.find(aim) != mergeVis.end()) {
+                continue;
+            }
+            // judge.
+            int baseX1 = (*base)[0];
+            int baseX2 = (*base)[2];
+            int baseY1 = (*base)[1];
+            int baseY2 = (*base)[3];
+            int aimX1 = (*aim)[0];
+            int aimX2 = (*aim)[2];
+            int aimY1 = (*aim)[1];
+            int aimY2 = (*aim)[3];
+            std::pair<int, int> baseCenter(
+                (baseX1 + baseX2)/2, (baseY1 + baseY2)/2
+            );
+            std::pair<int, int> aimCenter(
+                (aimX1 + aimX2)/2, (aimY1 + aimY2)/2
+            );
+            if ((aimCenter.second > baseY1 && aimCenter.second < baseY2) ||
+                    (baseCenter.second > aimY1 && baseCenter.second > aimY2)) {
+                int disX = aimCenter.first - baseCenter.first;
+                if (disX < 0) {
+                    disX *= -1;
+                }
+                // judge if disX is small enough.
+                if (disX < (baseX2-baseX1)/2 || disX < (aimX2 - aimX1)/2) {
+                    // merge the aim into base.
+                    std::vector<int> mergeBaseAim;
+                    mergeBaseAim.resize(4);
+                    mergeBaseAim[0] = std::min((*base)[0], (*aim)[0]);
+                    mergeBaseAim[1] = std::min((*base)[1], (*aim)[1]);
+                    mergeBaseAim[2] = std::max((*base)[2], (*aim)[2]);
+                    mergeBaseAim[3] = std::max((*base)[3], (*aim)[3]);
+                    mergeRes.push_back(mergeBaseAim);
+                    mergeVis.insert(aim);
+                    mergeFlag = 1;
+                    break;
+                }
+            }
+        }
+        mergeVis.insert(base);
+        if (mergeFlag == 0) {
+            mergeRes.push_back(*base);
+        }
+    }
+    // return res;
+    return mergeRes;
 }
 
 
@@ -234,7 +294,7 @@ bool Image::gridJudge(std::vector<int> edge)
     }
     int col = edge[2] - edge[0] + 1;
     int row = edge[3] - edge[1] + 1;
-    if (col < 2 || row < 2) {
+    if (col < 2 && row < 2) {
         return false;
     }
     return true;
