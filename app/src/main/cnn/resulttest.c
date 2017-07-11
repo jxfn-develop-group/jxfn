@@ -34,12 +34,12 @@ int main(){
         }
         int e= runCnn(&cnn, mat);
         //printf("%d %d\n",e,ii);
-        if(e==ii%10){
+        if(e==ii%OUTPUTNUMBER){
             k++;
             //printf("e:%d\n",ii);
         }
         if(xiangxi){
-            for(int i = 0; i < 10; i++){
+            for(int i = 0; i < OUTPUTNUMBER; i++){
                 printf("%f\n", cnn.mats[7].p_matrix[i]->arr[0]);
             }
             printf("----------------------\n");

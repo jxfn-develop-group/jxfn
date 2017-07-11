@@ -28,7 +28,7 @@ int main(){
         fp = fopen("out1","r");
         double maxval = 0.0, minval = 110.0, averval = 0.0, act = 0.0;
         for(int ii=0;ii<LEARNDATANUM;ii++){
-            int ans =ii%26;
+            int ans =ii%OUTPUTNUMBER;
             for(int i = 2;i<30;i++){
                 for(int j= 2; j < 30 ; j++){
                     fscanf(fp,"%lf",&mat.arr[i * 32 + j]);
@@ -86,7 +86,8 @@ int main(){
             minval = minval < tmp ? minval : tmp;
         }
         fclose(fp);
-        printf("%.9f %.9f %.9f %.9f\n",minval, maxval, averval/1000.0, act/1000.0);
+        printf("%.9f %.9f %.9f %.9f\n",minval, maxval,
+        averval/(double)LEARNDATANUM, act/(double)LEARNDATANUM);
     }
     char s[1111];
     int sav=0;
