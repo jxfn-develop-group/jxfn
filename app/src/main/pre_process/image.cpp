@@ -299,3 +299,51 @@ bool Image::gridJudge(std::vector<int> edge)
     }
     return true;
 }
+
+
+// the resize func.
+std::vector<std::vector<int>> Image::resizeGrid(std::vector<int> grid)
+{
+    // res is a 28*28 2-d vector.
+    std::vector<std::vector<int>> res;
+    res.resize(28);
+    for (auto i = res.begin(); i != res.end(); ++i) {
+        i->resize(28);
+    }
+    int x1 = grid[0];
+    int y1 = grid[1];
+    int x2 = grid[2];
+    int y2 = grid[3];
+    int lenX = x2 - x1 + 1;
+    int lenY = y2 - y1 + 1;
+    // the norm of operator.
+    int lamX = (lenX + 27) / 28;
+    int lamY = (lenY + 27) / 28;
+    for (int i = 0; i < 28; ++i) {
+        for (int j = 0; j < 28; ++j) {
+            int maxPixel = 0;
+            for (int li = 0; li < lamX; ++li) {
+                int nowX = i*lamX + li + x1;
+                if (nowX > x2) {
+                    break;
+                }
+                for (int lj = 0; lj < lamY; ++lj) {
+                    int nowY = j*lamY + lj + y1;
+                    if (nowY > y2) {
+                        break;
+                    }
+                    // if this pixel is white, then use it.
+                    if ((*this)[nowX][nowY] > 0) {
+                        maxPixel = 255;
+                        break;
+                    }
+                }
+                if (maxPixel == 255) {
+                    break;
+                }
+            }
+            res[i][j] = maxPixel;
+        }
+    }
+    return res;
+}

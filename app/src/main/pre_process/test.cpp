@@ -43,13 +43,36 @@ int main(int argc, char const *argv[]) {
             std::cout << *j << ' ';
         }
         std::cout << '\n';
-        int x1 = (*grid)[0];
-        int x2 = (*grid)[2];
-        int y1 = (*grid)[1];
-        int y2 = (*grid)[3];
-        for (int i = x1; i <= x2; ++i) {
-            for (int j = y1; j<= y2; ++j) {
-                if (img[i][j]) {
+        // int& x1 = (*grid)[0];
+        // int& x2 = (*grid)[2];
+        // int& y1 = (*grid)[1];
+        // int& y2 = (*grid)[3];
+        // for (int i = x1; i <= x2; ++i) {
+        //     for (int j = y1; j<= y2; ++j) {
+        //         if (img[i][j]) {
+        //             std::cout << 1;
+        //         }
+        //         else {
+        //             std::cout << 0;
+        //         }
+        //     }
+        //     std::cout << '\n';
+        // }
+        auto resizeGrid = img.resizeGrid(*grid);
+        // for (int i = x1; i <= x2; ++i) {
+        //     for (int j = y1; j<= y2; ++j) {
+        //         if (img[i][j]) {
+        //             std::cout << 1;
+        //         }
+        //         else {
+        //             std::cout << 0;
+        //         }
+        //     }
+        //     std::cout << '\n';
+        // }
+        for (auto i = resizeGrid.begin(); i != resizeGrid.end(); ++i) {
+            for (auto j = i->begin(); j != i->end(); ++j) {
+                if (*j) {
                     std::cout << 1;
                 }
                 else {

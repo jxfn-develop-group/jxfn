@@ -20,6 +20,12 @@
             // find grid that contain a AlphaBeta
             // be ware of that may contain nothing at all.
             std::vector<std::vector<int>> findGrid();
+            // resize the grids.
+            // args:
+            //      grid std::vector<int> size 4 [x1, y1, x2, y2],
+            // return:
+            //      a 2-d vector of int include val of image that lagra 28*28.
+            std::vector<std::vector<int>> resizeGrid(std::vector<int> grid);
         private:
             bool gridJudge(std::vector<int> edge);
     };
