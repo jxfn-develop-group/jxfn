@@ -255,14 +255,12 @@ std::vector<std::vector<int>> Image::findGrid()
                 (aimX1 + aimX2)/2, (aimY1 + aimY2)/2
             );
             if ((aimCenter.second >= baseY1 && aimCenter.second <= baseY2) ||
-                    (baseCenter.second >= aimY1 && baseCenter.second >= aimY2)) {
-                std::cout << aimCenter.first << ' ' << aimCenter.second << '\n';
+                    (baseCenter.second >= aimY1 && baseCenter.second <= aimY2)) {
                 int disX = aimCenter.first - baseCenter.first;
                 if (disX < 0) {
                     disX *= -1;
                 }
                 // judge if disX is small enough.
-                std::cout << aimX2 - aimX1 << '\n';
                 if (disX <= (baseX2-baseX1) || disX <= (aimX2 - aimX1)) {
                     // merge the aim into base.
                     std::vector<int> mergeBaseAim;
@@ -296,8 +294,60 @@ bool Image::gridJudge(std::vector<int> edge)
     }
     int col = edge[2] - edge[0] + 1;
     int row = edge[3] - edge[1] + 1;
-    if (col < 2 && row < 2) {
+    if (col < 2 || row < 2) {
         return false;
     }
     return true;
+}
+
+
+// the resize func.
+// use max filter.
+std::vector<std::vector<int>> Image::resizeGrid(std::vector<int> grid)
+{
+    // res is a 28*28 2-d vector.
+    std::vector<std::vector<int>> res;
+    res.resize(28);
+    for (auto i = res.begin(); i != res.end(); ++i) {
+        i->resize(28);
+    }
+    int x1 = grid[0];
+    int y1 = grid[1];
+    int x2 = grid[2];
+    int y2 = grid[3];
+    int lenX = x2 - x1 + 1;
+    int lenY = y2 - y1 + 1;
+    // the norm of operator.
+    int lamX = (lenX + 27) / 28;
+    int lamY = (lenY + 27) / 28;
+    // the scale of zoom. use to fix window.
+    double scaleZoomX = (double)lenX/28.0;
+    double scaleZoomY = (double)lenY/28.0;
+    for (int i = 0; i < 28; ++i) {
+        for (int j = 0; j < 28; ++j) {
+            int maxPixel = 0;
+            for (int li = 0; li < lamX; ++li) {
+                int nowX = i*scaleZoomX + li + x1;
+                if (nowX > x2) {
+                    break;
+                }
+                for (int lj = 0; lj < lamY; ++lj) {
+                    int nowY = j*scaleZoomY + lj + y1;
+                    if (nowY > y2) {
+                        break;
+                    }
+                    // if this pixel is white, then use it.
+                    if ((*this)[nowX][nowY] > 0) {
+                        maxPixel = 255;
+                        break;
+                    }
+                }
+                if (maxPixel == 255) {
+                    break;
+                }
+            }
+            res[i][j] = maxPixel;
+        }
+    }
+    return res;
 }

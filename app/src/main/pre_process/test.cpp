@@ -6,8 +6,8 @@
 
 int main(int argc, char const *argv[]) {
     // int cnt = 0;
-    const int n = 28;
-    const int m = 28;
+    const int n = 1280;
+    const int m = 960;
     int array[1280*960] = {0};
 
     std::ifstream ifs("out1", std::fstream::in);
@@ -38,11 +38,49 @@ int main(int argc, char const *argv[]) {
     }
 
     auto grids = img.findGrid();
-    for (auto i = grids.begin(); i != grids.end(); ++i) {
-        for (auto j = i->begin(); j != i->end(); ++j) {
+    for (auto grid = grids.begin(); grid != grids.end(); ++grid) {
+        for (auto j = grid->begin(); j != grid->end(); ++j) {
             std::cout << *j << ' ';
         }
         std::cout << '\n';
+        // int& x1 = (*grid)[0];
+        // int& x2 = (*grid)[2];
+        // int& y1 = (*grid)[1];
+        // int& y2 = (*grid)[3];
+        // for (int i = x1; i <= x2; ++i) {
+        //     for (int j = y1; j<= y2; ++j) {
+        //         if (img[i][j]) {
+        //             std::cout << 1;
+        //         }
+        //         else {
+        //             std::cout << 0;
+        //         }
+        //     }
+        //     std::cout << '\n';
+        // }
+        auto resizeGrid = img.resizeGrid(*grid);
+        // for (int i = x1; i <= x2; ++i) {
+        //     for (int j = y1; j<= y2; ++j) {
+        //         if (img[i][j]) {
+        //             std::cout << 1;
+        //         }
+        //         else {
+        //             std::cout << 0;
+        //         }
+        //     }
+        //     std::cout << '\n';
+        // }
+        for (auto i = resizeGrid.begin(); i != resizeGrid.end(); ++i) {
+            for (auto j = i->begin(); j != i->end(); ++j) {
+                if (*j) {
+                    std::cout << 1;
+                }
+                else {
+                    std::cout << 0;
+                }
+            }
+            std::cout << '\n';
+        }
     }
 
     return 0;
