@@ -33,8 +33,16 @@ def read(s,fileout):
     #new_im = Image.fromarray(data)
 
 if __name__ == "__main__":
-    filein = open('addressofpic','r')
-    fileout = open('out1','w+')
+    print('Please input the address of picture:')
+    s = input()
+    try :
+        filein = open(s, 'r')
+    except FileNotFoundError as err:
+        print('please input the valid filename!')
+        sys.exit(0)
+    print('Please input the filename of output:')
+    s = input()
+    fileout = open(s,'w')
     for i in filein.readlines():
         s = i[:-1]
         print(s)
