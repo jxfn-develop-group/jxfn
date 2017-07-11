@@ -6,8 +6,8 @@
 
 int main(int argc, char const *argv[]) {
     // int cnt = 0;
-    const int n = 1280;
-    const int m = 960;
+    const int n = 28;
+    const int m = 28;
     int array[1280*960] = {0};
 
     std::ifstream ifs("out1", std::fstream::in);

@@ -231,6 +231,13 @@ std::vector<std::vector<int>> Image::findGrid()
         if (mergeVis.find(base) != mergeVis.end()) {
             continue;
         }
+        int baseX1 = (*base)[0];
+        int baseX2 = (*base)[2];
+        int baseY1 = (*base)[1];
+        int baseY2 = (*base)[3];
+        std::pair<int, int> baseCenter(
+            (baseX1 + baseX2)/2, (baseY1 + baseY2)/2
+        );
         for (auto aim = base; aim != res.end(); ++aim) {
             // jump the first one.
             if (aim == base) {
@@ -240,28 +247,23 @@ std::vector<std::vector<int>> Image::findGrid()
                 continue;
             }
             // judge.
-            int baseX1 = (*base)[0];
-            int baseX2 = (*base)[2];
-            int baseY1 = (*base)[1];
-            int baseY2 = (*base)[3];
             int aimX1 = (*aim)[0];
             int aimX2 = (*aim)[2];
             int aimY1 = (*aim)[1];
             int aimY2 = (*aim)[3];
-            std::pair<int, int> baseCenter(
-                (baseX1 + baseX2)/2, (baseY1 + baseY2)/2
-            );
             std::pair<int, int> aimCenter(
                 (aimX1 + aimX2)/2, (aimY1 + aimY2)/2
             );
-            if ((aimCenter.second > baseY1 && aimCenter.second < baseY2) ||
-                    (baseCenter.second > aimY1 && baseCenter.second > aimY2)) {
+            if ((aimCenter.second >= baseY1 && aimCenter.second <= baseY2) ||
+                    (baseCenter.second >= aimY1 && baseCenter.second >= aimY2)) {
+                std::cout << aimCenter.first << ' ' << aimCenter.second << '\n';
                 int disX = aimCenter.first - baseCenter.first;
                 if (disX < 0) {
                     disX *= -1;
                 }
                 // judge if disX is small enough.
-                if (disX < (baseX2-baseX1)/2 || disX < (aimX2 - aimX1)/2) {
+                std::cout << aimX2 - aimX1 << '\n';
+                if (disX <= (baseX2-baseX1) || disX <= (aimX2 - aimX1)) {
                     // merge the aim into base.
                     std::vector<int> mergeBaseAim;
                     mergeBaseAim.resize(4);
