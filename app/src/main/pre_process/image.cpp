@@ -302,6 +302,7 @@ bool Image::gridJudge(std::vector<int> edge)
 
 
 // the resize func.
+// use max filter.
 std::vector<std::vector<int>> Image::resizeGrid(std::vector<int> grid)
 {
     // res is a 28*28 2-d vector.
@@ -319,16 +320,19 @@ std::vector<std::vector<int>> Image::resizeGrid(std::vector<int> grid)
     // the norm of operator.
     int lamX = (lenX + 27) / 28;
     int lamY = (lenY + 27) / 28;
+    // the scale of zoom. use to fix window.
+    double scaleZoomX = (double)lenX/28.0;
+    double scaleZoomY = (double)lenY/28.0;
     for (int i = 0; i < 28; ++i) {
         for (int j = 0; j < 28; ++j) {
             int maxPixel = 0;
             for (int li = 0; li < lamX; ++li) {
-                int nowX = i*lamX + li + x1;
+                int nowX = i*scaleZoomX + li + x1;
                 if (nowX > x2) {
                     break;
                 }
                 for (int lj = 0; lj < lamY; ++lj) {
-                    int nowY = j*lamY + lj + y1;
+                    int nowY = j*scaleZoomY + lj + y1;
                     if (nowY > y2) {
                         break;
                     }
