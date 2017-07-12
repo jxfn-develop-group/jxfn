@@ -5,5 +5,8 @@ package edu.jxfn.jxfn;
  */
 
 public class jni_test {
-    public final static native long helloWorld();
+    static {
+        System.loadLibrary("native-lib");
+    }
+    public static native String JniHelloWorld();
 }

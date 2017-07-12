@@ -171,6 +171,7 @@ class Main : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
             val regexString = Regex(""""translatedText": "(.*)"""")
             val regexResult =  regexString.find(resText)
             textView1.text = regexResult!!.groupValues[1]
+            textView1.text = jni_test.JniHelloWorld()
         }
     }
 
