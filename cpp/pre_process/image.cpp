@@ -30,7 +30,7 @@ Image::Image(int n, int m, int* array):vector()
 std::map<int, int> Image::imageHist()
 {
     std::map<int, int> res;
-    // Image::iterator is a std::vector<std::vector<int>>::iterator.
+    // Image::iterator is a std::vector<std::vector<int> >::iterator.
     for (auto i = this->begin(); i != this->end(); i++) {
         for (auto j = i->begin(); j != i->end(); j++) {
             if (res.find(*j) != res.end()) {
@@ -124,7 +124,7 @@ void Image::imageStandard()
 //      ...      ... ...
 //      (x1, y1) ... (x2, y1)
 // you should turn this Image to a 2-value first.
-std::vector<std::vector<int>> Image::findGrid()
+std::vector<std::vector<int> > Image::findGrid()
 {
     int dir[8][2] = {
         {0, 1},
@@ -136,9 +136,9 @@ std::vector<std::vector<int>> Image::findGrid()
         {-1, 1},
         {-1, -1}
     };
-    std::set<std::pair<int, int>> vis;
-    std::vector<std::vector<int>> res;
-    std::queue<std::pair<int, int>> bfsQueue;
+    std::set<std::pair<int, int> > vis;
+    std::vector<std::vector<int> > res;
+    std::queue<std::pair<int, int> > bfsQueue;
     // find grids.
     for (auto i = this->begin(); i != this->end(); ++i) {
         for (auto j = i->begin(); j != i->end(); ++j) {
@@ -223,8 +223,8 @@ std::vector<std::vector<int>> Image::findGrid()
         }
     }
     // merge the grids.
-    std::vector<std::vector<int>> mergeRes;
-    std::set<std::vector<std::vector<int>>::iterator> mergeVis;
+    std::vector<std::vector<int> > mergeRes;
+    std::set<std::vector<std::vector<int> >::iterator> mergeVis;
     for (auto base = res.begin(); base != res.end(); ++base) {
         int mergeFlag = 0;
         // merge aim into base.
@@ -303,10 +303,10 @@ bool Image::gridJudge(std::vector<int> edge)
 
 // the resize func.
 // use max filter.
-std::vector<std::vector<int>> Image::resizeGrid(std::vector<int> grid)
+std::vector<std::vector<int> > Image::resizeGrid(std::vector<int> grid)
 {
     // res is a 28*28 2-d vector.
-    std::vector<std::vector<int>> res;
+    std::vector<std::vector<int> > res;
     res.resize(28);
     for (auto i = res.begin(); i != res.end(); ++i) {
         i->resize(28);

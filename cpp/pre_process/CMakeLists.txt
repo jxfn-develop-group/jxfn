@@ -5,12 +5,12 @@ project (jni_test)
 SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
 
 aux_source_directory(. DIR_SRCS)
-# add the executable
-# add_executable(main ${DIR_SRCS})
+# add the shared library.
 add_library( # Specifies the name of the library.
-             native-lib
+            pre-process
             # Sets the library as a shared library.
-             SHARED
+            SHARED
             # Provides a relative path to your source file(s).
             ${DIR_SRCS}
     )
+# add_executable(a.out ${DIR_SRCS})

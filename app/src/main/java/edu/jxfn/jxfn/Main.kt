@@ -148,7 +148,7 @@ class Main : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
             }
             val file = File(imagePath, "myCamera.jpg")
             val newFile: FileInputStream = FileInputStream(file)
-            val newBitmap = BitmapFactory.decodeStream(newFile)
+            val newBitmap = PreProcess.RgbToGray(BitmapFactory.decodeStream(newFile))
             newFile.close()
             // bitmap = bitmapProcess(bitmap)
             imageView2.setImageBitmap(newBitmap)
@@ -171,7 +171,6 @@ class Main : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
             val regexString = Regex(""""translatedText": "(.*)"""")
             val regexResult =  regexString.find(resText)
             textView1.text = regexResult!!.groupValues[1]
-            textView1.text = jni_test.JniHelloWorld()
         }
     }
 

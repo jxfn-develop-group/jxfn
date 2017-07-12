@@ -2,4 +2,5 @@ test
 data/
 *.out
 out*
+build/
 *.o

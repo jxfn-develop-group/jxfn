@@ -23,7 +23,7 @@ android {
     }
     externalNativeBuild {
         cmake {
-            path '../cpp/jni_test/CMakeLists.txt'
+            path '../cpp/pre_process/CMakeLists.txt'
         }
     }
 }
