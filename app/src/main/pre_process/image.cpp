@@ -294,7 +294,7 @@ bool Image::gridJudge(std::vector<int> edge)
     }
     int col = edge[2] - edge[0] + 1;
     int row = edge[3] - edge[1] + 1;
-    if (col < 2 || row < 2) {
+    if (col < 28 && row < 28) {
         return false;
     }
     return true;
