@@ -18,7 +18,7 @@ int main(){
     matrixInit(&mat, 32, 32);
     Cnnnet cnn;
     cnnnetInit(&cnn);
-    initRand(&cnn);
+    //initRand(&cnn);
     char fn[1111]="parameter";
     initFromFile(&cnn, fn);
 
@@ -36,57 +36,70 @@ int main(){
             }
             double tmp = errorCnn(&cnn, mat, ans);
             act+=tmp;
+            maxval = maxval > tmp ? maxval : tmp;
+            minval = minval < tmp ? minval : tmp;
             //if(ans)
             //printf("%d:%d %d %f\n",ans,t,ii,tmp);
-            double err;
+            //double err;
             double tmp1=tmp;
-            if(tmp<0.5){
-                err = tmp * 0.99;
-                tmp1 = tmp*1.01;
+            int maxci=5;/*
+            if(tmp<0.15){
+                maxci = 1;
             }
-            else if(tmp < 1.0){
-                err = tmp * 0.95;
-                tmp1=tmp*1.02;
+            else if(tmp<0.25){
+                maxci = 5;
             }
-            else if(tmp < 2.0){
-                err = tmp * 0.80;
-                tmp1= tmp* 1.04;
+            else if(tmp<0.35){
+                maxci = 9;
             }
-            else if(tmp < 10.0){
-                err = tmp * 0.90;
-                tmp1= tmp*1.08;
+            else if(tmp<0.45){
+                maxci = 14;
             }
-            else if(tmp < 100.0){
-                err = tmp * 0.80;
-                tmp1= tmp*1.18;
+            else if(tmp<0.55){
+                maxci =18;
+            }
+            else if(tmp<0.65){
+                maxci = 22;
+            }
+            else if(tmp<0.8){
+                maxci = 26;
+            }
+            else if(tmp<1.0){
+                maxci = 30;
+            }
+            else if(tmp<2.0){
+                maxci = 40;
+            }
+            else if(tmp<5.0){
+                maxci = 50;
+            }
+            else if(tmp<10.0){
+                maxci = 60;
             }
             else{
-                err = tmp - 50.0;
-                tmp1= tmp + 20.0;
-            }
-            learnCnn(&cnn, mat, ans);
+                maxci = 70;
+            }*/
+            //learnCnn(&cnn, mat, ans);
             //err = tmp * 0.99;
             int ci = 0;
-            double pre = tmp;
-            while(tmp>0.25&&ci<100){
+            //double pre = tmp;
+            while(ci<1){
                 ci++;
                 //if(tmp<0.20)break;
                 learnCnn(&cnn,mat,ans);
                 tmp = errorCnn(&cnn, mat, ans);
                 if(tmp>tmp1){
-                    printf("\n!! %f %f %f\n\n",tmp,tmp1,err);
+                    printf("\n!! %f %f\n\n",tmp,tmp1);
                     break;
                 }
                 //if(ci%100==0)printf("%f\n",tmp);
             }
             //if(ii%100<10)
-            printf("%d:%d %d %f %d %d\n",ans,t,ii,tmp,ci,pre>tmp);
+            //printf("%d:%d %d %f %d %d\n",ans,t,ii,tmp,ci,pre>tmp);
             averval += tmp;
-            maxval = maxval > tmp ? maxval : tmp;
-            minval = minval < tmp ? minval : tmp;
         }
         fclose(fp);
-        printf("%.9f %.9f %.9f %.9f\n",minval, maxval,
+        printf("%d %.9f %.9f %.9f %.9f\n",t, minval, maxval,
         averval/(double)LEARNDATANUM, act/(double)LEARNDATANUM);
     }
     char s[1111];

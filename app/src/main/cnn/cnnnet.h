@@ -23,4 +23,5 @@
         #define CNNERROR 0.1
     #endif
     double errorCnn(Cnnnet *net1, Matrix image, int ans);
+    void initFun(Cnnnet* net1);
 #endif
