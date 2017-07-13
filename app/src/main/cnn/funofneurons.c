@@ -81,22 +81,10 @@ double LReLuDer(double a){
 void LReLuRT(double* pre, double * nex, double* w, double input,
         double output, double* bias){
     double tmp = *nex * LReLuDer(output);
-    *pre +=  (tmp * (*w));
-    /*if(fabs(tmp* (*w))>fabs(*nex)+1e-3){
-        *pre +=  *nex * 1e-6;
-    }
-    else{
-        *pre += (tmp * (*w)) * 1e-6;
-    }*/
+    *pre +=   (tmp * (*w));
     *w -= minDouble(LEARNINDEX * (input * tmp), WEIGHTLIMIT);
-    /*if(fabs(*w)>1+1e-3){
-        if(*w>0){
-            *w = 1.0;
-        }
-        else{
-            *w = -1.0;
-        }
-    }*/
+    if(*w > 1.0) *w = 1.0;
+    if(*w < -1.0) *w = -1.0;
     *bias -= LEARNBIAS * tmp;
 }
 
@@ -104,9 +92,8 @@ void LReLuRT(double* pre, double * nex, double* w, double input,
 void LReLuRTNoChange(double* pre, double* nex, double* w, double input,
         double output, double* bias, double* wc){
     double tmp = *nex * LReLuDer(output);
-    // *pre += LEARNINDEX * tmp * (*w);
-    *pre += tmp * (*w);
-    *wc = minDouble(-LEARNINDEX * input * tmp, WEIGHTLIMIT);
+    *pre += tmp * (*w) ;
+    *wc = -LEARNINDEX * input * tmp;
     *bias -= LEARNBIAS * tmp;
 }
 
@@ -121,6 +108,9 @@ void convRT(Matrix* pre, Matrix* nex, Neurons* neu, Matrix* input,
         return ;
     }
     Matrix tmat;
+    Matrix tweights;
+    tweights.arr = NULL;
+    matrixEqu(&tweights, &neu->weights);
     int om = output->m, on = output->n, im = input->m, nm = neu->weights.m;
     matrixInit(&tmat, neu->weights.n, neu->weights.m);
     for(int i = 0; i < on; i++){
@@ -128,17 +118,23 @@ void convRT(Matrix* pre, Matrix* nex, Neurons* neu, Matrix* input,
             if(fabs(output->arr[i * output->m + j]) < EPS){
                 continue;
             }
+            double tmpp = 1.0;
+            tmpp /= (double)neu->weights.n;
+            tmpp /= (double)neu->weights.m;
             for(int ii = 0; ii < neu->weights.n; ii++){
                 for(int jj = 0; jj < neu->weights.m; jj++){
                     p_fun(&pre->arr[(i+ii)*im+j+jj],&nex->arr[i*om+j],
                     &neu->weights.arr[ii*nm+jj],input->arr[(i+ii)*im+j+jj],
-                    output->arr[i*om+j],&neu->bias,&tmat.arr[ii*nm+jj]);
+                    input->arr[(i+ii)*im+j+jj] * neu->weights.arr[ii*nm+jj] +
+                    neu->bias * tmpp, &neu->bias,&tmat.arr[ii*nm+jj]);
                 }
             }
         }
     }
     matrixAdd(&neu->weights, &tmat);
+    weightsAdjust(&tweights, &neu->weights);
     matrixFree(&tmat);
+    matrixFree(&tweights);
 }
 
 
@@ -229,6 +225,56 @@ void gradAdjust(Matrixs* mat){
             int m = mat->p_matrix[i]->m;
             for(int k = 0; k < m; k++){
                 mat->p_matrix[i]->arr[j *m + k] /= maxd;
+            }
+        }
+    }
+}
+
+
+void biasAdjust(double* tmpbias, double* bias){
+    if(fabs(*tmpbias - *bias) > BIASLIMIT){
+        if(*tmpbias > *bias){
+            *bias = *tmpbias - BIASLIMIT;
+        }
+        else{
+            *bias = *tmpbias + BIASLIMIT;
+        }
+    }
+    if(fabs(*bias) > 0.5){
+        if(*bias > 0.0){
+            *bias = 0.5;
+        }
+        else{
+            *bias = -0.5;
+        }
+    }
+}
+
+
+void weightsAdjust(Matrix* pre, Matrix* now){
+    if(!matrixSameSize(pre, now)){
+        printf("error in weightsAdjust!\n");
+        exit(0);
+    }
+    int n = pre->n, m = pre->m;
+    //printf("%d %d\n",n,m);
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < m; j++){
+            if(fabs(pre->arr[i * m +j] - now->arr[i * m + j]) > WEIGHTLIMIT){
+                if(pre->arr[i * m + j] > now->arr[i * m + j]){
+                    now->arr[i * m + j] = pre->arr[i * m + j] - WEIGHTLIMIT;
+                }
+                else{
+                    now->arr[i * m + j] = pre->arr[i * m + j] + WEIGHTLIMIT;
+                }
+            }
+            if(fabs(now->arr[i * m + j]) > 1.0){
+                if(now->arr[i * m + j] > 0.0){
+                    now->arr[i * m + j] = 1.0;
+                }
+                else{
+                    now->arr[i * m + j] = -1.0;
+                }
             }
         }
     }

@@ -3,5 +3,19 @@
     #if __MOSHI__
         // #define double float
     #endif
-    #define EPS 1e-9
+    #ifndef EPS
+        #define EPS 1e-9
+    #endif
+    #ifndef OUTPUTNUEBER
+        #define OUTPUTNUMBER 26
+    #endif
+    #ifndef TESTNUM
+        #define TESTNUM 3
+    #endif
+    #ifndef LEARNDATANUM
+        #define LEARNDATANUM 2600
+    #endif
+    #ifndef TESTDATANUM
+        #define TESTDATANUM 2600
+    #endif
 #endif

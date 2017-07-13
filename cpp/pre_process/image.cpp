@@ -30,7 +30,7 @@ Image::Image(int n, int m, int* array):vector()
 std::map<int, int> Image::imageHist()
 {
     std::map<int, int> res;
-    // Image::iterator is a std::vector<std::vector<int>>::iterator.
+    // Image::iterator is a std::vector<std::vector<int> >::iterator.
     for (auto i = this->begin(); i != this->end(); i++) {
         for (auto j = i->begin(); j != i->end(); j++) {
             if (res.find(*j) != res.end()) {
@@ -124,7 +124,7 @@ void Image::imageStandard()
 //      ...      ... ...
 //      (x1, y1) ... (x2, y1)
 // you should turn this Image to a 2-value first.
-std::vector<std::vector<int>> Image::findGrid()
+std::vector<std::vector<int> > Image::findGrid()
 {
     int dir[8][2] = {
         {0, 1},
@@ -136,10 +136,10 @@ std::vector<std::vector<int>> Image::findGrid()
         {-1, 1},
         {-1, -1}
     };
-    std::set<std::pair<int, int>> vis;
-    std::vector<std::vector<int>> res;
-    std::queue<std::pair<int, int>> bfsQueue;
-    // do the job.
+    std::set<std::pair<int, int> > vis;
+    std::vector<std::vector<int> > res;
+    std::queue<std::pair<int, int> > bfsQueue;
+    // find grids.
     for (auto i = this->begin(); i != this->end(); ++i) {
         for (auto j = i->begin(); j != i->end(); ++j) {
             // white = 255.
@@ -222,8 +222,67 @@ std::vector<std::vector<int>> Image::findGrid()
             }
         }
     }
-
-    return res;
+    // merge the grids.
+    std::vector<std::vector<int> > mergeRes;
+    std::set<std::vector<std::vector<int> >::iterator> mergeVis;
+    for (auto base = res.begin(); base != res.end(); ++base) {
+        int mergeFlag = 0;
+        // merge aim into base.
+        if (mergeVis.find(base) != mergeVis.end()) {
+            continue;
+        }
+        int baseX1 = (*base)[0];
+        int baseX2 = (*base)[2];
+        int baseY1 = (*base)[1];
+        int baseY2 = (*base)[3];
+        std::pair<int, int> baseCenter(
+            (baseX1 + baseX2)/2, (baseY1 + baseY2)/2
+        );
+        for (auto aim = base; aim != res.end(); ++aim) {
+            // jump the first one.
+            if (aim == base) {
+                continue;
+            }
+            if (mergeVis.find(aim) != mergeVis.end()) {
+                continue;
+            }
+            // judge.
+            int aimX1 = (*aim)[0];
+            int aimX2 = (*aim)[2];
+            int aimY1 = (*aim)[1];
+            int aimY2 = (*aim)[3];
+            std::pair<int, int> aimCenter(
+                (aimX1 + aimX2)/2, (aimY1 + aimY2)/2
+            );
+            if ((aimCenter.second >= baseY1 && aimCenter.second <= baseY2) ||
+                    (baseCenter.second >= aimY1 && baseCenter.second <= aimY2)) {
+                int disX = aimCenter.first - baseCenter.first;
+                if (disX < 0) {
+                    disX *= -1;
+                }
+                // judge if disX is small enough.
+                if (disX <= (baseX2-baseX1) || disX <= (aimX2 - aimX1)) {
+                    // merge the aim into base.
+                    std::vector<int> mergeBaseAim;
+                    mergeBaseAim.resize(4);
+                    mergeBaseAim[0] = std::min((*base)[0], (*aim)[0]);
+                    mergeBaseAim[1] = std::min((*base)[1], (*aim)[1]);
+                    mergeBaseAim[2] = std::max((*base)[2], (*aim)[2]);
+                    mergeBaseAim[3] = std::max((*base)[3], (*aim)[3]);
+                    mergeRes.push_back(mergeBaseAim);
+                    mergeVis.insert(aim);
+                    mergeFlag = 1;
+                    break;
+                }
+            }
+        }
+        mergeVis.insert(base);
+        if (mergeFlag == 0) {
+            mergeRes.push_back(*base);
+        }
+    }
+    // return res;
+    return mergeRes;
 }
 
 
@@ -233,11 +292,62 @@ bool Image::gridJudge(std::vector<int> edge)
     if (edge.size() != 4) {
         return false;
     }
-
     int col = edge[2] - edge[0] + 1;
     int row = edge[3] - edge[1] + 1;
-    if (col < 2 || row < 2) {
+    if (col < 28 && row < 28) {
         return false;
     }
     return true;
+}
+
+
+// the resize func.
+// use max filter.
+std::vector<std::vector<int> > Image::resizeGrid(std::vector<int> grid)
+{
+    // res is a 28*28 2-d vector.
+    std::vector<std::vector<int> > res;
+    res.resize(28);
+    for (auto i = res.begin(); i != res.end(); ++i) {
+        i->resize(28);
+    }
+    int x1 = grid[0];
+    int y1 = grid[1];
+    int x2 = grid[2];
+    int y2 = grid[3];
+    int lenX = x2 - x1 + 1;
+    int lenY = y2 - y1 + 1;
+    // the norm of operator.
+    int lamX = (lenX + 27) / 28;
+    int lamY = (lenY + 27) / 28;
+    // the scale of zoom. use to fix window.
+    double scaleZoomX = (double)lenX/28.0;
+    double scaleZoomY = (double)lenY/28.0;
+    for (int i = 0; i < 28; ++i) {
+        for (int j = 0; j < 28; ++j) {
+            int maxPixel = 0;
+            for (int li = 0; li < lamX; ++li) {
+                int nowX = i*scaleZoomX + li + x1;
+                if (nowX > x2) {
+                    break;
+                }
+                for (int lj = 0; lj < lamY; ++lj) {
+                    int nowY = j*scaleZoomY + lj + y1;
+                    if (nowY > y2) {
+                        break;
+                    }
+                    // if this pixel is white, then use it.
+                    if ((*this)[nowX][nowY] > 0) {
+                        maxPixel = 255;
+                        break;
+                    }
+                }
+                if (maxPixel == 255) {
+                    break;
+                }
+            }
+            res[i][j] = maxPixel;
+        }
+    }
+    return res;
 }
