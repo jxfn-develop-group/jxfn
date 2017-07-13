@@ -1,7 +1,7 @@
 #include <cstdio>
 #include <vector>
 
-#include "cnnnet.h"
+//#include "cnnnet.h"
 #include "fileofconfig.h"
 #include "functioninit.h"
 

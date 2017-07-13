@@ -2,6 +2,8 @@
 #include <fstream>
 #include <string>
 #include "image.hpp"
+#include "charsort.hpp"
+#include "interface.hpp"
 #include "edu_jxfn_jxfn_PreProcess.h"
 
 
@@ -23,10 +25,10 @@ JNIEXPORT jstring JNICALL Java_edu_jxfn_jxfn_PreProcess_preProcess(
     Image img(n, m, buff);
     img.imageStandard();
     auto grids = img.findGrid();
-    for (auto i = grids.begin(); i != grids.end(); ++i) {
-
+    for (auto grid = grids.begin(); grid != grids.end(); ++grid) {
+        grid->push_back(cnnInterface(img.resizeGrid(*grid)));
     }
-    std::string res = "hello world from deep sea.";
+    std::string res = charasort(grids);
     return env->NewStringUTF(res.c_str());
 }
 
