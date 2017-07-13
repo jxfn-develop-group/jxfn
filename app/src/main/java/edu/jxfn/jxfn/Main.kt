@@ -148,9 +148,9 @@ class Main : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
             }
             val file = File(imagePath, "myCamera.jpg")
             val newFile: FileInputStream = FileInputStream(file)
-            val newBitmap = PreProcess.RgbToGray(BitmapFactory.decodeStream(newFile))
+            var newBitmap = PreProcess.RgbToGray(BitmapFactory.decodeStream(newFile))
             newFile.close()
-            // bitmap = bitmapProcess(bitmap)
+            newBitmap = Bitmap.createScaledBitmap(newBitmap, 1280, 960, false)
             imageView2.setImageBitmap(newBitmap)
             bitmap = newBitmap
         }

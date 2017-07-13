@@ -32,10 +32,10 @@ JNIEXPORT jstring JNICALL Java_edu_jxfn_jxfn_PreProcess_preProcess(
     int n = 1280;
     int m = 960;
     Image img(n, m, buff);
-    img.imageStandard();
+    img.imageStandard(0);
     auto grids = img.findGrid();
-    // std::string tres = IntToString(grids.end() - grids.begin());
-    // return env->NewStringUTF(tres.c_str());
+//    std::string tres = IntToString(grids.end() - grids.begin());
+//    return env->NewStringUTF(tres.c_str());
     for (auto grid = grids.begin(); grid != grids.end(); ++grid) {
         grid->push_back(cnnInterface(img.resizeGrid(*grid)));
     }

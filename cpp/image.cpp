@@ -79,7 +79,7 @@ void Image::imageTwoValue(int threshold)
 // use the hist table to smart choose a threshold.
 // automate do the Invert when needed.
 // the stardand image means a black background (0) and white text (255)
-void Image::imageStandard()
+void Image::imageStandard(int invert)
 {
     std::map<int, int> hist = this->imageHist();
     auto maxItem = hist.begin();
@@ -105,7 +105,7 @@ void Image::imageStandard()
         }
     }
     // if the background is white (255), then invert it.
-    if (maxItem->first > 128) {
+    if ((maxItem->first > 128 && invert) || (maxItem->first < 128 && !invert)) {
         this->imageInvert(minItem->first);
     }
     else {
