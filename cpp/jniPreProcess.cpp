@@ -1,15 +1,26 @@
 #include <cstdio>
-#include <fstream>
 #include <string>
+#include <sstream>
 #include "image.hpp"
-#include "edu_jxfn_jxfn_PreProcess.h"
+#include "charsort.hpp"
+#include "interface.hpp"
+#include "edu_jxfn_jxfn_PreProcess.hpp"
+
+
+std::string IntToString (long a)
+{
+    std::ostringstream temp;
+    temp<<a;
+    return temp.str();
+}
+
 
 
 JNIEXPORT jstring JNICALL Java_edu_jxfn_jxfn_PreProcess_preProcess(
     JNIEnv* env, jclass cls, jintArray jArray)
 {
-    jint i = 0;
     jint arrayLen = env->GetArrayLength(jArray);
+
     if (arrayLen < 1280*960) {
         return env->NewStringUTF("Error!");
     }
@@ -21,12 +32,14 @@ JNIEXPORT jstring JNICALL Java_edu_jxfn_jxfn_PreProcess_preProcess(
     int n = 1280;
     int m = 960;
     Image img(n, m, buff);
-    img.imageStandard();
+    img.imageStandard(0);
     auto grids = img.findGrid();
-    for (auto i = grids.begin(); i != grids.end(); ++i) {
-
+//    std::string tres = IntToString(grids.end() - grids.begin());
+//    return env->NewStringUTF(tres.c_str());
+    for (auto grid = grids.begin(); grid != grids.end(); ++grid) {
+        grid->push_back(cnnInterface(img.resizeGrid(*grid)));
     }
-    std::string res = "hello world from deep sea.";
+    std::string res = charasort(grids);
     return env->NewStringUTF(res.c_str());
 }
 

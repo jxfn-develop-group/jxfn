@@ -1,7 +1,0 @@
-out*
-# callgrind cache
-callgrind
-data/
-test*
-para*
-addressofpic

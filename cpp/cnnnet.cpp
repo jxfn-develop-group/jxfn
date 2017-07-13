@@ -4,10 +4,10 @@
 #include <time.h>
 
 
-#include "cnnnet.h"
-#include "funofneurons.h"
-#include "fileofparameter.h"
-#include "functioninit.h"
+#include "cnnnet.hpp"
+#include "funofneurons.hpp"
+#include "fileofparameter.hpp"
+#include "functioninit.hpp"
 
 
 void cnnnetInit(Cnnnet* net1){

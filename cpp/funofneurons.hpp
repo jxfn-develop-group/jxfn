@@ -1,6 +1,6 @@
-#include "matrix.h"
-#include "fileofconfig.h"
-#include "neurons.h"
+#include "matrix.hpp"
+#include "fileofconfig.hpp"
+#include "neurons.hpp"
 
 
 #ifndef _FUNOFNEURONS_H

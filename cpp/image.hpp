@@ -16,7 +16,7 @@
             void imageInvert(int threshold);
             void imageTwoValue(int threshold);
             // stardand the image.
-            void imageStandard();
+            void imageStandard(int invert);
             // find grid that contain a AlphaBeta
             // be ware of that may contain nothing at all.
             std::vector<std::vector<int> > findGrid();
