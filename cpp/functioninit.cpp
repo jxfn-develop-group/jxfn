@@ -1,7 +1,7 @@
 #include<stdio.h>
 
 
-#include "functioninit.h"
+#include "functioninit.hpp"
 
 
 void functionIni(Cnnnet* net1){

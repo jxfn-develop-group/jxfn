@@ -2,8 +2,8 @@
 #include <vector>
 
 //#include "cnnnet.h"
-#include "fileofconfig.h"
-#include "functioninit.h"
+#include "fileofconfig.hpp"
+#include "functioninit.hpp"
 
 
 #ifndef _INTERFACE_HPP

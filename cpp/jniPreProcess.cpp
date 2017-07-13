@@ -1,17 +1,26 @@
 #include <cstdio>
-#include <fstream>
 #include <string>
+#include <sstream>
 #include "image.hpp"
 #include "charsort.hpp"
 #include "interface.hpp"
-#include "edu_jxfn_jxfn_PreProcess.h"
+#include "edu_jxfn_jxfn_PreProcess.hpp"
+
+
+std::string IntToString (long a)
+{
+    std::ostringstream temp;
+    temp<<a;
+    return temp.str();
+}
+
 
 
 JNIEXPORT jstring JNICALL Java_edu_jxfn_jxfn_PreProcess_preProcess(
     JNIEnv* env, jclass cls, jintArray jArray)
 {
-    jint i = 0;
     jint arrayLen = env->GetArrayLength(jArray);
+
     if (arrayLen < 1280*960) {
         return env->NewStringUTF("Error!");
     }
@@ -25,6 +34,8 @@ JNIEXPORT jstring JNICALL Java_edu_jxfn_jxfn_PreProcess_preProcess(
     Image img(n, m, buff);
     img.imageStandard();
     auto grids = img.findGrid();
+    // std::string tres = IntToString(grids.end() - grids.begin());
+    // return env->NewStringUTF(tres.c_str());
     for (auto grid = grids.begin(); grid != grids.end(); ++grid) {
         grid->push_back(cnnInterface(img.resizeGrid(*grid)));
     }

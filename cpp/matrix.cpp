@@ -3,7 +3,7 @@
 #include <string.h>
 #include <math.h>
 
-#include "matrix.h"
+#include "matrix.hpp"
 
 void matrixInit(Matrix* mat, int n, int m){
     if(n < 0||m < 0){

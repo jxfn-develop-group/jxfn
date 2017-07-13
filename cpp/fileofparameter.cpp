@@ -2,9 +2,9 @@
 #include <stdlib.h>
 
 
-#include "fileofparameter.h"
-#include "fileofconfig.h"
-#include "funofneurons.h"
+#include "fileofparameter.hpp"
+#include "fileofconfig.hpp"
+#include "funofneurons.hpp"
 
 
 void readLayerOne(Cnnnet* net1, FILE* fp){

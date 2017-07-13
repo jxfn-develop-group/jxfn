@@ -2,8 +2,8 @@
 #include <stdlib.h>
 
 
-#include "matrix.h"
-#include "neurons.h"
+#include "matrix.hpp"
+#include "neurons.hpp"
 
 
 void neuronsInit(Neurons* a, int n, int m, double bias){

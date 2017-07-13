@@ -4,9 +4,9 @@
 #include <stdio.h>
 
 
-#include "funofneurons.h"
-#include "neurons.h"
-#include "matrix.h"
+#include "funofneurons.hpp"
+#include "neurons.hpp"
+#include "matrix.hpp"
 
 
 double maxd(double a, double b){

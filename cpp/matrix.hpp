@@ -1,4 +1,4 @@
-#include "fileofconfig.h"
+#include "fileofconfig.hpp"
 
 
 #ifndef _MATRIX_H

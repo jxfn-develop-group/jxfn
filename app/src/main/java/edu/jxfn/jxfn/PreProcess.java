@@ -38,6 +38,7 @@ public class PreProcess {
         int x = bitSrc.getWidth();
         int y = bitSrc.getHeight();
         int[] bitmapArray = new int[x * y];
+//        System.out.print(x * y);
         bitSrc.getPixels(bitmapArray, 0, x, 0, 0, x, y);
         return preProcess(bitmapArray);
     }

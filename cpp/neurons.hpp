@@ -1,5 +1,5 @@
-#include "matrix.h"
-#include "fileofconfig.h"
+#include "matrix.hpp"
+#include "fileofconfig.hpp"
 
 
 #ifndef _NEURONS_H

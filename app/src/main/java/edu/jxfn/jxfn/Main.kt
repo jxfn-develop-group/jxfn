@@ -177,6 +177,7 @@ class Main : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
                 textView1.text = regexResult!!.groupValues[1]
             }
         }
+        textView1.text = word
     }
 
     fun bitmapProcess(bitmap: Bitmap?): Unit {
