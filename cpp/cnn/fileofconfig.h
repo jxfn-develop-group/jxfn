@@ -10,12 +10,12 @@
         #define OUTPUTNUMBER 26
     #endif
     #ifndef TESTNUM
-        #define TESTNUM 3
+        #define TESTNUM 100
     #endif
     #ifndef LEARNDATANUM
         #define LEARNDATANUM 2600
     #endif
     #ifndef TESTDATANUM
-        #define TESTDATANUM 2600
+        #define TESTDATANUM 2600/5
     #endif
 #endif

@@ -7,6 +7,7 @@
 #include "cnnnet.h"
 #include "funofneurons.h"
 #include "fileofparameter.h"
+#include "functioninit.h"
 
 
 void cnnnetInit(Cnnnet* net1){
@@ -523,4 +524,10 @@ double errorCnn(Cnnnet* net1, Matrix image, int ans){
         }
     }
     return res;
+}
+
+
+void initFun(Cnnnet *net1){
+    initRand(net1);
+    functionIni(net1);
 }
