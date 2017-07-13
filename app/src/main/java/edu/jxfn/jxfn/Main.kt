@@ -182,6 +182,6 @@ class Main : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
         }
 
         imageView2.setImageBitmap(null)
-        translate("hello world.")
+        translate(PreProcess.bitmapPreProcess(bitmap))
     }
 }

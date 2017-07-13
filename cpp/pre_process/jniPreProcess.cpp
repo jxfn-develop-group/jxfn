@@ -1,6 +1,6 @@
 #include <cstdio>
 #include <fstream>
-#include <iostream>
+#include <string>
 #include "image.hpp"
 #include "edu_jxfn_jxfn_PreProcess.h"
 
@@ -18,7 +18,16 @@ JNIEXPORT jstring JNICALL Java_edu_jxfn_jxfn_PreProcess_preProcess(
     for (int i = 0; i < 1280*960; ++i) {
         buff[i] = arr[i];
     }
-    return env->NewStringUTF("Success!");
+    int n = 1280;
+    int m = 960;
+    Image img(n, m, buff);
+    img.imageStandard();
+    auto grids = img.findGrid();
+    for (auto i = grids.begin(); i != grids.end(); ++i) {
+
+    }
+    std::string res = "hello world from deep sea.";
+    return env->NewStringUTF(res.c_str());
 }
 
 
