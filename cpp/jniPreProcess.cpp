@@ -20,7 +20,6 @@ JNIEXPORT jstring JNICALL Java_edu_jxfn_jxfn_PreProcess_preProcess(
     JNIEnv* env, jclass cls, jintArray jArray)
 {
     jint arrayLen = env->GetArrayLength(jArray);
-
     if (arrayLen < 1280*960) {
         return env->NewStringUTF("Error!");
     }
@@ -29,13 +28,12 @@ JNIEXPORT jstring JNICALL Java_edu_jxfn_jxfn_PreProcess_preProcess(
     for (int i = 0; i < 1280*960; ++i) {
         buff[i] = arr[i];
     }
+    env->ReleaseIntArrayElements(jArray, arr, 0);
     int n = 1280;
     int m = 960;
     Image img(n, m, buff);
     img.imageStandard(0);
     auto grids = img.findGrid();
-//    std::string tres = IntToString(grids.end() - grids.begin());
-//    return env->NewStringUTF(tres.c_str());
     for (auto grid = grids.begin(); grid != grids.end(); ++grid) {
         grid->push_back(cnnInterface(img.resizeGrid(*grid)));
     }
